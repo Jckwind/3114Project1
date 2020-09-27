@@ -1,5 +1,6 @@
 package prj1;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 // On my honor:
@@ -63,5 +64,45 @@ public class Command {
      */
     public ArrayList<String> getArgs() {
         return args;
+    }
+
+
+    /**
+     * runs the command depending on type
+     */
+    public void run() {
+        switch (commandType) {
+            case LOAD:
+                this.load();
+                break;
+            case SEARCH:
+
+                break;
+            case SUMMARY:
+
+                break;
+            case DUMP:
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * runs the load command
+     */
+    private void load() {
+        String csvFilePath = args.get(0);
+        try {
+            CSVReader reader = new CSVReader(csvFilePath);
+            reader.readData();
+            for (CovidData data : reader.getData()) {
+// System.out.println(data.toString());
+            }
+        }
+        catch (FileNotFoundException e) {
+            // report error
+        }
     }
 }

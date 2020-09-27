@@ -41,6 +41,6 @@ public class Covid19TrackingManager {
         String commandFile = args[0];
         CommandHub hub = new CommandHub(commandFile);
         hub.execute();
-        System.out.println(hub.toString());
+// System.out.println(hub.toString());
     }
 }

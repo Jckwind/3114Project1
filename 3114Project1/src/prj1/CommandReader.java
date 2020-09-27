@@ -1,5 +1,12 @@
 package prj1;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
 // On my honor:
 //
 // - I have not used source code obtained from another student,
@@ -29,4 +36,68 @@ package prj1;
  */
 public class CommandReader {
 
+    private ArrayList<Command> commands;
+
+    private String commandPath;
+
+
+    /**
+     * 
+     */
+    public CommandReader(ArrayList<Command> commands, String commandPath) {
+        this.commands = commands;
+        this.commandPath = commandPath;
+    }
+
+
+    /**
+     * reads the command file and populates the command list
+     * 
+     * @throws FileNotFoundException
+     */
+    public void read() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(commandPath));
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine().trim();
+            // split the line into parts and convert parts to arraylist
+            List<String> listOfParts = Arrays.asList(line.split("\\s+"));
+            ArrayList<String> parts = new ArrayList<>(listOfParts);
+            // cast the command type
+            CommandEnum type = getType(parts.get(0));
+            // remove the type of command from parts
+            parts.remove(0);
+            Command command = new Command(type, parts);
+            commands.add(command);
+        }
+        scanner.close();
+    }
+
+
+    /**
+     * changes a string to a command type enum value
+     * 
+     * @param stringValue
+     *            the type of the command
+     * @return the command type
+     */
+    private CommandEnum getType(String stringValue) {
+        if (stringValue == null) {
+            return null;
+        }
+        else if (stringValue.equals("load")) {
+            return CommandEnum.LOAD;
+        }
+        else if (stringValue.equals("search")) {
+            return CommandEnum.SEARCH;
+        }
+        else if (stringValue.equals("summarydata")) {
+            return CommandEnum.SUMMARY;
+        }
+        else if (stringValue.equals("dumpdata")) {
+            return CommandEnum.DUMP;
+        }
+        else {
+            return null;
+        }
+    }
 }
