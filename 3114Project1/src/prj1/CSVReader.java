@@ -2,7 +2,7 @@ package prj1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 // On my honor:
@@ -36,7 +36,7 @@ public class CSVReader {
 
     private String filePath;
 
-    private ArrayList<CovidData> data;
+    private Map<String, CovidData> data;
 
 
     /**
@@ -46,9 +46,10 @@ public class CSVReader {
      *            the path to the csv file
      * @throws FileNotFoundException
      */
-    public CSVReader(String filePath) throws FileNotFoundException {
+    public CSVReader(String filePath, Map<String, CovidData> data)
+        throws FileNotFoundException {
         this.filePath = filePath;
-        data = new ArrayList<CovidData>();
+        this.data = data;
     }
 
 
@@ -57,24 +58,45 @@ public class CSVReader {
      * 
      * @throws FileNotFoundException
      */
-    public void readData() throws FileNotFoundException {
+    public void loadData() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filePath));
         // skips the column names
         scanner.nextLine();
+        int count = 0;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(", *");
-            CovidData dataPoint = new CovidData(parts);
-            data.add(dataPoint);
+            if (parts.length != 0) {
+                CovidData dataPoint = new CovidData(parts);
+                String key = dataPoint.getKey();
+                if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
+                    count++;
+                    data.put(key, dataPoint);
+                }
+            }
         }
         scanner.close();
+        System.out.println("Finished loading" + filePath + "file");
+        System.out.println(count + " records have been loaded");
+    }
+
+
+    /**
+     * decided if should add new data point to data
+     * 
+     * @param dataPoint
+     * @return if to add it
+     */
+    private Boolean shouldAdd(String key, CovidData newData) {
+        CovidData currentData = data.get(key);
+        return false;
     }
 
 
     /**
      * @return the data
      */
-    public ArrayList<CovidData> getData() {
+    public Map<String, CovidData> getData() {
         return data;
     }
 

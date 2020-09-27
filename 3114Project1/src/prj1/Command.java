@@ -2,6 +2,7 @@ package prj1;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Map;
 
 // On my honor:
 //
@@ -70,10 +71,10 @@ public class Command {
     /**
      * runs the command depending on type
      */
-    public void run() {
+    public void run(Map<String, CovidData> data) {
         switch (commandType) {
             case LOAD:
-                this.load();
+                this.load(data);
                 break;
             case SEARCH:
 
@@ -92,17 +93,14 @@ public class Command {
     /**
      * runs the load command
      */
-    private void load() {
+    private void load(Map<String, CovidData> data) {
         String csvFilePath = args.get(0);
         try {
-            CSVReader reader = new CSVReader(csvFilePath);
-            reader.readData();
-            for (CovidData data : reader.getData()) {
-// System.out.println(data.toString());
-            }
+            CSVReader reader = new CSVReader(csvFilePath, data);
+            reader.loadData();
         }
         catch (FileNotFoundException e) {
-            // report error
+            System.out.println("File " + csvFilePath + " was not found");
         }
     }
 }

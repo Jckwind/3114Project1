@@ -2,6 +2,8 @@ package prj1;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 // On my honor:
 //
@@ -36,6 +38,8 @@ public class CommandHub {
 
     private ArrayList<Command> commands;
 
+    private Map<String, CovidData> data;
+
 
     /**
      * creates a new command reader object
@@ -47,6 +51,7 @@ public class CommandHub {
     public CommandHub(String commandFile) throws FileNotFoundException {
         this.commandFile = commandFile;
         this.commands = new ArrayList<Command>();
+        data = new HashMap<String, CovidData>();
     }
 
 
@@ -75,7 +80,7 @@ public class CommandHub {
      */
     private void runCommands() {
         for (Command command : commands) {
-            command.run();
+            command.run(data);
         }
     }
 

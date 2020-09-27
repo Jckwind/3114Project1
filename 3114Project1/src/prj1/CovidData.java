@@ -109,10 +109,12 @@ public class CovidData {
 
 
     /**
-     * @return the state
+     * returns the key for this data point
+     * 
+     * @return the key
      */
-    public String getState() {
-        return state;
+    public String getKey() {
+        return state + "-" + date;
     }
 
 
