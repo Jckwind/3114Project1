@@ -77,12 +77,18 @@ public class Command {
                 this.load(data);
                 break;
             case SEARCH:
-
+                if (args.size() == 2) {
+                    this.searchDate(data);
+                }
+                else {
+                    this.searchState(data);
+                }
                 break;
             case SUMMARY:
-
+                this.summary(data);
                 break;
             case DUMP:
+                this.dataDump(data);
                 break;
             default:
                 break;
@@ -91,7 +97,10 @@ public class Command {
 
 
     /**
-     * runs the load command
+     * loads the data
+     * 
+     * @param data
+     *            the hashmap of data
      */
     private void load(Map<String, CovidData> data) {
         String csvFilePath = args.get(0);
@@ -102,5 +111,53 @@ public class Command {
         catch (FileNotFoundException e) {
             System.out.println("File " + csvFilePath + " was not found");
         }
+    }
+
+
+    /**
+     * searchs the data by state
+     * 
+     * @param data
+     *            the hashmap of data
+     * @param args
+     *            the args
+     */
+    private void searchState(Map<String, CovidData> data) {
+
+    }
+
+
+    /**
+     * searchs the data by state
+     * 
+     * @param data
+     *            the hashmap of data
+     * @param args
+     *            the args
+     */
+    private void searchDate(Map<String, CovidData> data) {
+
+    }
+
+
+    /**
+     * runs the summary command
+     * 
+     * @param data
+     *            the hashmap of data
+     */
+    private void summary(Map<String, CovidData> data) {
+
+    }
+
+
+    /**
+     * runs the data dump command
+     * 
+     * @param data
+     *            the hashmap of data
+     */
+    private void dataDump(Map<String, CovidData> data) {
+
     }
 }
