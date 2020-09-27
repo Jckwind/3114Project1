@@ -1,5 +1,10 @@
 package prj1;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 // On my honor:
 //
 // - I have not used source code obtained from another student,
@@ -35,7 +40,7 @@ public class CovidData {
 
     private String dataQuality;
 
-    private double pos, neg, hosp, onVentCurr, onVentTotal, recovered, death;
+    private Double pos, neg, hosp, onVentCurr, onVentTotal, recovered, death;
 
 
     /**
@@ -61,49 +66,49 @@ public class CovidData {
             pos = Double.parseDouble(rawData[2]);
         }
         catch (Exception e) {
-            pos = 0;
+            pos = null;
         }
         //////
         try {
             neg = Double.parseDouble(rawData[3]);
         }
         catch (Exception e) {
-            neg = 0;
+            neg = null;
         }
         //////
         try {
             hosp = Double.parseDouble(rawData[4]);
         }
         catch (Exception e) {
-            hosp = 0;
+            hosp = null;
         }
         //////
         try {
             onVentCurr = Double.parseDouble(rawData[5]);
         }
         catch (Exception e) {
-            onVentCurr = 0;
+            onVentCurr = null;
         }
         //////
         try {
             onVentTotal = Double.parseDouble(rawData[6]);
         }
         catch (Exception e) {
-            onVentTotal = 0;
+            onVentTotal = null;
         }
         //////
         try {
             recovered = Double.parseDouble(rawData[7]);
         }
         catch (Exception e) {
-            recovered = 0;
+            recovered = null;
         }
         //////
         try {
             death = Double.parseDouble(rawData[9]);
         }
         catch (Exception e) {
-            death = 0;
+            death = null;
         }
     }
 
@@ -115,6 +120,139 @@ public class CovidData {
      */
     public String getKey() {
         return state + "-" + date;
+    }
+
+
+    /**
+     * @return the state
+     */
+    public String getState() {
+        return state;
+    }
+
+
+    /**
+     * returns the mm/dd/yyyy date formate
+     * 
+     * @return the date
+     */
+    public String fancyDate() {
+        DateFormat format = new SimpleDateFormat("yyyymmdd");
+        try {
+            Date dateData = format.parse(this.date);
+            format = new SimpleDateFormat("mm/dd/yyyy)");
+            return format.format(dateData);
+        }
+        catch (ParseException e) {
+            return "error";
+        }
+    }
+
+
+    /**
+     * returns a number value based on data quality
+     * 
+     * @return
+     */
+    public int getDataQualityRaw() {
+        switch (dataQuality) {
+            case "A+":
+                return 0;
+            case "A":
+                return 1;
+            case "B+":
+                return 2;
+            case "B":
+                return 3;
+            case "C+":
+                return 4;
+            case "C":
+                return 5;
+            case "D+":
+                return 6;
+            case "D":
+                return 7;
+            case "F":
+                return 8;
+            default:
+                return -1;
+        }
+    }
+
+
+    /**
+     * compares the quality of two data points
+     * 
+     * @param otherData
+     *            the other data point
+     * @return 0 if equal, 1 if greater, -1 if less
+     * 
+     */
+    public int compareQuality(CovidData otherData) {
+        if (otherData.getDataQualityRaw() == this.getDataQualityRaw()) {
+            return 0;
+        }
+        return (otherData.getDataQualityRaw() > this.getDataQualityRaw())
+            ? 1
+            : -1;
+    }
+
+
+    /**
+     * if a data point is valid
+     * 
+     * @return true if valid
+     */
+    public boolean isValid() {
+        return !date.isEmpty() && !state.isEmpty() && !dataQuality.isEmpty();
+    }
+
+
+    /**
+     * determines if this data point is missing any data
+     * 
+     * @return true if missing any data
+     */
+    private boolean hasEmptyData() {
+        return pos == null || neg == null || hosp == null || onVentCurr == null
+            || onVentTotal == null || recovered == null || death == null;
+    }
+
+
+    /**
+     * decideds if this current data point has any missing data, and if there is
+     * any missing data use the new data point to fill it in
+     * 
+     * @param newData
+     *            new data point
+     */
+    public void fillMissingData(CovidData newData) {
+        if (!hasEmptyData()) {
+            return;
+        }
+        if (this.pos == null) {
+            this.pos = newData.pos;
+        }
+        if (this.neg == null) {
+            this.neg = newData.neg;
+        }
+        if (this.hosp == null) {
+            this.hosp = newData.hosp;
+        }
+        if (this.onVentCurr == null) {
+            this.onVentCurr = newData.onVentCurr;
+        }
+        if (this.onVentTotal == null) {
+            this.onVentTotal = newData.onVentTotal;
+        }
+        if (this.recovered == null) {
+            this.recovered = newData.recovered;
+        }
+        if (this.death == null) {
+            this.death = newData.death;
+        }
+        System.out.println("Data has been updated for the missing data in "
+            + this.state);
     }
 
 

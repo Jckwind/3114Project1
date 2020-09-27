@@ -68,10 +68,15 @@ public class CSVReader {
             String[] parts = line.split(", *");
             if (parts.length != 0) {
                 CovidData dataPoint = new CovidData(parts);
-                String key = dataPoint.getKey();
-                if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
-                    count++;
-                    data.put(key, dataPoint);
+                if (dataPoint.isValid()) {
+                    String key = dataPoint.getKey();
+                    if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
+                        count++;
+                        data.put(key, dataPoint);
+                    }
+                }
+                else {
+                    System.out.println("Discard invalid record");
                 }
             }
         }
@@ -89,6 +94,18 @@ public class CSVReader {
      */
     private Boolean shouldAdd(String key, CovidData newData) {
         CovidData currentData = data.get(key);
+        if (currentData.compareQuality(newData) == 1) {
+            System.out.println("Data has been updated for " + newData.getState()
+                + newData.fancyDate());
+            return true;
+        }
+        else if (currentData.compareQuality(newData) == -1) {
+            System.out.println("Low quality data rejected for " + newData
+                .getState());
+        }
+        else {
+            currentData.fillMissingData(newData);
+        }
         return false;
     }
 
