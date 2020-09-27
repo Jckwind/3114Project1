@@ -66,9 +66,12 @@ public class CSVReader {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(", *");
-            if (parts.length != 0) {
-                CovidData dataPoint = new CovidData(parts);
-                if (dataPoint.isValid()) {
+            if (parts.length == 0) {
+                continue;
+            }
+            CovidData dataPoint = new CovidData(parts);
+            if (dataPoint.isValid()) {
+                if (dataPoint.stateIsValid()) {
                     String key = dataPoint.getKey();
                     if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
                         count++;
@@ -76,8 +79,12 @@ public class CSVReader {
                     }
                 }
                 else {
-                    System.out.println("Discard invalid record");
+                    System.out.println("State of " + dataPoint.getState()
+                        + " does not exist!");
                 }
+            }
+            else {
+                System.out.println("Discard invalid record");
             }
         }
         scanner.close();
@@ -99,12 +106,9 @@ public class CSVReader {
                 + newData.fancyDate());
             return true;
         }
-        else if (currentData.compareQuality(newData) == -1) {
+        else {
             System.out.println("Low quality data rejected for " + newData
                 .getState());
-        }
-        else {
-            currentData.fillMissingData(newData);
         }
         return false;
     }

@@ -209,50 +209,12 @@ public class CovidData {
 
 
     /**
-     * determines if this data point is missing any data
+     * decides if the state is true;
      * 
-     * @return true if missing any data
+     * @return true if valid
      */
-    private boolean hasEmptyData() {
-        return pos == null || neg == null || hosp == null || onVentCurr == null
-            || onVentTotal == null || recovered == null || death == null;
-    }
-
-
-    /**
-     * decideds if this current data point has any missing data, and if there is
-     * any missing data use the new data point to fill it in
-     * 
-     * @param newData
-     *            new data point
-     */
-    public void fillMissingData(CovidData newData) {
-        if (!hasEmptyData()) {
-            return;
-        }
-        if (this.pos == null) {
-            this.pos = newData.pos;
-        }
-        if (this.neg == null) {
-            this.neg = newData.neg;
-        }
-        if (this.hosp == null) {
-            this.hosp = newData.hosp;
-        }
-        if (this.onVentCurr == null) {
-            this.onVentCurr = newData.onVentCurr;
-        }
-        if (this.onVentTotal == null) {
-            this.onVentTotal = newData.onVentTotal;
-        }
-        if (this.recovered == null) {
-            this.recovered = newData.recovered;
-        }
-        if (this.death == null) {
-            this.death = newData.death;
-        }
-        System.out.println("Data has been updated for the missing data in "
-            + this.state);
+    public boolean stateIsValid() {
+        return State.stateAbbrList.contains(this.state);
     }
 
 
