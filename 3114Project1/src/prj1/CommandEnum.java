@@ -21,10 +21,12 @@ package prj1;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * The different types of commands we can run
  *
  * @author Jack Windham (jckwind11)
+ * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public enum CommandEnum {

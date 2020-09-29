@@ -24,10 +24,12 @@ import java.util.List;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * The class that handles the State abbrievation
  *
  * @author Jack Windham (jckwind11)
+ * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public class State {

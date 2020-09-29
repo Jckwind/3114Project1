@@ -29,10 +29,12 @@ import java.util.Map;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * Description of Class
  *
  * @author Jack Windham (jckwind11)
+ * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public class Command {

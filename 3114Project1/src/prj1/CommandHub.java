@@ -26,10 +26,12 @@ import java.util.Map;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * Reads and runs each command from the command File
  *
  * @author Jack Windham (jckwind11)
+ * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public class CommandHub {

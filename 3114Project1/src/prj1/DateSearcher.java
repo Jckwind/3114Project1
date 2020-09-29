@@ -26,10 +26,12 @@ import java.util.Map;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * Searches the data based on date
  *
  * @author Jack Windham (jckwind11)
+ * @author Michael Gannon 
  * @version 2020.09.29
  */
 public class DateSearcher {
