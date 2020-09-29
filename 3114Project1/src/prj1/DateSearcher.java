@@ -2,7 +2,6 @@ package prj1;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Map;
 
 // On my honor:
@@ -64,6 +63,10 @@ public class DateSearcher {
      */
     public void search() {
         ArrayList<CovidData> correspondingData = getMatchingDateData();
+        if (correspondingData.size() == 0) {
+            System.out.println("There are no records on " + fancyData);
+            return;
+        }
         System.out.println("There are " + correspondingData.size()
             + " records on " + fancyData);
         // add to split up the header cause of webcat
@@ -85,6 +88,14 @@ public class DateSearcher {
     }
 
 
+    /**
+     * goes through the data, checks if the key(state-date syntax)
+     * contains the date we're searching, if it does, add the data point to the
+     * list
+     * then sorts the list of data alphabetically
+     * 
+     * @return a list of covid points from the given date
+     */
     private ArrayList<CovidData> getMatchingDateData() {
         ArrayList<CovidData> list = new ArrayList<CovidData>();
         for (String key : data.keySet()) {
@@ -92,7 +103,7 @@ public class DateSearcher {
                 list.add(data.get(key));
             }
         }
-        Collections.sort(list, Comparator.comparing(CovidData::getState));
+        Collections.sort(list);
         return list;
     }
 }

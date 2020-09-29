@@ -163,7 +163,8 @@ public class Command {
      *            the hashmap of data
      */
     private void summary(Map<String, CovidData> data) {
-
+        Summary summaryReporter = new Summary(data);
+        summaryReporter.reportSummary();
     }
 
 

@@ -32,7 +32,7 @@ import java.util.Date;
  * @author Jack Windham (jckwind11)
  * @version 2020.09.27
  */
-public class CovidData {
+public class CovidData implements Comparable<Object> {
 
     private String date;
 
@@ -211,9 +211,48 @@ public class CovidData {
 
 
     @Override
+    public int compareTo(Object o) {
+        CovidData otherObject = (CovidData)o;
+        return this.getFullState().compareTo(otherObject.getFullState());
+    }
+
+
+    @Override
     public String toString() {
         return date + ", " + state + ", " + pos + ", " + neg + ", "
             + dataQuality + "\n";
+    }
+
+
+    /**
+     * combines the death, hosp and cases of two objects
+     * 
+     * @param otherData
+     *            the other data
+     */
+    public void combineObjects(CovidData otherData) {
+        if (this.pos == null) {
+            this.pos = 0.0;
+        }
+        if (this.death == null) {
+            this.death = 0.0;
+        }
+        if (this.hosp == null) {
+            this.hosp = 0.0;
+        }
+        this.pos += otherData.getPos();
+        this.death += otherData.getDeath();
+        this.hosp += otherData.getHosp();
+    }
+
+
+    /**
+     * returns the full state given the apprievation
+     * 
+     * @return
+     */
+    public String getFullState() {
+        return State.fullState(this.state);
     }
 
 
@@ -222,6 +261,14 @@ public class CovidData {
      */
     public String getState() {
         return state;
+    }
+
+
+    /**
+     * @return the date
+     */
+    public Integer getDate() {
+        return Integer.parseInt(date);
     }
 
 
