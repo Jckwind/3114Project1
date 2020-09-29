@@ -23,10 +23,12 @@ import java.io.FileNotFoundException;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * The main class of the program
  *
  * @author Jack Windham (jckwind11)
+ * @authro Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public class Covid19TrackingManager {

@@ -28,10 +28,12 @@ import java.util.Scanner;
 // letter of this restriction.
 //
 // -- Jack Windham (jckwind11)
+// -- Michael Gannon (mgannon3500)
 /**
  * Reads the command file
  *
  * @author Jack Windham (jckwind11)
+ * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public class CommandReader {
