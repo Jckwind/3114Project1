@@ -1,7 +1,11 @@
 package prj1;
 
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 // On my honor:
@@ -77,7 +81,7 @@ public class Command {
                 this.load(data);
                 break;
             case SEARCH:
-                if (args.size() == 2) {
+                if (args.size() == 1) {
                     this.searchDate(data);
                 }
                 else {
@@ -136,7 +140,19 @@ public class Command {
      *            the args
      */
     private void searchDate(Map<String, CovidData> data) {
-
+        DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+        try {
+            String date = args.get(0);
+            Date dateData = format.parse(date);
+            format = new SimpleDateFormat("yyyymmdd");
+            String searchableDate = format.format(dateData);
+            DateSearcher searcher = new DateSearcher(searchableDate, date,
+                data);
+            searcher.search();
+        }
+        catch (ParseException e) {
+            System.out.println("There are no records on " + args.get(0));
+        }
     }
 
 

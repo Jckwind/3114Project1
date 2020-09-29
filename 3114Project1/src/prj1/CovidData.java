@@ -124,14 +124,6 @@ public class CovidData {
 
 
     /**
-     * @return the state
-     */
-    public String getState() {
-        return state;
-    }
-
-
-    /**
      * returns the mm/dd/yyyy date formate
      * 
      * @return the date
@@ -222,5 +214,77 @@ public class CovidData {
     public String toString() {
         return date + ", " + state + ", " + pos + ", " + neg + ", "
             + dataQuality + "\n";
+    }
+
+
+    /**
+     * @return the state
+     */
+    public String getState() {
+        return state;
+    }
+
+
+    /**
+     * @return the pos
+     */
+    public Double getPos() {
+        return pos != null ? pos : 0;
+    }
+
+
+    /**
+     * @return the neg
+     */
+    public Double getNeg() {
+        return neg != null ? neg : 0;
+    }
+
+
+    /**
+     * @return the hosp
+     */
+    public Double getHosp() {
+        return hosp != null ? hosp : 0;
+    }
+
+
+    /**
+     * @return the onVentCurr
+     */
+    public Double getOnVentCurr() {
+        return onVentCurr != null ? onVentCurr : 0;
+    }
+
+
+    /**
+     * @return the onVentTotal
+     */
+    public Double getOnVentTotal() {
+        return onVentTotal != null ? onVentTotal : 0;
+    }
+
+
+    /**
+     * @return the recovered
+     */
+    public Double getRecovered() {
+        return recovered != null ? recovered : 0;
+    }
+
+
+    /**
+     * @return the dataQuality
+     */
+    public String getDataQuality() {
+        return dataQuality;
+    }
+
+
+    /**
+     * @return the death
+     */
+    public Double getDeath() {
+        return death != null ? death : 0;
     }
 }
