@@ -67,7 +67,7 @@ public class CSVReader {
         int count = 0;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            String[] parts = line.split(", *");
+            String[] parts = line.split(",", -1);
             if (parts.length == 0 || parts.length != 10) {
                 continue;
             }

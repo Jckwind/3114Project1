@@ -1,5 +1,4 @@
 
-
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -86,7 +85,7 @@ public class Command {
                 this.load(data);
                 break;
             case SEARCH:
-                if (args.size() == 1) {
+                if (args.size() <= 1) {
                     this.searchDate(data);
                 }
                 else {
@@ -100,6 +99,7 @@ public class Command {
                 this.dataDump(data);
                 break;
             default:
+                System.out.println("Discard invalid command name");
                 break;
         }
         return true;
@@ -134,6 +134,11 @@ public class Command {
         // the last arguement is always number of numbers
         int lastIndex = args.size() - 1;
         Integer numOfRecords = Integer.parseInt(args.get(lastIndex));
+        if (numOfRecords <= 0) {
+            System.out.println(
+                "Invalid command. # of records has to be positive");
+            return;
+        }
         args.remove(lastIndex);
         // the remaining arguements are the parts of the state name
         String stateName = String.join(" ", args);
@@ -150,8 +155,13 @@ public class Command {
      *            the hashmap of data
      */
     private void searchDate(Map<String, CovidData> data) {
-        DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+        if (args.size() == 0) {
+            DateSearcher searcher = new DateSearcher(null, null, data);
+            searcher.search();
+            return;
+        }
         try {
+            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
             String date = args.get(0);
             Date dateData = format.parse(date);
             format = new SimpleDateFormat("yyyymmdd");
@@ -161,7 +171,7 @@ public class Command {
             searcher.search();
         }
         catch (ParseException e) {
-            System.out.println("There are no records on " + args.get(0));
+            System.out.println("Discard invalid command name");
         }
     }
 

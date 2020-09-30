@@ -1,7 +1,11 @@
 
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 // On my honor:
@@ -65,11 +69,13 @@ public class DateSearcher {
     /**
      * searches the data
      */
-    public boolean search() {
+    public void search() {
+        if (data.size() == 0) {
+            System.out.println("No available data");
+        }
         ArrayList<CovidData> correspondingData = getMatchingDateData();
         if (correspondingData.size() == 0) {
             System.out.println("There are no records on " + fancyData);
-            return false;
         }
         System.out.println("There are " + correspondingData.size()
             + " records on " + fancyData);
@@ -89,7 +95,6 @@ public class DateSearcher {
             System.out.format("%-19s", myData.getDataQuality());
             System.out.format("%,-12d\n", myData.getDeath().intValue());
         }
-        return true;
     }
 
 
@@ -103,6 +108,20 @@ public class DateSearcher {
      */
     private ArrayList<CovidData> getMatchingDateData() {
         ArrayList<CovidData> list = new ArrayList<CovidData>();
+        if (date == null) {
+            CovidData maxDateData = data.values().stream().max(Comparator
+                .comparing(CovidData::getDate)).get();
+            date = maxDateData.getDate().toString();
+            try {
+                DateFormat format = new SimpleDateFormat("yyyymmdd");
+                Date dateData = format.parse(date);
+                format = new SimpleDateFormat("mm/dd/yyyy");
+                fancyData = format.format(dateData);
+            }
+            catch (ParseException e) {
+                // nothing lol, it'll never happen
+            }
+        }
         for (String key : data.keySet()) {
             if (key.endsWith(date)) {
                 list.add(data.get(key));

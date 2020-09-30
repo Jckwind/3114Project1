@@ -1,5 +1,4 @@
 
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -71,11 +70,15 @@ public class StateSearcher {
      * searches the data given the state
      */
     public void search() {
+        // sorts the data so most recent first
         Comparator<CovidData> comparator = Comparator.comparing(point -> point
             .getDate());
         comparator = comparator.reversed();
+        // filters the data to get data only from state
+        // sorts by date and limits by number of records
         Stream<CovidData> stream = data.values().stream().filter(point -> point
-            .getState().equals(stateAbbr)).sorted(comparator);
+            .getState().equals(stateAbbr)).sorted(comparator).limit(
+                numOfRecords);
         List<CovidData> dataPoints = stream.collect(Collectors.toList());
         if (dataPoints.size() == 0) {
             System.out.println("There are no records from " + stateName);
@@ -106,9 +109,9 @@ public class StateSearcher {
      * checks to populate the state abbr field for data lookup
      */
     private void getStateAbbr() {
-        if (State.stateAbbrList.contains(stateName)) {
+        if (State.stateAbbrList.contains(stateName.toUpperCase())) {
             // statename is already abbr
-            this.stateAbbr = this.stateName;
+            this.stateAbbr = this.stateName.toUpperCase();
         }
         else if (State.stateNameList.contains(stateName.toUpperCase())) {
             // state name is a full name state

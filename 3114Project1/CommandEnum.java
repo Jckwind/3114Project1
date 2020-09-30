@@ -1,5 +1,4 @@
 
-
 // On my honor:
 //
 // - I have not used source code obtained from another student,
@@ -34,5 +33,5 @@ public enum CommandEnum {
     /**
      * the enums for the commands are load, search, summary, dump
      */
-    LOAD, SEARCH, SUMMARY, DUMP;
+    LOAD, SEARCH, SUMMARY, DUMP, ERROR;
 }

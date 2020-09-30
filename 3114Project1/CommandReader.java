@@ -1,5 +1,4 @@
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -103,7 +102,7 @@ public class CommandReader {
             return CommandEnum.DUMP;
         }
         else {
-            return null;
+            return CommandEnum.ERROR;
         }
     }
 }
