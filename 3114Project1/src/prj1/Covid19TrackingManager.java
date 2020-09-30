@@ -35,15 +35,15 @@ public class Covid19TrackingManager {
 
     /**
      * Main method that runs the program
+     * 
      * @param args
      * @return
      * @throws FileNotFoundException
      */
-    public static boolean main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException {
         String commandFile = args[0];
         CommandHub hub = new CommandHub(commandFile);
         hub.execute();
-        return true;
-// System.out.println(hub.toString());
     }
+
 }

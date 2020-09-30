@@ -53,6 +53,7 @@ public class CovidData implements Comparable<Object> {
 
     /**
      * Creates a new CovidData object
+     * 
      * @param rawData
      */
     public CovidData(String[] rawData) {
@@ -217,13 +218,38 @@ public class CovidData implements Comparable<Object> {
 
     @Override
     public String toString() {
-        return date + ", " + state + ", " + pos + ", " + neg + ", "
-            + dataQuality + "\n";
+        StringBuilder builder = new StringBuilder();
+        builder.append(date + ",");
+        builder.append(state + ",");
+        builder.append(pos == null
+            ? ","
+            : String.format("%d,", pos.intValue()));
+        builder.append(neg == null
+            ? ","
+            : String.format("%d,", neg.intValue()));
+        builder.append(hosp == null
+            ? ","
+            : String.format("%d,", hosp.intValue()));
+        builder.append(onVentCurr == null
+            ? ","
+            : String.format("%d,", onVentCurr.intValue()));
+        builder.append(onVentTotal == null
+            ? ","
+            : String.format("%d,", onVentTotal.intValue()));
+        builder.append(recovered == null
+            ? ","
+            : String.format("%d,", recovered.intValue()));
+        builder.append(dataQuality + ",");
+        builder.append(death == null
+            ? ","
+            : String.format("%d,", death.intValue()));
+        return builder.toString();
     }
 
 
     /**
      * combines the death, hosp and cases of two objects
+     * 
      * @param otherData
      * @return boolean
      */

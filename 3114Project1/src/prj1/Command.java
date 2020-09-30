@@ -76,6 +76,7 @@ public class Command {
 
     /**
      * runs the command depending on type
+     * 
      * @param data
      * @return boolean
      */
@@ -176,6 +177,7 @@ public class Command {
      *            the hashmap of data
      */
     private void dataDump(Map<String, CovidData> data) {
-
+        Dumper dumpTruck = new Dumper(data, args.get(0));
+        dumpTruck.dump();
     }
 }
