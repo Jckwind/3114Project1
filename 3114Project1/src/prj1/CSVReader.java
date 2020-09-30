@@ -43,6 +43,7 @@ public class CSVReader {
 
     /**
      * creates a new csv reader0
+     * 
      * @param filePath
      * @param data
      * @throws FileNotFoundException
@@ -56,6 +57,7 @@ public class CSVReader {
 
     /**
      * reads the data from the csv file
+     * 
      * @return boolean
      * @throws FileNotFoundException
      */
@@ -89,7 +91,7 @@ public class CSVReader {
             }
         }
         scanner.close();
-        System.out.println("Finished loading" + filePath + "file");
+        System.out.println("Finished loading " + filePath + "file");
         System.out.println(count + " records have been loaded");
         return true;
     }

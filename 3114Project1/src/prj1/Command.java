@@ -131,7 +131,15 @@ public class Command {
      *            the hashmap of data
      */
     private void searchState(Map<String, CovidData> data) {
-
+        // the last arguement is always number of numbers
+        int lastIndex = args.size() - 1;
+        Integer numOfRecords = Integer.parseInt(args.get(lastIndex));
+        args.remove(lastIndex);
+        // the remaining arguements are the parts of the state name
+        String stateName = String.join(" ", args);
+        StateSearcher searcher = new StateSearcher(data, stateName,
+            numOfRecords);
+        searcher.search();
     }
 
 

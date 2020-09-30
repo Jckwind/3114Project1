@@ -131,7 +131,7 @@ public class CovidData implements Comparable<Object> {
         DateFormat format = new SimpleDateFormat("yyyymmdd");
         try {
             Date dateData = format.parse(this.date);
-            format = new SimpleDateFormat("mm/dd/yyyy)");
+            format = new SimpleDateFormat("mm/dd/yyyy");
             return format.format(dateData);
         }
         catch (ParseException e) {

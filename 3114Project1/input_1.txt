@@ -7,4 +7,4 @@ load head_200_random_70.csv
 search    new    Jersey 1
    search KY     5 
 search 08/16/2020
-dumpdata xyz14da.csv
+dumpdata xyz13da.csv

@@ -1,5 +1,11 @@
 package prj1;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 // On my honor:
 //
 // - I have not used source code obtained from another student,
@@ -31,4 +37,86 @@ package prj1;
  */
 public class StateSearcher {
 
+    private String stateName;
+
+    private String stateAbbr;
+
+    private Integer numOfRecords;
+
+    private Map<String, CovidData> data;
+
+
+    /**
+     * creates a new state searcher object
+     * 
+     * @param data
+     *            the data to search
+     * @param stateName
+     *            the states name or abbrv
+     * @param numOfRecords
+     *            number of records to return
+     */
+    public StateSearcher(
+        Map<String, CovidData> data,
+        String stateName,
+        Integer numOfRecords) {
+        this.data = data;
+        this.stateName = stateName;
+        this.numOfRecords = numOfRecords;
+        this.getStateAbbr();
+    }
+
+
+    /**
+     * searches the data given the state
+     */
+    public void search() {
+        Comparator<CovidData> comparator = Comparator.comparing(point -> point
+            .getDate());
+        comparator = comparator.reversed();
+        Stream<CovidData> stream = data.values().stream().filter(point -> point
+            .getState().equals(stateAbbr)).sorted(comparator);
+        List<CovidData> dataPoints = stream.collect(Collectors.toList());
+        if (dataPoints.size() == 0) {
+            System.out.println("There are no records from " + stateName);
+            return;
+        }
+        System.out.println(dataPoints.size()
+            + " records are printed out for the state of " + stateName);
+        Object[] headerStrings = { "date", "positive", "negative",
+            "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
+            "recovered", "dataQualityGrade", "death" };
+        System.out.format("%s%19s%12s%16s%24s%26s%12s%19s%8s\n", headerStrings);
+        for (CovidData myData : dataPoints) {
+            System.out.format("%-15s", myData.fancyDate());
+            System.out.format("%,-12d", myData.getPos().intValue());
+            System.out.format("%,-12d", myData.getNeg().intValue());
+            System.out.format("%,-15d", myData.getHosp().intValue());
+            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
+            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
+            System.out.format("%,-12d", myData.getRecovered().intValue());
+            System.out.format("%-19s", myData.getDataQuality());
+            System.out.format("%,-12d\n", myData.getDeath().intValue());
+        }
+
+    }
+
+
+    /**
+     * checks to populate the state abbr field for data lookup
+     */
+    private void getStateAbbr() {
+        if (State.stateAbbrList.contains(stateName)) {
+            // statename is already abbr
+            this.stateAbbr = this.stateName;
+        }
+        else if (State.stateNameList.contains(stateName.toUpperCase())) {
+            // state name is a full name state
+            this.stateAbbr = State.stateAbbr(stateName);
+        }
+        else {
+            // state does not exist
+            System.out.println("State of " + stateName + " does not exist!");
+        }
+    }
 }
