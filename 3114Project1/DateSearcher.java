@@ -76,6 +76,7 @@ public class DateSearcher {
         ArrayList<CovidData> correspondingData = getMatchingDateData();
         if (correspondingData.size() == 0) {
             System.out.println("There are no records on " + fancyData);
+            return;
         }
         System.out.println("There are " + correspondingData.size()
             + " records on " + fancyData);

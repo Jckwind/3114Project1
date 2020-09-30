@@ -113,6 +113,10 @@ public class Command {
      *            the hashmap of data
      */
     private void load(Map<String, CovidData> data) {
+        if (args.size() != 1) {
+            System.out.println("Discard invalid command name");
+            return;
+        }
         String csvFilePath = args.get(0);
         try {
             CSVReader reader = new CSVReader(csvFilePath, data);

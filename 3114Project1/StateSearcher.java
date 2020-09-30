@@ -70,6 +70,9 @@ public class StateSearcher {
      * searches the data given the state
      */
     public void search() {
+        if (stateAbbr == null) {
+            return;
+        }
         // sorts the data so most recent first
         Comparator<CovidData> comparator = Comparator.comparing(point -> point
             .getDate());
