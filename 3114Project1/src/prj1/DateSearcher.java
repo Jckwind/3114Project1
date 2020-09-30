@@ -65,11 +65,11 @@ public class DateSearcher {
     /**
      * searches the data
      */
-    public void search() {
+    public boolean search() {
         ArrayList<CovidData> correspondingData = getMatchingDateData();
         if (correspondingData.size() == 0) {
             System.out.println("There are no records on " + fancyData);
-            return;
+            return false;
         }
         System.out.println("There are " + correspondingData.size()
             + " records on " + fancyData);
@@ -89,6 +89,7 @@ public class DateSearcher {
             System.out.format("%-19s", myData.getDataQuality());
             System.out.format("%,-12d\n", myData.getDeath().intValue());
         }
+        return true;
     }
 
 

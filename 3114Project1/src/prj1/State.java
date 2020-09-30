@@ -33,7 +33,7 @@ import java.util.List;
  * @version 2020.09.27
  */
 public class State {
-
+    
     static private String[] arrayOfAbbrievations = { "AL", "AK", "AS", "AZ",
         "AR", "CA", "CO", "CT", "DE", "DC", "FM", "FL", "GA", "GU", "HI", "ID",
         "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MH", "MD", "MA", "MI", "MN",
@@ -46,7 +46,7 @@ public class State {
      */
     static public List<String> stateAbbrList = Arrays.asList(
         arrayOfAbbrievations);
-
+    
 
     /**
      * returns the full state when given the abbrievation

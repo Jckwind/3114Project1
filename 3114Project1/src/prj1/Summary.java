@@ -49,8 +49,9 @@ public class Summary {
 
     /**
      * prints the summary data
+     * @return boolean
      */
-    public void reportSummary() {
+    public boolean reportSummary() {
         ArrayList<CovidData> condensedData = condensedData();
         Object[] headerStrings = { "State", "Total Case", "Total Death",
             "Total Hospitalized" };
@@ -72,6 +73,7 @@ public class Summary {
         System.out.format("Total Cases: %,d\n", totalCases);
         System.out.format("Total Death: %,d\n", totalDeaths);
         System.out.format("Total Hospitalized: %,d\n", totalHospital);
+        return true;
     }
 
 

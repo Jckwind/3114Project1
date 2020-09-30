@@ -42,12 +42,10 @@ public class CSVReader {
 
 
     /**
-     * creates a new csv reader
-     * 
+     * creates a new csv reader0
      * @param filePath
-     *            the path to the csv file
-     * @throws FileNotFoundException
      * @param data
+     * @throws FileNotFoundException
      */
     public CSVReader(String filePath, Map<String, CovidData> data)
         throws FileNotFoundException {
@@ -58,10 +56,10 @@ public class CSVReader {
 
     /**
      * reads the data from the csv file
-     * 
+     * @return boolean
      * @throws FileNotFoundException
      */
-    public void loadData() throws FileNotFoundException {
+    public boolean loadData() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filePath));
         // skips the column names
         scanner.nextLine();
@@ -93,6 +91,7 @@ public class CSVReader {
         scanner.close();
         System.out.println("Finished loading" + filePath + "file");
         System.out.println(count + " records have been loaded");
+        return true;
     }
 
 
