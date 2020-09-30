@@ -1,5 +1,4 @@
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
@@ -69,7 +68,7 @@ public class CSVReader {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(", *");
-            if (parts.length == 0) {
+            if (parts.length == 0 || parts.length != 10) {
                 continue;
             }
             CovidData dataPoint = new CovidData(parts);
