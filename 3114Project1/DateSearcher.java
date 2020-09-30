@@ -1,4 +1,4 @@
-package prj1;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import java.util.Map;
  * Searches the data based on date
  *
  * @author Jack Windham (jckwind11)
- * @author Michael Gannon 
+ * @author Michael Gannon
  * @version 2020.09.29
  */
 public class DateSearcher {
