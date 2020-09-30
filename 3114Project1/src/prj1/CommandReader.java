@@ -45,6 +45,8 @@ public class CommandReader {
 
     /**
      * 
+     * @param commands
+     * @param commandPath
      */
     public CommandReader(ArrayList<Command> commands, String commandPath) {
         this.commands = commands;
@@ -56,8 +58,9 @@ public class CommandReader {
      * reads the command file and populates the command list
      * 
      * @throws FileNotFoundException
+     * @param boolean
      */
-    public void read() throws FileNotFoundException {
+    public boolean read() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(commandPath));
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine().trim();
@@ -72,6 +75,7 @@ public class CommandReader {
             commands.add(command);
         }
         scanner.close();
+        return true;
     }
 
 

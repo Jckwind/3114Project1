@@ -22,6 +22,7 @@ package prj1;
 //
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
+
 /**
  * The different types of commands we can run
  *
@@ -30,5 +31,8 @@ package prj1;
  * @version 2020.09.27
  */
 public enum CommandEnum {
+    /**
+     * the enums for the commands are load, search, summary, dump
+     */
     LOAD, SEARCH, SUMMARY, DUMP;
 }

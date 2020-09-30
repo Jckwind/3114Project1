@@ -41,6 +41,9 @@ public class State {
         "OH", "OK", "OR", "PW", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT",
         "VT", "VI", "VA", "WA", "WV", "WI", "WY" };
 
+    /**
+     * turns arrayOfAbbreviations into a list of strings 
+     */
     static public List<String> stateAbbrList = Arrays.asList(
         arrayOfAbbrievations);
 

@@ -28,21 +28,22 @@ import java.io.FileNotFoundException;
  * The main class of the program
  *
  * @author Jack Windham (jckwind11)
- * @authro Michael Gannon (mgannon3500)
+ * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
 public class Covid19TrackingManager {
 
     /**
-     * main method that runs the program
-     * 
+     * Main method that runs the program
      * @param args
+     * @return
      * @throws FileNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException {
+    public static boolean main(String[] args) throws FileNotFoundException {
         String commandFile = args[0];
         CommandHub hub = new CommandHub(commandFile);
         hub.execute();
+        return true;
 // System.out.println(hub.toString());
     }
 }

@@ -76,8 +76,10 @@ public class Command {
 
     /**
      * runs the command depending on type
+     * @param data
+     * @return boolean
      */
-    public void run(Map<String, CovidData> data) {
+    public boolean run(Map<String, CovidData> data) {
         switch (commandType) {
             case LOAD:
                 this.load(data);
@@ -99,6 +101,7 @@ public class Command {
             default:
                 break;
         }
+        return true;
     }
 
 
@@ -125,8 +128,6 @@ public class Command {
      * 
      * @param data
      *            the hashmap of data
-     * @param args
-     *            the args
      */
     private void searchState(Map<String, CovidData> data) {
 
@@ -138,8 +139,6 @@ public class Command {
      * 
      * @param data
      *            the hashmap of data
-     * @param args
-     *            the args
      */
     private void searchDate(Map<String, CovidData> data) {
         DateFormat format = new SimpleDateFormat("mm/dd/yyyy");

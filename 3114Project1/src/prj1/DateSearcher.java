@@ -49,6 +49,8 @@ public class DateSearcher {
      *            the date to search
      * @param data
      *            the data to search through
+     * @param fancyDate
+     *            the date in a different form
      */
     public DateSearcher(
         String date,
@@ -76,16 +78,16 @@ public class DateSearcher {
             "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
             "recovered", "dataQualityGrade", "death" };
         System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s\n", headerStrings);
-        for (CovidData data : correspondingData) {
-            System.out.format("%-8s", data.getState());
-            System.out.format("%,-12d", data.getPos().intValue());
-            System.out.format("%,-12d", data.getNeg().intValue());
-            System.out.format("%,-15d", data.getHosp().intValue());
-            System.out.format("%,-25d", data.getOnVentCurr().intValue());
-            System.out.format("%,-25d", data.getOnVentTotal().intValue());
-            System.out.format("%,-12d", data.getRecovered().intValue());
-            System.out.format("%-19s", data.getDataQuality());
-            System.out.format("%,-12d\n", data.getDeath().intValue());
+        for (CovidData myData : correspondingData) {
+            System.out.format("%-8s", myData.getState());
+            System.out.format("%,-12d", myData.getPos().intValue());
+            System.out.format("%,-12d", myData.getNeg().intValue());
+            System.out.format("%,-15d", myData.getHosp().intValue());
+            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
+            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
+            System.out.format("%,-12d", myData.getRecovered().intValue());
+            System.out.format("%-19s", myData.getDataQuality());
+            System.out.format("%,-12d\n", myData.getDeath().intValue());
         }
     }
 

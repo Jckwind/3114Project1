@@ -47,6 +47,7 @@ public class CSVReader {
      * @param filePath
      *            the path to the csv file
      * @throws FileNotFoundException
+     * @param data
      */
     public CSVReader(String filePath, Map<String, CovidData> data)
         throws FileNotFoundException {

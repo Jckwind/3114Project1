@@ -40,7 +40,7 @@ public class Summary {
     /**
      * creates a new summary object
      * 
-     * @param rawData
+     * @param rawData in map form 
      */
     public Summary(Map<String, CovidData> rawData) {
         this.rawData = rawData;

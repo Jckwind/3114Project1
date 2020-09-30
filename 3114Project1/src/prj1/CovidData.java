@@ -42,22 +42,18 @@ public class CovidData implements Comparable<Object> {
 
     private String dataQuality;
 
-    private Double pos, neg, hosp, onVentCurr, onVentTotal, recovered, death;
+    private Double pos;
+    private Double neg;
+    private Double hosp;
+    private Double onVentCurr;
+    private Double onVentTotal;
+    private Double recovered;
+    private Double death;
 
 
     /**
-     * creates a new covid data object
-     * 
-     * @param date
-     * @param state
-     * @param pos
-     * @param neg
-     * @param hosp
-     * @param onVentCurr
-     * @param onVentTotal
-     * @param recovered
-     * @param dataQuality
-     * @param death
+     * Creates a new CovidData object
+     * @param rawData
      */
     public CovidData(String[] rawData) {
         this.date = rawData[0];
@@ -146,7 +142,7 @@ public class CovidData implements Comparable<Object> {
     /**
      * returns a number value based on data quality
      * 
-     * @return
+     * @return int of Data quality raw
      */
     public int getDataQualityRaw() {
         switch (dataQuality) {
@@ -228,11 +224,10 @@ public class CovidData implements Comparable<Object> {
 
     /**
      * combines the death, hosp and cases of two objects
-     * 
      * @param otherData
-     *            the other data
+     * @return boolean
      */
-    public void combineObjects(CovidData otherData) {
+    public boolean combineObjects(CovidData otherData) {
         if (this.pos == null) {
             this.pos = 0.0;
         }
@@ -245,13 +240,14 @@ public class CovidData implements Comparable<Object> {
         this.pos += otherData.getPos();
         this.death += otherData.getDeath();
         this.hosp += otherData.getHosp();
+        return true;
     }
 
 
     /**
      * returns the full state given the apprievation
      * 
-     * @return
+     * @return String of full state
      */
     public String getFullState() {
         return State.fullState(this.state);

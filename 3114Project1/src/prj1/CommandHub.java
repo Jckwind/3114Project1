@@ -59,10 +59,12 @@ public class CommandHub {
 
     /**
      * reads the command data and then runs each command
+     * @param boolean
      */
-    public void execute() throws FileNotFoundException {
+    public boolean execute() throws FileNotFoundException {
         readCommandData();
         runCommands();
+        return true;
     }
 
 
