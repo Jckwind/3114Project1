@@ -88,7 +88,7 @@ public class CSVReader {
             }
         }
         scanner.close();
-        System.out.println("Finished loading " + filePath + "file");
+        System.out.println("Finished loading " + filePath + " file");
         System.out.println(count + " records have been loaded");
         return true;
     }
