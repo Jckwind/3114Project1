@@ -77,6 +77,7 @@ public class Command {
      * runs the command depending on type
      * 
      * @param data
+     *           Map of the data to be run
      * @return boolean
      */
     public boolean run(Map<String, CovidData> data) {
