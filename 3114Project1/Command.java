@@ -171,11 +171,13 @@ public class Command {
             DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
             format.setLenient(false);
             String date = args.get(0);
+            if (date.length() != 10) {
+                throw new ParseException(date, 0);
+            }
             Date dateData = format.parse(date);
             format = new SimpleDateFormat("yyyymmdd");
-            String searchableDate = format.format(dateData);
-            DateSearcher searcher = new DateSearcher(searchableDate, date,
-                data);
+            String searchable = format.format(dateData);
+            DateSearcher searcher = new DateSearcher(searchable, date, data);
             searcher.search();
         }
         catch (ParseException e) {

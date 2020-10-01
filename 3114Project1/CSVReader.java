@@ -68,7 +68,14 @@ public class CSVReader {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(",", -1);
-            if (parts.length == 0 || parts.length != 10) {
+            Boolean allEmpty = true;
+            for (String part : parts) {
+                if (!part.isEmpty()) {
+                    allEmpty = false;
+                    break;
+                }
+            }
+            if (parts.length == 0 || parts.length != 10 || allEmpty) {
                 continue;
             }
             CovidData dataPoint = new CovidData(parts);

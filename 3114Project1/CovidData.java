@@ -42,11 +42,17 @@ public class CovidData implements Comparable<Object> {
     private String dataQuality;
 
     private Double pos;
+
     private Double neg;
+
     private Double hosp;
+
     private Double onVentCurr;
+
     private Double onVentTotal;
+
     private Double recovered;
+
     private Double death;
 
 
