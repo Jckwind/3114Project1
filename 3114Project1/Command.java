@@ -77,6 +77,7 @@ public class Command {
      * runs the command depending on type
      * 
      * @param data
+     *            Map of the data to be run
      * @return boolean
      */
     public boolean run(Map<String, CovidData> data) {
@@ -171,6 +172,7 @@ public class Command {
             format.setLenient(false);
             String date = args.get(0);
             Date dateData = format.parse(date);
+
             format = new SimpleDateFormat("yyyymmdd");
             String searchableDate = format.format(dateData);
             DateSearcher searcher = new DateSearcher(searchableDate, date,

@@ -116,6 +116,7 @@ public class DateSearcher {
             date = maxDateData.getDate().toString();
             try {
                 DateFormat format = new SimpleDateFormat("yyyymmdd");
+                format.setLenient(false);
                 Date dateData = format.parse(date);
                 format = new SimpleDateFormat("mm/dd/yyyy");
                 fancyDate = format.format(dateData);
