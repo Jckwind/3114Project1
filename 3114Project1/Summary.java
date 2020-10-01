@@ -1,5 +1,4 @@
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -70,7 +69,7 @@ public class Summary {
             System.out.format("%-8s", data.getState());
             System.out.format("%,-12d", data.getPos().intValue());
             System.out.format("%,-14d", data.getDeath().intValue());
-            System.out.format("%,-12d\n", data.getHosp().intValue());
+            System.out.format("%,-18d\n", data.getHosp().intValue());
         }
         System.out.format("Total Cases: %,d\n", totalCases);
         System.out.format("Total Death: %,d\n", totalDeaths);

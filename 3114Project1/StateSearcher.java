@@ -92,7 +92,8 @@ public class StateSearcher {
         Object[] headerStrings = { "date", "positive", "negative",
             "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
             "recovered", "dataQualityGrade", "death" };
-        System.out.format("%s%19s%12s%16s%24s%26s%12s%19s%8s\n", headerStrings);
+        System.out.format("%s%19s%12s%16s%24s%26s%12s%19s%8s   \n",
+            headerStrings);
         for (CovidData myData : dataPoints) {
             System.out.format("%-15s", myData.fancyDate());
             System.out.format("%,-12d", myData.getPos().intValue());
@@ -102,7 +103,7 @@ public class StateSearcher {
             System.out.format("%,-25d", myData.getOnVentTotal().intValue());
             System.out.format("%,-12d", myData.getRecovered().intValue());
             System.out.format("%-19s", myData.getDataQuality());
-            System.out.format("%,-12d\n", myData.getDeath().intValue());
+            System.out.format("%,-8d\n", myData.getDeath().intValue());
         }
 
     }

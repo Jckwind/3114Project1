@@ -98,8 +98,10 @@ public class Command {
             case DUMP:
                 this.dataDump(data);
                 break;
-            default:
+            case ERROR:
                 System.out.println("Discard invalid command name");
+                break;
+            default:
                 break;
         }
         return true;
@@ -166,6 +168,7 @@ public class Command {
         }
         try {
             DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+            format.setLenient(false);
             String date = args.get(0);
             Date dateData = format.parse(date);
             format = new SimpleDateFormat("yyyymmdd");
@@ -187,6 +190,10 @@ public class Command {
      *            the hashmap of data
      */
     private void summary(Map<String, CovidData> data) {
+        if (args.size() != 0) {
+            System.out.println("Discard invalid command name");
+            return;
+        }
         Summary summaryReporter = new Summary(data);
         summaryReporter.reportSummary();
     }
@@ -199,6 +206,10 @@ public class Command {
      *            the hashmap of data
      */
     private void dataDump(Map<String, CovidData> data) {
+        if (args.size() != 1) {
+            System.out.println("Discard invalid command name");
+            return;
+        }
         Dumper dumpTruck = new Dumper(data, args.get(0));
         dumpTruck.dump();
     }

@@ -41,7 +41,7 @@ public class DateSearcher {
 
     private String date;
 
-    private String fancyData;
+    private String fancyDate;
 
     private Map<String, CovidData> data;
 
@@ -61,7 +61,7 @@ public class DateSearcher {
         String fancyDate,
         Map<String, CovidData> data) {
         this.date = date;
-        this.fancyData = fancyDate;
+        this.fancyDate = fancyDate;
         this.data = data;
     }
 
@@ -75,16 +75,17 @@ public class DateSearcher {
         }
         ArrayList<CovidData> correspondingData = getMatchingDateData();
         if (correspondingData.size() == 0) {
-            System.out.println("There are no records on " + fancyData);
+            System.out.println("There are no records on " + fancyDate);
             return;
         }
         System.out.println("There are " + correspondingData.size()
-            + " records on " + fancyData);
+            + " records on " + fancyDate);
         // add to split up the header cause of webcat
         Object[] headerStrings = { "state", "positive", "negative",
             "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
             "recovered", "dataQualityGrade", "death" };
-        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s\n", headerStrings);
+        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s   \n",
+            headerStrings);
         for (CovidData myData : correspondingData) {
             System.out.format("%-8s", myData.getState());
             System.out.format("%,-12d", myData.getPos().intValue());
@@ -94,7 +95,7 @@ public class DateSearcher {
             System.out.format("%,-25d", myData.getOnVentTotal().intValue());
             System.out.format("%,-12d", myData.getRecovered().intValue());
             System.out.format("%-19s", myData.getDataQuality());
-            System.out.format("%,-12d\n", myData.getDeath().intValue());
+            System.out.format("%,-8d\n", myData.getDeath().intValue());
         }
     }
 
@@ -117,7 +118,7 @@ public class DateSearcher {
                 DateFormat format = new SimpleDateFormat("yyyymmdd");
                 Date dateData = format.parse(date);
                 format = new SimpleDateFormat("mm/dd/yyyy");
-                fancyData = format.format(dateData);
+                fancyDate = format.format(dateData);
             }
             catch (ParseException e) {
                 // nothing lol, it'll never happen

@@ -66,8 +66,11 @@ public class CommandReader {
             // split the line into parts and convert parts to arraylist
             List<String> listOfParts = Arrays.asList(line.split("\\s+"));
             ArrayList<String> parts = new ArrayList<>(listOfParts);
+            if (parts.get(0).isEmpty()) {
+                continue;
+            }
             // cast the command type
-            CommandEnum type = getType(parts.get(0));
+            CommandEnum type = getType(parts.get(0).toLowerCase());
             // remove the type of command from parts
             parts.remove(0);
             Command command = new Command(type, parts);
@@ -86,10 +89,7 @@ public class CommandReader {
      * @return the command type
      */
     private CommandEnum getType(String stringValue) {
-        if (stringValue == null) {
-            return null;
-        }
-        else if (stringValue.equals("load")) {
+        if (stringValue.equals("load")) {
             return CommandEnum.LOAD;
         }
         else if (stringValue.equals("search")) {
