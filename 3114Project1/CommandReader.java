@@ -57,7 +57,7 @@ public class CommandReader {
      * reads the command file and populates the command list
      * 
      * @throws FileNotFoundException
-     * @param boolean
+     * @return boolean
      */
     public boolean read() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(commandPath));
