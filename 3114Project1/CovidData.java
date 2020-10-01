@@ -55,6 +55,7 @@ public class CovidData implements Comparable<Object> {
      * Creates a new CovidData object
      * 
      * @param rawData
+     *            A string array of all the data raw
      */
     public CovidData(String[] rawData) {
         this.date = rawData[0];
