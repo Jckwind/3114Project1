@@ -85,7 +85,6 @@ public class Summary {
     private ArrayList<CovidData> condensedData() {
         // create new hashmap, so each state can have one entry
         Map<String, CovidData> condensedMap = new HashMap<String, CovidData>();
-
         for (CovidData data : rawData.values()) {
             String state = data.getState();
             // if the state has no entry, insert it in hashmap
@@ -95,8 +94,9 @@ public class Summary {
             else {
                 // state already has entry, combine data
                 CovidData existingCovidData = condensedMap.get(state);
-                existingCovidData.combineObjects(data);
-                condensedMap.put(state, existingCovidData);
+                CovidData newCombinedObject = new CovidData(existingCovidData);
+                newCombinedObject.combineObjects(data);
+                condensedMap.put(state, newCombinedObject);
             }
         }
         ArrayList<CovidData> result = new ArrayList<CovidData>(condensedMap

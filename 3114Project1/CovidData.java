@@ -113,6 +113,26 @@ public class CovidData implements Comparable<Object> {
 
 
     /**
+     * makes a deep copy
+     * 
+     * @param copy
+     *            the copy
+     */
+    public CovidData(CovidData copy) {
+        this.state = copy.state;
+        this.date = copy.date;
+        this.pos = copy.pos;
+        this.neg = copy.neg;
+        this.hosp = copy.hosp;
+        this.onVentCurr = copy.onVentCurr;
+        this.onVentTotal = copy.onVentTotal;
+        this.recovered = copy.recovered;
+        this.dataQuality = copy.dataQuality;
+        this.death = copy.death;
+    }
+
+
+    /**
      * returns the key for this data point
      * 
      * @return the key
