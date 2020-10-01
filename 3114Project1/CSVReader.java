@@ -79,21 +79,8 @@ public class CSVReader {
                 continue;
             }
             CovidData dataPoint = new CovidData(parts);
-            if (dataPoint.isValid()) {
-                if (dataPoint.stateIsValid()) {
-                    String key = dataPoint.getKey();
-                    if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
-                        count++;
-                        data.put(key, dataPoint);
-                    }
-                }
-                else {
-                    System.out.println("State of " + dataPoint.getState()
-                        + " does not exist!");
-                }
-            }
-            else {
-                System.out.println("Discard invalid record");
+            if (addToList(dataPoint)) {
+                count++;
             }
         }
         scanner.close();
@@ -104,9 +91,44 @@ public class CSVReader {
 
 
     /**
-     * decided if should add new data point to data
+     * adds the data point to our data
      * 
      * @param dataPoint
+     *            the data to add
+     * @return if to increment count
+     */
+    private boolean addToList(CovidData dataPoint) {
+        if (dataPoint.isValid()) {
+            if (dataPoint.stateIsValid()) {
+                String key = dataPoint.getKey();
+
+                if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
+                    data.put(key, dataPoint);
+                    return true;
+                }
+                else if (shouldUpdate(key, dataPoint)) {
+                    return true;
+                }
+            }
+            else {
+                System.out.println("State of " + dataPoint.getState()
+                    + " does not exist!");
+            }
+        }
+        else {
+            System.out.println("Discard invalid record");
+        }
+        return false;
+    }
+
+
+    /**
+     * decided if should add new data point to data
+     * 
+     * @param key
+     *            the key
+     * @param dataPoint
+     * @count the count, to add to it if need to increment
      * @return if to add it
      */
     private Boolean shouldAdd(String key, CovidData newData) {
@@ -116,19 +138,33 @@ public class CSVReader {
                 + newData.fancyDate());
             return true;
         }
-        else {
-            boolean didUpdate = currentData.updatedData(newData);
-            if (didUpdate) {
-                System.out.println(
-                    "Data has been updated for the missing data in " + newData
-                        .getState());
-            }
-            else {
-                System.out.println("Low quality data rejected for " + newData
-                    .getState());
-            }
-        }
         return false;
+    }
+
+
+    /**
+     * if to update the data
+     * 
+     * @param key
+     *            the key
+     * @param newData
+     *            the new data to update with
+     * @return if we updated
+     */
+    private boolean shouldUpdate(String key, CovidData newData) {
+        CovidData currentData = data.get(key);
+        boolean didUpdate = currentData.updatedData(newData);
+        if (didUpdate) {
+            String state = newData.getState();
+            System.out.println("Data has been updated for the missing data in "
+                + state);
+            return true;
+        }
+        else {
+            String state = newData.getState();
+            System.out.println("Low quality data rejected for " + state);
+            return false;
+        }
     }
 
 

@@ -224,6 +224,14 @@ public class CovidData implements Comparable<Object> {
      */
     public boolean updatedData(CovidData newData) {
         boolean updated = false;
+        if (pos == null && newData.pos != null) {
+            this.pos = newData.pos;
+            updated = true;
+        }
+        if (neg == null && newData.neg != null) {
+            this.neg = newData.neg;
+            updated = true;
+        }
         if (hosp == null && newData.hosp != null) {
             this.hosp = newData.hosp;
             updated = true;

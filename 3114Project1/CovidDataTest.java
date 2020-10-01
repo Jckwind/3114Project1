@@ -148,15 +148,34 @@ public class CovidDataTest extends TestCase {
     }
 
 
+    /**
+     * tests a successful update data command
+     */
     public void testUpdateData() {
-        String[] rawData = { "20200305", "MA", "25.0", "21.0", "", "", "", "",
-            "A", "3.0" };
+        String[] rawData = { "20200305", "MA", "", "", "", "", "", "", "A",
+            "" };
         CovidData testData = new CovidData(rawData);
+        assertTrue(testData.isValid());
         assertTrue(testData.updatedData(myCovidData));
+        assertEquals(25.0, testData.getPos(), 0.1);
+        assertEquals(21.0, testData.getNeg(), 0.1);
         assertEquals(5.0, testData.getHosp(), 0.1);
         assertEquals(4.0, testData.getOnVentCurr(), 0.1);
         assertEquals(0.0, testData.getOnVentTotal(), 0.1);
         assertEquals(20.0, testData.getRecovered(), 0.1);
+        assertEquals(3.0, testData.getDeath(), 0.1);
+    }
+
+
+    /**
+     * tests a failed update data command
+     */
+    public void testFailedUpdateData() {
+        String[] rawData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
+            "0.0", "20.0", "A", "3.0" };
+        CovidData testData = new CovidData(rawData);
+        assertFalse(testData.updatedData(myCovidData));
+        assertFalse(myCovidData.updatedData(testData));
     }
 
 }
