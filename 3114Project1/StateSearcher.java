@@ -113,11 +113,11 @@ public class StateSearcher {
      * checks to populate the state abbr field for data lookup
      */
     private void getStateAbbr() {
-        if (State.stateAbbrList.contains(stateName.toUpperCase())) {
+        if (State.STATE_ABBR_LIST.contains(stateName.toUpperCase())) {
             // statename is already abbr
             this.stateAbbr = this.stateName.toUpperCase();
         }
-        else if (State.stateNameList.contains(stateName.toUpperCase())) {
+        else if (State.STATE_NAME_LIST.contains(stateName.toUpperCase())) {
             // state name is a full name state
             this.stateAbbr = State.stateAbbr(stateName);
         }

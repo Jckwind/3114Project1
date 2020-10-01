@@ -172,7 +172,6 @@ public class Command {
             format.setLenient(false);
             String date = args.get(0);
             Date dateData = format.parse(date);
-
             format = new SimpleDateFormat("yyyymmdd");
             String searchableDate = format.format(dateData);
             DateSearcher searcher = new DateSearcher(searchableDate, date,

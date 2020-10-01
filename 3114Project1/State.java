@@ -1,5 +1,4 @@
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,12 +58,14 @@ public class State {
     /**
      * turns arrayOfAbbreviations into a list of strings
      */
-    static public List<String> stateAbbrList = Arrays.asList(arrayOfAbbrv);
+    static final public List<String> STATE_ABBR_LIST = Arrays.asList(
+        arrayOfAbbrv);
 
     /**
      * turns arrayOfStateNames into a list of strings
      */
-    static public List<String> stateNameList = Arrays.asList(arrayOfStateNames);
+    static final public List<String> STATE_NAME_LIST = Arrays.asList(
+        arrayOfStateNames);
 
 
     /**

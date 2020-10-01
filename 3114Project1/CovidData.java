@@ -1,5 +1,4 @@
 
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -191,6 +190,39 @@ public class CovidData implements Comparable<Object> {
 
 
     /**
+     * updates the object if it has empty fields
+     * 
+     * @param newData
+     *            the object
+     * @return if it was updated
+     */
+    public boolean updatedData(CovidData newData) {
+        boolean updated = false;
+        if (hosp == null && newData.hosp != null) {
+            this.hosp = newData.hosp;
+            updated = true;
+        }
+        if (onVentCurr == null && newData.onVentCurr != null) {
+            this.onVentCurr = newData.onVentCurr;
+            updated = true;
+        }
+        if (onVentTotal == null && newData.onVentTotal != null) {
+            this.onVentTotal = newData.onVentTotal;
+            updated = true;
+        }
+        if (recovered == null && newData.recovered != null) {
+            this.recovered = newData.recovered;
+            updated = true;
+        }
+        if (death == null && newData.death != null) {
+            this.death = newData.death;
+            updated = true;
+        }
+        return updated;
+    }
+
+
+    /**
      * if a data point is valid
      * 
      * @return true if valid
@@ -206,7 +238,7 @@ public class CovidData implements Comparable<Object> {
      * @return true if valid
      */
     public boolean stateIsValid() {
-        return State.stateAbbrList.contains(this.state);
+        return State.STATE_ABBR_LIST.contains(this.state.toUpperCase());
     }
 
 
@@ -252,7 +284,7 @@ public class CovidData implements Comparable<Object> {
      * combines the death, hosp and cases of two objects
      * 
      * @param otherData
-     *             The other data to be combined with this data
+     *            The other data to be combined with this data
      * @return boolean
      */
     public boolean combineObjects(CovidData otherData) {

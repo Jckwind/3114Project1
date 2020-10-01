@@ -1,7 +1,7 @@
 load head_100_random_30.csv
   search oregon 3
 search new Jersey 1
- search       08/17/20
+ search       08/18/2020
 summarydata
 load head_200_random_70.csv
 search    new    Jersey 1

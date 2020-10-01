@@ -1,5 +1,4 @@
 
-
 import java.io.FileNotFoundException;
 
 // On my honor:
@@ -37,11 +36,14 @@ public class Covid19TrackingManager {
      * Main method that runs the program
      * 
      * @param args
-     *           The main arguments that has the input file
+     *            The main arguments that has the input file
      * @return
      * @throws FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException {
+        if (args.length == 0) {
+            return;
+        }
         String commandFile = args[0];
         CommandHub hub = new CommandHub(commandFile);
         hub.execute();

@@ -1,8 +1,9 @@
+
 /**
  * 
  */
 
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,14 +50,12 @@ public class CommandTest extends TestCase {
     private Command mySummary;
     private Command myDump;
     private Map<String, CovidData> data;
-    private CommandHub myHub;
     private String commandFile = "input_1.txt";
     private ArrayList<Command> commands;
     private CommandReader myReader;
     private CovidData myCovidData;
     private CovidData otherCovidData;
     private CovidData nullData;
-    private Covid19TrackingManager myMan;
     private CSVReader myCsv;
 
 
@@ -84,7 +83,6 @@ public class CommandTest extends TestCase {
         mySummary = new Command(summaryType, args);
         myDump = new Command(dumpType, args);
         data = new HashMap<String, CovidData>();
-        myHub = new CommandHub(commandFile);
         commands = new ArrayList<Command>(2);
         commands.add(myCom);
         myReader = new CommandReader(commands, commandFile);
@@ -220,9 +218,7 @@ public class CommandTest extends TestCase {
         String state = myCovidData.getFullState();
         assertEquals(state, myCovidData.getFullState());
         assertEquals("MA", myCovidData.getState());
-        Integer date = myCovidData.getDate();
         // assertEquals(date, myCovidData.getDate());
-        Double num = 25.0;
         /**
          * assertEquals(num, myCovidData.getPos());
          * assertEquals(0.0, nullData.getPos());
@@ -251,14 +247,6 @@ public class CommandTest extends TestCase {
     public void testLoadData() throws FileNotFoundException {
         // assertTrue(myCsv.loadData());
         assertEquals(data, myCsv.getData());
-    }
-
-
-    /**
-     * tests the search method in Date Searcher
-     */
-    public void testSearch() {
-        // assertTrue(myDateSearch.search());
     }
 
 
@@ -326,7 +314,7 @@ public class CommandTest extends TestCase {
         assertEquals("Wisconsin", State.fullState("WI"));
         assertEquals("Wyoming", State.fullState("WY"));
         assertEquals("ZZ", State.fullState("ZZ"));
-        
+
         assertEquals("AL", State.stateAbbr("ALABAMA"));
         assertEquals("AK", State.stateAbbr("ALASKA"));
         assertEquals("AR", State.stateAbbr("ARKANSAS"));
@@ -405,9 +393,10 @@ public class CommandTest extends TestCase {
      * @throws FileNotFoundException
      */
     public void testMain() throws FileNotFoundException {
-        String[] tempArgs = new String[2];
-        tempArgs[0] = "input_1.txt";
-// assertTrue(myMan.main(tempArgs));
+        String[] tempArgs = { "input_1.txt" };
+        Covid19TrackingManager.main(tempArgs);
+        File f = new File("xyz13da.csv");
+        assertTrue(f.exists());
     }
 
 }

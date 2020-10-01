@@ -1,6 +1,5 @@
 load       head_200_random_70.csv
-
-search  va    3
+search  pH    3
     search New     York 1
    search 07/01/2020
 search Mo 1   

@@ -110,8 +110,16 @@ public class CSVReader {
             return true;
         }
         else {
-            System.out.println("Low quality data rejected for " + newData
-                .getState());
+            boolean didUpdate = currentData.updatedData(newData);
+            if (didUpdate) {
+                System.out.println(
+                    "Data has been updated for the missing data in " + newData
+                        .getState());
+            }
+            else {
+                System.out.println("Low quality data rejected for " + newData
+                    .getState());
+            }
         }
         return false;
     }
