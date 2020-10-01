@@ -55,6 +55,7 @@ public class CovidData implements Comparable<Object> {
      * Creates a new CovidData object
      * 
      * @param rawData
+     *            A string array of all the data raw
      */
     public CovidData(String[] rawData) {
         this.date = rawData[0];
@@ -251,6 +252,7 @@ public class CovidData implements Comparable<Object> {
      * combines the death, hosp and cases of two objects
      * 
      * @param otherData
+     *             The other data to be combined with this data
      * @return boolean
      */
     public boolean combineObjects(CovidData otherData) {

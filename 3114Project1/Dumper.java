@@ -48,7 +48,13 @@ public class Dumper {
 
     private BufferedWriter writer;
 
-
+    /**
+    * Main constructor for dumper
+    * @param data
+    *           Map of the data to dump
+    * @param filename
+    *           String of the file name
+    */
     public Dumper(Map<String, CovidData> data, String filename) {
         this.fileName = filename;
         this.data = data;

@@ -37,6 +37,7 @@ public class Covid19TrackingManager {
      * Main method that runs the program
      * 
      * @param args
+     *           The main arguments that has the input file
      * @return
      * @throws FileNotFoundException
      */

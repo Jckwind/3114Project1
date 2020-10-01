@@ -44,7 +44,9 @@ public class CSVReader {
      * creates a new csv reader0
      * 
      * @param filePath
+     *            String of the file input
      * @param data
+     *            Map of the data to read
      */
     public CSVReader(String filePath, Map<String, CovidData> data) {
         this.filePath = filePath;
