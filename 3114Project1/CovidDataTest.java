@@ -35,6 +35,8 @@ public class CovidDataTest extends TestCase {
     private CovidData myCovidData;
     private CovidData otherCovidData;
     private CovidData nullData;
+    private String[] rawData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
+        "0.0", "20.0", "A", "3.0" };
 
 
     /**
@@ -43,8 +45,6 @@ public class CovidDataTest extends TestCase {
      *             Used for Test setup
      */
     public void setUp() {
-        String[] rawData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
-            "0.0", "20.0", "A", "3.0" };
         String[] otherData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
             "0.0", "20.0", "B", "3.0" };
         String[] tempData = { null, null, null, null, null, null, null, null,
@@ -79,6 +79,18 @@ public class CovidDataTest extends TestCase {
         assertEquals("B", otherCovidData.getDataQuality());
         assertEquals(1, myCovidData.getDataQualityRaw());
         assertEquals(3, otherCovidData.getDataQualityRaw());
+        rawData[8] = "B+";
+        CovidData dataB = new CovidData(rawData);
+        assertEquals(2, dataB.getDataQualityRaw());
+        rawData[8] = "C+";
+        CovidData dataC = new CovidData(rawData);
+        assertEquals(4, dataC.getDataQualityRaw());
+        rawData[8] = "D+";
+        CovidData dataD = new CovidData(rawData);
+        assertEquals(6, dataD.getDataQualityRaw());
+        rawData[8] = "Z";
+        CovidData dataZ = new CovidData(rawData);
+        assertEquals(-1, dataZ.getDataQualityRaw());
     }
 
 
@@ -94,9 +106,9 @@ public class CovidDataTest extends TestCase {
      * tests the isValid method in CovidData
      */
     public void testIsValid() {
-        String[] rawData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
+        String[] tempData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
             "0.0", "20.0", "", "3.0" };
-        CovidData testData = new CovidData(rawData);
+        CovidData testData = new CovidData(tempData);
         assertTrue(myCovidData.isValid());
         assertFalse(testData.isValid());
     }
@@ -108,6 +120,8 @@ public class CovidDataTest extends TestCase {
     public void testCompareTo() {
         assertEquals(1, myCovidData.compareQuality(otherCovidData));
         assertEquals(-1, otherCovidData.compareQuality(myCovidData));
+        int num = myCovidData.compareTo(otherCovidData);
+        assertEquals(num, myCovidData.compareTo(otherCovidData));
     }
 
 
@@ -117,6 +131,8 @@ public class CovidDataTest extends TestCase {
     public void testToStringCovidData() {
         String str = myCovidData.toString();
         assertEquals(str, myCovidData.toString());
+        String str2 = nullData.toString();
+        assertEquals(str2, nullData.toString());
     }
 
 
@@ -126,6 +142,7 @@ public class CovidDataTest extends TestCase {
     public void testCombineObjects() {
         assertTrue(myCovidData.combineObjects(otherCovidData));
         assertTrue(myCovidData.combineObjects(nullData));
+        assertTrue(nullData.combineObjects(myCovidData));
     }
 
 
@@ -152,9 +169,9 @@ public class CovidDataTest extends TestCase {
      * tests a successful update data command
      */
     public void testUpdateData() {
-        String[] rawData = { "20200305", "MA", "", "", "", "", "", "", "A",
+        String[] tempData = { "20200305", "MA", "", "", "", "", "", "", "A",
             "" };
-        CovidData testData = new CovidData(rawData);
+        CovidData testData = new CovidData(tempData);
         assertTrue(testData.isValid());
         assertTrue(testData.updatedData(myCovidData));
         assertEquals(25.0, testData.getPos(), 0.1);
@@ -171,11 +188,19 @@ public class CovidDataTest extends TestCase {
      * tests a failed update data command
      */
     public void testFailedUpdateData() {
-        String[] rawData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
+        String[] tempData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
             "0.0", "20.0", "A", "3.0" };
-        CovidData testData = new CovidData(rawData);
+        CovidData testData = new CovidData(tempData);
         assertFalse(testData.updatedData(myCovidData));
         assertFalse(myCovidData.updatedData(testData));
+    }
+    
+    /**
+     * tests the deep copy method
+     */
+    public void testCovidData() {
+        CovidData newData = new CovidData(myCovidData);
+        assertTrue(newData.isValid());
     }
 
 }

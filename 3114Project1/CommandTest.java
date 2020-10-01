@@ -72,7 +72,7 @@ public class CommandTest extends TestCase {
         myOtherSearch = new Command(searchType, arg1);
         mySummary = new Command(summaryType, args);
         myDump = new Command(dumpType, args);
-        data = new HashMap<String, CovidData>();
+        data = new HashMap<String, CovidData>(2);
         commands = new ArrayList<Command>(2);
         commands.add(myCom);
         myReader = new CommandReader(commands, commandFile);
@@ -112,10 +112,15 @@ public class CommandTest extends TestCase {
 
     /**
      * tests the toString function for commandHub
+     * @throws FileNotFoundException 
      */
-    public void testToString() {
+    public void testToString() throws FileNotFoundException {
         String str = commands.toString();
         assertEquals(str, commands.toString());
+        CommandHub myHub = new CommandHub(commandFile);
+        myHub.execute();
+        String str2 = myHub.toString();
+        assertEquals(str2, myHub.toString());
     }
 
 
@@ -126,6 +131,11 @@ public class CommandTest extends TestCase {
      */
     public void testRead() throws FileNotFoundException {
         assertTrue(myReader.read());
+        assertEquals(CommandEnum.LOAD, myReader.getType("load"));
+        assertEquals(CommandEnum.SEARCH, myReader.getType("search"));
+        assertEquals(CommandEnum.SUMMARY, myReader.getType("summarydata"));
+        assertEquals(CommandEnum.DUMP, myReader.getType("dumpdata"));
+        assertEquals(CommandEnum.ERROR, myReader.getType("other"));
     }
 
 
@@ -146,6 +156,22 @@ public class CommandTest extends TestCase {
     public void testSummary() {
         Summary mySum = new Summary(data);
         assertTrue(mySum.reportSummary());
+    }
+    
+    /**
+     * tests the StateSearcher and DateSearcher
+     */
+    public void testSearching() {
+        Map<String, CovidData> tempData = new HashMap<String, CovidData>(0);
+        StateSearcher myTemp = new StateSearcher(data, "Virginia", 1);
+        myTemp.search();
+        DateSearcher myDate = new DateSearcher("03052000", "03/05/2000", data);
+        myDate.search();
+        assertTrue(myDate.equals(myDate));
+        DateSearcher otherDate = new DateSearcher("3", "5", tempData);
+        StateSearcher otherTemp = new StateSearcher(tempData, "MA", 1);
+        otherDate.search();
+        otherTemp.search();
     }
 
 }

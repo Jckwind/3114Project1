@@ -177,4 +177,5 @@ public class StateTest extends TestCase {
     public void testStateNameToAbbrFailed() {
         assertEquals("ZZ", State.stateAbbr("ZZ"));
     }
+    
 }
