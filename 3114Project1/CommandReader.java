@@ -45,7 +45,9 @@ public class CommandReader {
     /**
      * 
      * @param commands
+     *             ArrayList of the commands
      * @param commandPath
+     *             path to the command File
      */
     public CommandReader(ArrayList<Command> commands, String commandPath) {
         this.commands = commands;
