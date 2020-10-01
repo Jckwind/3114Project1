@@ -335,7 +335,7 @@ public class CommandTest extends TestCase {
         assertEquals("CA", State.stateAbbr("CALIFORNIA"));
         assertEquals("CO", State.stateAbbr("COLORADO"));
         assertEquals("CT", State.stateAbbr("CONNECTICUT"));
-        assertEquals("DE", State.stateAbbr("DELEWARE"));
+        assertEquals("DE", State.stateAbbr("DELAWARE"));
         assertEquals("DC", State.stateAbbr("DISTRICT OF COLUMBIA"));
         assertEquals("FL", State.stateAbbr("FLORIDA"));
         assertEquals("FM", State.stateAbbr("FEDERATED STATES OF MICRONESIA"));
