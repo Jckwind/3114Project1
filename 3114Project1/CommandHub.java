@@ -60,7 +60,7 @@ public class CommandHub {
     /**
      * reads the command data and then runs each command
      * 
-     * @param boolean
+     * @return boolean
      */
     public boolean execute() throws FileNotFoundException {
         readCommandData();
