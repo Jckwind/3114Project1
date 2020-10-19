@@ -90,7 +90,7 @@ public class CommandReader {
      *            the type of the command
      * @return the command type
      */
-    private CommandEnum getType(String stringValue) {
+    public CommandEnum getType(String stringValue) {
         if (stringValue.equals("load")) {
             return CommandEnum.LOAD;
         }

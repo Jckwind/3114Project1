@@ -105,7 +105,7 @@ public class StateSearcher {
             System.out.format("%-19s", myData.getDataQuality());
             System.out.format("%,-8d\n", myData.getDeath().intValue());
         }
-
+        
     }
 
 
