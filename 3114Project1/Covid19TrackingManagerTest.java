@@ -38,7 +38,7 @@ public class Covid19TrackingManagerTest extends TestCase {
      */
     public void testMain() throws FileNotFoundException {
         String[] tempArgs = { "input_1.txt" };
-        Covid19TrackingManager.main(tempArgs);
+        Covid19TrackingManager2.main(tempArgs);
         File f = new File("xyz13da.csv");
         assertTrue(f.exists());
     }

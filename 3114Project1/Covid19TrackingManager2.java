@@ -30,7 +30,7 @@ import java.io.FileNotFoundException;
  * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
-public class Covid19TrackingManager {
+public class Covid19TrackingManager2 {
 
     /**
      * Main method that runs the program
