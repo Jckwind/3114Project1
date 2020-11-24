@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 // On my honor:
 //
@@ -21,17 +22,60 @@
 //
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
-
 /**
- * The different types of commands we can run
+ * details of the class
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
- * @version 2020.09.27
+ * @version Nov 24, 2020
  */
-public enum CommandEnum {
+public class CommandArgs {
+
+    private ParameterEnum type;
+
+    private ArrayList<String> args;
+
     /**
-     * the enums for the commands are load, search, summary, dump
+     * creates a new command arg object
+     * 
+     * @param type
+     *            the type of object
+     * @param args
+     *            the args
      */
-    LOAD, SEARCH, REMOVE, DUMP, ERROR;
+    public CommandArgs(ParameterEnum type) {
+        this.type = type;
+        this.args = new ArrayList<String>();
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("type: " + type.toString() + " args: ");
+        for (String arg : args) {
+            builder.append(arg + " ");
+        }
+        return builder.toString();
+    }
+
+
+    /**
+     * adds an arg
+     * 
+     * @param arg
+     *            the arg to add
+     */
+    public void addArg(String arg) {
+        args.add(arg);
+    }
+
+
+    /**
+     * @return the args
+     */
+    public ArrayList<String> getArgs() {
+        return args;
+    }
+
 }

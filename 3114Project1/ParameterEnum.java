@@ -1,4 +1,3 @@
-
 // On my honor:
 //
 // - I have not used source code obtained from another student,
@@ -21,17 +20,27 @@
 //
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
-
 /**
- * The different types of commands we can run
+ * details of the class
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
- * @version 2020.09.27
+ * @version Nov 24, 2020
  */
-public enum CommandEnum {
+public enum ParameterEnum {
+
     /**
      * the enums for the commands are load, search, summary, dump
      */
-    LOAD, SEARCH, REMOVE, DUMP, ERROR;
+    QUALITY,
+    STATE,
+    DAYS,
+    DATE,
+    AVERAGE,
+    CONTINUOUSRUN,
+    DEFAULT,
+    LOAD,
+    REMOVE,
+    ERROR,
+    DUMP;
 }

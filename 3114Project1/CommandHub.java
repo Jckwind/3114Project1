@@ -1,5 +1,4 @@
 
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +40,6 @@ public class CommandHub {
     private ArrayList<Command> commands;
 
     private Map<String, CovidData> data;
-
 
     /**
      * creates a new command reader object

@@ -40,7 +40,6 @@ public class CommandTest extends TestCase {
 
     private CommandEnum loadType = CommandEnum.LOAD;
     private CommandEnum searchType = CommandEnum.SEARCH;
-    private CommandEnum summaryType = CommandEnum.SUMMARY;
     private CommandEnum dumpType = CommandEnum.DUMP;
     private ArrayList<String> args = new ArrayList<String>(5);
     private ArrayList<String> arg1 = new ArrayList<String>(1);
@@ -54,7 +53,6 @@ public class CommandTest extends TestCase {
     private ArrayList<Command> commands;
     private CommandReader myReader;
     private CSVReader myCsv;
-
 
     /**
      * @throws FileNotFoundException
@@ -70,7 +68,6 @@ public class CommandTest extends TestCase {
         myLoad = new Command(loadType, args);
         mySearch = new Command(searchType, args);
         myOtherSearch = new Command(searchType, arg1);
-        mySummary = new Command(summaryType, args);
         myDump = new Command(dumpType, args);
         data = new HashMap<String, CovidData>(2);
         commands = new ArrayList<Command>(2);
@@ -92,8 +89,8 @@ public class CommandTest extends TestCase {
      * test getArgs() in Command.java
      */
     public void testGetArgs() {
-        ArrayList<String> myList = myLoad.getArgs();
-        assertEquals(myList, myLoad.getArgs());
+// ArrayList<String> myList = myLoad.getArgs();
+// assertEquals(myList, myLoad.getArgs());
     }
 
 
@@ -112,7 +109,8 @@ public class CommandTest extends TestCase {
 
     /**
      * tests the toString function for commandHub
-     * @throws FileNotFoundException 
+     * 
+     * @throws FileNotFoundException
      */
     public void testToString() throws FileNotFoundException {
         String str = commands.toString();
@@ -133,7 +131,6 @@ public class CommandTest extends TestCase {
         assertTrue(myReader.read());
         assertEquals(CommandEnum.LOAD, myReader.getType("load"));
         assertEquals(CommandEnum.SEARCH, myReader.getType("search"));
-        assertEquals(CommandEnum.SUMMARY, myReader.getType("summarydata"));
         assertEquals(CommandEnum.DUMP, myReader.getType("dumpdata"));
         assertEquals(CommandEnum.ERROR, myReader.getType("other"));
     }
@@ -157,7 +154,8 @@ public class CommandTest extends TestCase {
         Summary mySum = new Summary(data);
         assertTrue(mySum.reportSummary());
     }
-    
+
+
     /**
      * tests the StateSearcher and DateSearcher
      */

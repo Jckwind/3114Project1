@@ -1,10 +1,6 @@
 
 import java.io.FileNotFoundException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 // On my honor:
@@ -40,8 +36,7 @@ public class Command {
 
     private CommandEnum commandType;
 
-    private ArrayList<String> args;
-
+    private ArrayList<CommandArgs> args;
 
     /**
      * creates a new command object
@@ -53,7 +48,8 @@ public class Command {
      */
     public Command(CommandEnum type, ArrayList<String> args) {
         this.commandType = type;
-        this.args = args;
+        this.args = new ArrayList<CommandArgs>();
+        handleArgs(args);
     }
 
 
@@ -68,8 +64,98 @@ public class Command {
     /**
      * @return the args
      */
-    public ArrayList<String> getArgs() {
+    public ArrayList<CommandArgs> getArgs() {
         return args;
+    }
+
+
+    /**
+     * converts the args to command arg objetc
+     * 
+     * @param args
+     *            the args
+     */
+    public void handleArgs(ArrayList<String> args) {
+        CommandArgs currentArg = null;
+        for (String arg : args) {
+            if (arg.charAt(0) == '-') {
+                if (currentArg != null) {
+                    this.args.add(currentArg);
+                }
+                ParameterEnum name = stringToParam(arg.toLowerCase());
+                currentArg = new CommandArgs(name);
+            }
+            else if (currentArg != null) {
+                currentArg.addArg(arg);
+            }
+        }
+        if (currentArg == null) {
+            ParameterEnum type = paramToComand();
+            currentArg = new CommandArgs(type);
+            for (String arg : args) {
+                currentArg.addArg(arg);
+            }
+            this.args.add(currentArg);
+
+        }
+        else {
+            this.args.add(currentArg);
+        }
+    }
+
+
+    /**
+     * turns a parameter into a enum
+     * 
+     * @param value
+     *            the string
+     * @return the param enum type
+     */
+    public ParameterEnum stringToParam(String value) {
+        if (value.equals("-q")) {
+            return ParameterEnum.QUALITY;
+        }
+        else if (value.equals("-s")) {
+            return ParameterEnum.STATE;
+        }
+        else if (value.equals("-n")) {
+            return ParameterEnum.DAYS;
+        }
+        else if (value.equals("-d")) {
+            return ParameterEnum.DATE;
+        }
+        else if (value.equals("-t")) {
+            return ParameterEnum.AVERAGE;
+        }
+        else if (value.equals("-c")) {
+            return ParameterEnum.CONTINUOUSRUN;
+        }
+        else {
+            return ParameterEnum.ERROR;
+        }
+    }
+
+
+    /**
+     * turns a command enum to a parameter enum
+     * 
+     * @return the param enum type
+     */
+    public ParameterEnum paramToComand() {
+        switch (this.commandType) {
+            case LOAD:
+                return ParameterEnum.LOAD;
+            case SEARCH:
+                return ParameterEnum.DEFAULT;
+            case REMOVE:
+                return ParameterEnum.REMOVE;
+            case DUMP:
+                return ParameterEnum.DUMP;
+            case ERROR:
+                return ParameterEnum.ERROR;
+            default:
+                return ParameterEnum.ERROR;
+        }
     }
 
 
@@ -92,9 +178,6 @@ public class Command {
                 else {
                     this.searchState(data);
                 }
-                break;
-            case SUMMARY:
-                this.summary(data);
                 break;
             case DUMP:
                 this.dataDump(data);
@@ -120,7 +203,7 @@ public class Command {
             System.out.println("Discard invalid command name");
             return;
         }
-        String csvFilePath = args.get(0);
+        String csvFilePath = args.get(0).getArgs().get(0);
         try {
             CSVReader reader = new CSVReader(csvFilePath, data);
             reader.loadData();
@@ -139,19 +222,19 @@ public class Command {
      */
     private void searchState(Map<String, CovidData> data) {
         // the last arguement is always number of numbers
-        int lastIndex = args.size() - 1;
-        Integer numOfRecords = Integer.parseInt(args.get(lastIndex));
-        if (numOfRecords <= 0) {
-            System.out.println(
-                "Invalid command. # of records has to be positive");
-            return;
-        }
-        args.remove(lastIndex);
-        // the remaining arguements are the parts of the state name
-        String stateName = String.join(" ", args);
-        StateSearcher searcher = new StateSearcher(data, stateName,
-            numOfRecords);
-        searcher.search();
+// int lastIndex = args.size() - 1;
+// Integer numOfRecords = Integer.parseInt(args.get(lastIndex));
+// if (numOfRecords <= 0) {
+// System.out.println(
+// "Invalid command. # of records has to be positive");
+// return;
+// }
+// args.remove(lastIndex);
+// // the remaining arguements are the parts of the state name
+// String stateName = String.join(" ", args);
+// StateSearcher searcher = new StateSearcher(data, stateName,
+// numOfRecords);
+// searcher.search();
     }
 
 
@@ -162,43 +245,27 @@ public class Command {
      *            the hashmap of data
      */
     private void searchDate(Map<String, CovidData> data) {
-        if (args.size() == 0) {
-            DateSearcher searcher = new DateSearcher(null, null, data);
-            searcher.search();
-            return;
-        }
-        try {
-            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
-            format.setLenient(false);
-            String date = args.get(0);
-            if (date.length() != 10) {
-                throw new ParseException(date, 0);
-            }
-            Date dateData = format.parse(date);
-            format = new SimpleDateFormat("yyyymmdd");
-            String searchable = format.format(dateData);
-            DateSearcher searcher = new DateSearcher(searchable, date, data);
-            searcher.search();
-        }
-        catch (ParseException e) {
-            System.out.println("Discard invalid command name");
-        }
-    }
-
-
-    /**
-     * runs the summary command
-     * 
-     * @param data
-     *            the hashmap of data
-     */
-    private void summary(Map<String, CovidData> data) {
-        if (args.size() != 0) {
-            System.out.println("Discard invalid command name");
-            return;
-        }
-        Summary summaryReporter = new Summary(data);
-        summaryReporter.reportSummary();
+// if (args.size() == 0) {
+// DateSearcher searcher = new DateSearcher(null, null, data);
+// searcher.search();
+// return;
+// }
+// try {
+// DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+// format.setLenient(false);
+// String date = args.get(0);
+// if (date.length() != 10) {
+// throw new ParseException(date, 0);
+// }
+// Date dateData = format.parse(date);
+// format = new SimpleDateFormat("yyyymmdd");
+// String searchable = format.format(dateData);
+// DateSearcher searcher = new DateSearcher(searchable, date, data);
+// searcher.search();
+// }
+// catch (ParseException e) {
+// System.out.println("Discard invalid command name");
+// }
     }
 
 
@@ -209,11 +276,22 @@ public class Command {
      *            the hashmap of data
      */
     private void dataDump(Map<String, CovidData> data) {
-        if (args.size() != 1) {
-            System.out.println("Discard invalid command name");
-            return;
+// if (args.size() != 1) {
+// System.out.println("Discard invalid command name");
+// return;
+// }
+// Dumper dumpTruck = new Dumper(data, args.get(0));
+// dumpTruck.dump();
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(commandType.toString() + " args: ");
+        for (CommandArgs arg : args) {
+            builder.append(arg + " ");
         }
-        Dumper dumpTruck = new Dumper(data, args.get(0));
-        dumpTruck.dump();
+        return builder.toString();
     }
 }

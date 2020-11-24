@@ -41,13 +41,12 @@ public class CommandReader {
 
     private String commandPath;
 
-
     /**
      * 
      * @param commands
-     *             ArrayList of the commands
+     *            ArrayList of the commands
      * @param commandPath
-     *             path to the command File
+     *            path to the command File
      */
     public CommandReader(ArrayList<Command> commands, String commandPath) {
         this.commands = commands;
@@ -97,10 +96,10 @@ public class CommandReader {
         else if (stringValue.equals("search")) {
             return CommandEnum.SEARCH;
         }
-        else if (stringValue.equals("summarydata")) {
-            return CommandEnum.SUMMARY;
+        else if (stringValue.equals("remove")) {
+            return CommandEnum.REMOVE;
         }
-        else if (stringValue.equals("dumpdata")) {
+        else if (stringValue.equals("dumpBST")) {
             return CommandEnum.DUMP;
         }
         else {
