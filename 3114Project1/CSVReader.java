@@ -39,7 +39,6 @@ public class CSVReader {
 
     private Map<String, CovidData> data;
 
-
     /**
      * creates a new csv reader0
      * 
@@ -135,7 +134,7 @@ public class CSVReader {
         CovidData currentData = data.get(key);
         if (currentData.compareQuality(newData) == 1) {
             System.out.println("Data has been updated for " + newData.getState()
-                + newData.fancyDate());
+                + " " + newData.fancyDate());
             return true;
         }
         return false;

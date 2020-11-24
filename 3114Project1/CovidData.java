@@ -55,7 +55,6 @@ public class CovidData implements Comparable<Object> {
 
     private Double death;
 
-
     /**
      * Creates a new CovidData object
      * 
@@ -209,7 +208,7 @@ public class CovidData implements Comparable<Object> {
         if (otherData.getDataQualityRaw() == this.getDataQualityRaw()) {
             return 0;
         }
-        return (otherData.getDataQualityRaw() > this.getDataQualityRaw())
+        return (otherData.getDataQualityRaw() < this.getDataQualityRaw())
             ? 1
             : -1;
     }
