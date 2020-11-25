@@ -29,13 +29,52 @@
  */
 public class DataNode<T> extends NodeClass<T> {
 
+    private LeafNode<T> leafNode;
+
     /**
      * creates a new data node class
      * 
      * @param data
      */
-    public DataNode(T data) {
+    public DataNode(T data, LeafNode<T> leafNode) {
         super(data);
+        this.leafNode = leafNode;
+    }
+
+
+    @Override
+    public NodeClass<T> getLeft() {
+        if (super.getLeft() == null) {
+            return leafNode;
+        }
+        return super.getLeft();
+    }
+
+
+    @Override
+    public NodeClass<T> getRight() {
+        if (super.getRight() == null) {
+            return leafNode;
+        }
+        return super.getRight();
+    }
+
+
+    @Override
+    public void setLeft(NodeClass<T> left) {
+        if (left != null) {
+            super.setLeft(left);
+        }
+        super.setLeft(leafNode);
+    }
+
+
+    @Override
+    public void setRight(NodeClass<T> right) {
+        if (right != null) {
+            super.setRight(right);
+        }
+        super.setRight(leafNode);
     }
 
 

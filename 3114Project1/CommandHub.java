@@ -39,6 +39,8 @@ public class CommandHub {
 
     private ArrayList<Command> commands;
 
+    private BST<CovidData> data2;
+
     private Map<String, CovidData> data;
 
     /**
@@ -52,6 +54,7 @@ public class CommandHub {
         this.commandFile = commandFile;
         this.commands = new ArrayList<Command>();
         data = new HashMap<String, CovidData>();
+        data2 = new BST<CovidData>();
     }
 
 

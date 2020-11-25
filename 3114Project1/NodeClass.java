@@ -21,7 +21,7 @@
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * details of the class
+ * the default node in my bst
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
@@ -29,7 +29,7 @@
  */
 public class NodeClass<T> implements Comparable<T> {
 
-    private T data;
+    private T key;
 
     private NodeClass<T> left;
 
@@ -39,15 +39,15 @@ public class NodeClass<T> implements Comparable<T> {
      * 
      */
     public NodeClass(T data) {
-        this.data = data;
+        this.key = data;
     }
 
 
     /**
      * @return the data
      */
-    public T getData() {
-        return data;
+    public T getKey() {
+        return key;
     }
 
 
@@ -65,23 +65,29 @@ public class NodeClass<T> implements Comparable<T> {
     public NodeClass<T> getRight() {
         return right;
     }
-    
+
+
     /**
-     * @param data the data to set
+     * @param data
+     *            the data to set
      */
-    public void setData(T data) {
-        this.data = data;
+    public void setKey(T key) {
+        this.key = key;
     }
-    
+
+
     /**
-     * @param left the left to set
+     * @param left
+     *            the left to set
      */
     public void setLeft(NodeClass<T> left) {
         this.left = left;
     }
-    
+
+
     /**
-     * @param right the right to set
+     * @param right
+     *            the right to set
      */
     public void setRight(NodeClass<T> right) {
         this.right = right;
