@@ -23,7 +23,7 @@ import java.util.ArrayList;
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * details of the class
+ * holds the different parameters for commands
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
@@ -72,10 +72,19 @@ public class CommandArgs {
 
 
     /**
+     * @return the type
+     */
+    public ParameterEnum getType() {
+        return type;
+    }
+
+
+    /**
      * @return the args
      */
-    public ArrayList<String> getArgs() {
-        return args;
+    public String[] getArgs() {
+        String[] arguments = new String[0];
+        return args.toArray(arguments);
     }
 
 }

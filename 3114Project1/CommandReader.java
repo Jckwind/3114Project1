@@ -99,7 +99,7 @@ public class CommandReader {
         else if (stringValue.equals("remove")) {
             return CommandEnum.REMOVE;
         }
-        else if (stringValue.equals("dumpBST")) {
+        else if (stringValue.equals("dumpbst")) {
             return CommandEnum.DUMP;
         }
         else {

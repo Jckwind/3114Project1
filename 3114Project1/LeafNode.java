@@ -21,21 +21,22 @@
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * details of the class
+ * the empty node in my bst
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
  */
 public class LeafNode<T> extends NodeClass<T> {
-    
+
     /**
      * creates a new leaf node class
      */
     public LeafNode() {
         super(null);
     }
-    
+
+
     @Override
     public int compareTo(T o) {
         // TODO Auto-generated method stub

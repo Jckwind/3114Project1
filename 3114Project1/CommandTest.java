@@ -32,6 +32,8 @@ import student.TestCase;
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
+ * tests the command file
+ * 
  * @author Michael Gannon (mgannon3500)
  * @author jack Windham (jckwind11)
  * @version 2020.09.27
@@ -91,19 +93,6 @@ public class CommandTest extends TestCase {
     public void testGetArgs() {
 // ArrayList<String> myList = myLoad.getArgs();
 // assertEquals(myList, myLoad.getArgs());
-    }
-
-
-    /**
-     * tests the run function in Command.java
-     * Should also hit the four private methods as well
-     */
-    public void testRun() {
-        assertTrue(myLoad.run(data));
-        assertTrue(mySearch.run(data));
-        assertTrue(mySummary.run(data));
-        assertTrue(myDump.run(data));
-        assertTrue(myOtherSearch.run(data));
     }
 
 

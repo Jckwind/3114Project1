@@ -21,7 +21,7 @@
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * details of the class
+ * the different types of parameter types
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
@@ -32,15 +32,5 @@ public enum ParameterEnum {
     /**
      * the enums for the commands are load, search, summary, dump
      */
-    QUALITY,
-    STATE,
-    DAYS,
-    DATE,
-    AVERAGE,
-    CONTINUOUSRUN,
-    DEFAULT,
-    LOAD,
-    REMOVE,
-    ERROR,
-    DUMP;
+    QUALITY, STATE, DAYS, DATE, AVERAGE, CONTINUOUSRUN, DEFAULT,
 }

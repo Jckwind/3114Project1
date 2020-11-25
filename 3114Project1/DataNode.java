@@ -21,7 +21,7 @@
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * details of the class
+ * the node in my bst - this one has data
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
@@ -31,12 +31,14 @@ public class DataNode<T> extends NodeClass<T> {
 
     /**
      * creates a new data node class
+     * 
      * @param data
      */
     public DataNode(T data) {
         super(data);
     }
-    
+
+
     @Override
     public int compareTo(T o) {
         // TODO Auto-generated method stub

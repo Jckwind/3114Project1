@@ -21,7 +21,7 @@
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * details of the class
+ * my generic binary search tree class
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
@@ -35,15 +35,20 @@ public class BST<T extends Comparable<T>> {
 
     /**
      * adds the node to tree
-     * @param node the node to add
+     * 
+     * @param node
+     *            the node to add
      */
     public void add(T node) {
 
     }
 
+
     /**
      * removes node from tree
-     * @param node node to remove
+     * 
+     * @param node
+     *            node to remove
      */
     public void remove(T node) {
 

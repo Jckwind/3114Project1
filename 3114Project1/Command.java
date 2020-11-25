@@ -26,7 +26,7 @@ import java.util.Map;
 // -- Jack Windham (jckwind11)
 // -- Michael Gannon (mgannon3500)
 /**
- * Description of Class
+ * the command class
  *
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
@@ -90,8 +90,7 @@ public class Command {
             }
         }
         if (currentArg == null) {
-            ParameterEnum type = paramToComand();
-            currentArg = new CommandArgs(type);
+            currentArg = new CommandArgs(ParameterEnum.DEFAULT);
             for (String arg : args) {
                 currentArg.addArg(arg);
             }
@@ -131,30 +130,7 @@ public class Command {
             return ParameterEnum.CONTINUOUSRUN;
         }
         else {
-            return ParameterEnum.ERROR;
-        }
-    }
-
-
-    /**
-     * turns a command enum to a parameter enum
-     * 
-     * @return the param enum type
-     */
-    public ParameterEnum paramToComand() {
-        switch (this.commandType) {
-            case LOAD:
-                return ParameterEnum.LOAD;
-            case SEARCH:
-                return ParameterEnum.DEFAULT;
-            case REMOVE:
-                return ParameterEnum.REMOVE;
-            case DUMP:
-                return ParameterEnum.DUMP;
-            case ERROR:
-                return ParameterEnum.ERROR;
-            default:
-                return ParameterEnum.ERROR;
+            return ParameterEnum.DEFAULT;
         }
     }
 
@@ -166,21 +142,20 @@ public class Command {
      *            Map of the data to be run
      * @return boolean
      */
-    public boolean run(Map<String, CovidData> data) {
+    public void run(Map<String, CovidData> data) {
         switch (commandType) {
             case LOAD:
                 this.load(data);
                 break;
             case SEARCH:
-                if (args.size() <= 1) {
-                    this.searchDate(data);
-                }
-                else {
-                    this.searchState(data);
-                }
+                Searcher searcher = new Searcher(args);
+                searcher.search();
                 break;
             case DUMP:
                 this.dataDump(data);
+                break;
+            case REMOVE:
+                this.remove();
                 break;
             case ERROR:
                 System.out.println("Discard invalid command name");
@@ -188,7 +163,6 @@ public class Command {
             default:
                 break;
         }
-        return true;
     }
 
 
@@ -199,11 +173,11 @@ public class Command {
      *            the hashmap of data
      */
     private void load(Map<String, CovidData> data) {
-        if (args.size() != 1) {
+        if (args.size() != 1 && args.get(0).getArgs().length != 0) {
             System.out.println("Discard invalid command name");
             return;
         }
-        String csvFilePath = args.get(0).getArgs().get(0);
+        String csvFilePath = args.get(0).getArgs()[0];
         try {
             CSVReader reader = new CSVReader(csvFilePath, data);
             reader.loadData();
@@ -245,11 +219,9 @@ public class Command {
      *            the hashmap of data
      */
     private void searchDate(Map<String, CovidData> data) {
-// if (args.size() == 0) {
-// DateSearcher searcher = new DateSearcher(null, null, data);
-// searcher.search();
-// return;
-// }
+        DateSearcher searcher = new DateSearcher(null, null, data);
+        searcher.search();
+        return;
 // try {
 // DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
 // format.setLenient(false);
@@ -282,6 +254,14 @@ public class Command {
 // }
 // Dumper dumpTruck = new Dumper(data, args.get(0));
 // dumpTruck.dump();
+    }
+
+
+    /**
+     * removes the specified data grade
+     */
+    private void remove() {
+
     }
 
 
