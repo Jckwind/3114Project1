@@ -75,7 +75,7 @@ public class CommandTest extends TestCase {
         commands = new ArrayList<Command>(2);
         commands.add(myCom);
         myReader = new CommandReader(commands, commandFile);
-        myCsv = new CSVReader(commandFile, data);
+// myCsv = new CSVReader(commandFile, data);
     }
 
 

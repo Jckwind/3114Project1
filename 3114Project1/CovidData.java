@@ -33,7 +33,7 @@ import java.util.Date;
  * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
-public class CovidData implements Comparable<Object> {
+public class CovidData implements Comparable<CovidData> {
 
     private String date;
 
@@ -143,7 +143,24 @@ public class CovidData implements Comparable<Object> {
      * @return the key
      */
     public String getKey() {
-        return state + "-" + date;
+        String fullName = getFullState().toLowerCase().replaceAll("\\s", "");
+        return fullName + "-" + date;
+    }
+
+
+    public String getKey(int mode) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<");
+        if (mode == 2) {
+            builder.append(state);
+            builder.append(", " + fancyDate());
+        }
+        else {
+            builder.append(fancyDate());
+            builder.append(", " + state);
+        }
+        builder.append("> ");
+        return builder.toString();
     }
 
 
@@ -274,12 +291,11 @@ public class CovidData implements Comparable<Object> {
         return State.STATE_ABBR_LIST.contains(this.state.toUpperCase());
     }
 
-
-    @Override
-    public int compareTo(Object o) {
-        CovidData otherObject = (CovidData)o;
-        return this.getFullState().compareTo(otherObject.getFullState());
-    }
+// @Override
+// public int compareTo(Object o) {
+// CovidData otherObject = (CovidData)o;
+// return this.getFullState().compareTo(otherObject.getFullState());
+// }
 
 
     @Override
@@ -424,5 +440,12 @@ public class CovidData implements Comparable<Object> {
      */
     public Double getDeath() {
         return death != null ? death : 0;
+    }
+
+
+    @Override
+    public int compareTo(CovidData o) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

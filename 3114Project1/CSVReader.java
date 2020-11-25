@@ -1,7 +1,6 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Map;
 import java.util.Scanner;
 
 // On my honor:
@@ -37,7 +36,7 @@ public class CSVReader {
 
     private String filePath;
 
-    private Map<String, CovidData> data;
+    private BST<CovidData> data;
 
     /**
      * creates a new csv reader0
@@ -47,7 +46,7 @@ public class CSVReader {
      * @param data
      *            Map of the data to read
      */
-    public CSVReader(String filePath, Map<String, CovidData> data) {
+    public CSVReader(String filePath, BST<CovidData> data) {
         this.filePath = filePath;
         this.data = data;
     }
@@ -101,8 +100,8 @@ public class CSVReader {
             if (dataPoint.stateIsValid()) {
                 String key = dataPoint.getKey();
 
-                if (!data.containsKey(key) || shouldAdd(key, dataPoint)) {
-                    data.put(key, dataPoint);
+                if (!data.contains(key) || shouldAdd(key, dataPoint)) {
+                    data.add(key, dataPoint);
                     return true;
                 }
                 else if (shouldUpdate(key, dataPoint)) {
@@ -170,7 +169,7 @@ public class CSVReader {
     /**
      * @return the data
      */
-    public Map<String, CovidData> getData() {
+    public BST<CovidData> getData() {
         return data;
     }
 

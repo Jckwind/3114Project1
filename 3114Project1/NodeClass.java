@@ -27,19 +27,22 @@
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
  */
-public class NodeClass<T> implements Comparable<T> {
+public class NodeClass<T, K> implements Comparable<T> {
 
     private T key;
 
-    private NodeClass<T> left;
+    private K value;
 
-    private NodeClass<T> right;
+    private NodeClass<T, K> left;
+
+    private NodeClass<T, K> right;
 
     /**
      * 
      */
-    public NodeClass(T data) {
+    public NodeClass(T data, K value) {
         this.key = data;
+        this.value = value;
     }
 
 
@@ -52,9 +55,17 @@ public class NodeClass<T> implements Comparable<T> {
 
 
     /**
+     * @return the value
+     */
+    public K getValue() {
+        return value;
+    }
+
+
+    /**
      * @return the left
      */
-    public NodeClass<T> getLeft() {
+    public NodeClass<T, K> getLeft() {
         return left;
     }
 
@@ -62,7 +73,7 @@ public class NodeClass<T> implements Comparable<T> {
     /**
      * @return the right
      */
-    public NodeClass<T> getRight() {
+    public NodeClass<T, K> getRight() {
         return right;
     }
 
@@ -77,10 +88,19 @@ public class NodeClass<T> implements Comparable<T> {
 
 
     /**
+     * @param value
+     *            the value to set
+     */
+    public void setValue(K value) {
+        this.value = value;
+    }
+
+
+    /**
      * @param left
      *            the left to set
      */
-    public void setLeft(NodeClass<T> left) {
+    public void setLeft(NodeClass<T, K> left) {
         this.left = left;
     }
 
@@ -89,7 +109,7 @@ public class NodeClass<T> implements Comparable<T> {
      * @param right
      *            the right to set
      */
-    public void setRight(NodeClass<T> right) {
+    public void setRight(NodeClass<T, K> right) {
         this.right = right;
     }
 
@@ -98,6 +118,52 @@ public class NodeClass<T> implements Comparable<T> {
     public int compareTo(T o) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+
+    /**
+     * gets the key for this mode
+     * 
+     * @param mode
+     *            the mode
+     * @return the key
+     */
+    public String getKey(int mode) {
+        if (value == null) {
+            return "<>";
+        }
+        CovidData data = (CovidData)value;
+        return data.getKey(mode);
+    }
+
+
+    /**
+     * gets the value
+     * 
+     * @return the positive cases
+     */
+    public int getPos() {
+        if (value == null) {
+            return 0;
+        }
+
+        CovidData data = (CovidData)value;
+        return data.getPos().intValue();
+    }
+
+
+    public void print() {
+        print("", this, false);
+    }
+
+
+    public void print(String prefix, NodeClass<T, K> n, boolean isLeft) {
+        if (n != null) {
+            System.out.println(prefix + (isLeft ? "|-- " : "\\-- ") + n
+                .getKey());
+            print(prefix + (isLeft ? "|   " : "    "), n.left, true);
+            print(prefix + (isLeft ? "|   " : "    "), n.right, false);
+        }
     }
 
 }

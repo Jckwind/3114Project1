@@ -1,8 +1,6 @@
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 // On my honor:
 //
@@ -39,9 +37,7 @@ public class CommandHub {
 
     private ArrayList<Command> commands;
 
-    private BST<CovidData> data2;
-
-    private Map<String, CovidData> data;
+    private BST<CovidData> data;
 
     /**
      * creates a new command reader object
@@ -53,8 +49,7 @@ public class CommandHub {
     public CommandHub(String commandFile) throws FileNotFoundException {
         this.commandFile = commandFile;
         this.commands = new ArrayList<Command>();
-        data = new HashMap<String, CovidData>();
-        data2 = new BST<CovidData>();
+        this.data = new BST<CovidData>();
     }
 
 

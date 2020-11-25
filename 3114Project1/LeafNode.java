@@ -27,13 +27,25 @@
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
  */
-public class LeafNode<T> extends NodeClass<T> {
+public class LeafNode<T, K> extends NodeClass<T, K> {
 
     /**
      * creates a new leaf node class
      */
     public LeafNode() {
-        super(null);
+        super(null, null);
+    }
+
+
+    @Override
+    public T getKey() {
+        return null;
+    }
+
+
+    @Override
+    public K getValue() {
+        return null;
     }
 
 

@@ -27,23 +27,23 @@
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
  */
-public class DataNode<T> extends NodeClass<T> {
+public class DataNode<T, K> extends NodeClass<T, K> {
 
-    private LeafNode<T> leafNode;
+    private LeafNode<T, K> leafNode;
 
     /**
      * creates a new data node class
      * 
      * @param data
      */
-    public DataNode(T data, LeafNode<T> leafNode) {
-        super(data);
+    public DataNode(T key, K value, LeafNode<T, K> leafNode) {
+        super(key, value);
         this.leafNode = leafNode;
     }
 
 
     @Override
-    public NodeClass<T> getLeft() {
+    public NodeClass<T, K> getLeft() {
         if (super.getLeft() == null) {
             return leafNode;
         }
@@ -52,7 +52,7 @@ public class DataNode<T> extends NodeClass<T> {
 
 
     @Override
-    public NodeClass<T> getRight() {
+    public NodeClass<T, K> getRight() {
         if (super.getRight() == null) {
             return leafNode;
         }
@@ -61,18 +61,20 @@ public class DataNode<T> extends NodeClass<T> {
 
 
     @Override
-    public void setLeft(NodeClass<T> left) {
+    public void setLeft(NodeClass<T, K> left) {
         if (left != null) {
             super.setLeft(left);
+            return;
         }
         super.setLeft(leafNode);
     }
 
 
     @Override
-    public void setRight(NodeClass<T> right) {
+    public void setRight(NodeClass<T, K> right) {
         if (right != null) {
             super.setRight(right);
+            return;
         }
         super.setRight(leafNode);
     }

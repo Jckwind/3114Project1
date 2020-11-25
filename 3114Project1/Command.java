@@ -1,7 +1,6 @@
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Map;
 
 // On my honor:
 //
@@ -142,7 +141,7 @@ public class Command {
      *            Map of the data to be run
      * @return boolean
      */
-    public void run(Map<String, CovidData> data) {
+    public void run(BST<CovidData> data) {
         switch (commandType) {
             case LOAD:
                 this.load(data);
@@ -172,7 +171,7 @@ public class Command {
      * @param data
      *            the hashmap of data
      */
-    private void load(Map<String, CovidData> data) {
+    private void load(BST<CovidData> data) {
         if (args.size() != 1 && args.get(0).getArgs().length != 0) {
             System.out.println("Discard invalid command name");
             return;
@@ -194,7 +193,7 @@ public class Command {
      * @param data
      *            the hashmap of data
      */
-    private void searchState(Map<String, CovidData> data) {
+    private void searchState(BST<CovidData> data) {
         // the last arguement is always number of numbers
 // int lastIndex = args.size() - 1;
 // Integer numOfRecords = Integer.parseInt(args.get(lastIndex));
@@ -218,10 +217,10 @@ public class Command {
      * @param data
      *            the hashmap of data
      */
-    private void searchDate(Map<String, CovidData> data) {
-        DateSearcher searcher = new DateSearcher(null, null, data);
-        searcher.search();
-        return;
+    private void searchDate(BST<CovidData> data) {
+// DateSearcher searcher = new DateSearcher(null, null, data);
+// searcher.search();
+// return;
 // try {
 // DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
 // format.setLenient(false);
@@ -247,13 +246,15 @@ public class Command {
      * @param data
      *            the hashmap of data
      */
-    private void dataDump(Map<String, CovidData> data) {
-// if (args.size() != 1) {
-// System.out.println("Discard invalid command name");
-// return;
-// }
-// Dumper dumpTruck = new Dumper(data, args.get(0));
-// dumpTruck.dump();
+    private void dataDump(BST<CovidData> data) {
+        if (args.size() != 1 || args.get(0).getArgs().length == 0) {
+            System.out.println("Discard invalid command name");
+            return;
+        }
+        String modeString = args.get(0).getArgs()[0];
+        int mode = Integer.parseInt(modeString);
+        data.getRoot().print();
+// data.inOrder(mode);
     }
 
 
