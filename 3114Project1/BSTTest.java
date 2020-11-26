@@ -41,11 +41,11 @@ public class BSTTest extends TestCase {
      */
     public void setUp() {
         bst = new BST<Integer>();
-        bst.add("test-5", 5);
-        bst.add("test-10", 10);
-        bst.add("test-12", 12);
-        bst.add("test-3", 3);
-        bst.add("test-28", 28);
+        bst.add("5-test", 5);
+        bst.add("10-test", 10);
+        bst.add("12-test", 12);
+        bst.add("3-test", 3);
+        bst.add("28-test", 28);
     }
 
 
@@ -54,9 +54,9 @@ public class BSTTest extends TestCase {
      */
     public void testAdd() {
         assertEquals(bst.getSize(), 5);
-        bst.add("test-4", 7);
-        bst.add("test-2", 7);
-        bst.add("test-7", 7);
+        bst.add("4-test", 7);
+        bst.add("2-test", 7);
+        bst.add("7-test", 7);
         assertEquals(bst.getSize(), 8);
     }
 
@@ -65,9 +65,9 @@ public class BSTTest extends TestCase {
      * tests the contains method
      */
     public void testContains() {
-        assertEquals(false, bst.contains("test-11"));
-        bst.add("test-11", 11);
-        assertEquals(true, bst.contains("test-11"));
+        assertEquals(false, bst.contains("11-test"));
+        bst.add("11-test", 11);
+        assertEquals(true, bst.contains("11-test"));
     }
 
 
@@ -75,9 +75,9 @@ public class BSTTest extends TestCase {
      * tests the remove method
      */
     public void testRemove() {
-        bst.remove("test-5");
+        bst.remove("5-test");
         assertEquals(4, bst.getSize());
-        assertEquals("test-10", bst.getRoot().getKey());
+        assertEquals("10-test", bst.getRoot().getKey());
         assertEquals(10, bst.getRoot().getValue().intValue());
     }
 
@@ -98,8 +98,26 @@ public class BSTTest extends TestCase {
      * tests the git method
      */
     public void testGet() {
-        assertEquals(28, bst.get("test-28").intValue());
-        assertNull(bst.get("test-29"));
+        assertEquals(28, bst.get("28-test").intValue());
+        assertNull(bst.get("29-test"));
+    }
+
+
+    /**
+     * tests copy bst
+     */
+    public void testSecondCon() {
+        BST<Integer> bst2 = new BST<Integer>(bst);
+        assertEquals(5, bst2.getSize());
+        assertEquals(bst.getRoot().getLeft().getKey(), bst2.getRoot().getLeft()
+            .getKey());
+        assertEquals(bst.getRoot().getRight().getKey(), bst2.getRoot()
+            .getRight().getKey());
+
+        assertEquals(bst.getRoot().getLeft().getLeft(), bst2.getRoot().getLeft()
+            .getLeft());
+        assertEquals(bst.getRoot().getRight().getRight().getKey(), bst2
+            .getRoot().getRight().getRight().getKey());
     }
 
 }

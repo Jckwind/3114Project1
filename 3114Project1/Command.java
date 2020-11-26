@@ -147,7 +147,7 @@ public class Command {
                 this.load(data);
                 break;
             case SEARCH:
-                Searcher searcher = new Searcher(args);
+                Searcher searcher = new Searcher(args, data);
                 searcher.search();
                 break;
             case DUMP:
@@ -184,30 +184,6 @@ public class Command {
         catch (FileNotFoundException e) {
             System.out.println("File " + csvFilePath + " was not found");
         }
-    }
-
-
-    /**
-     * searchs the data by state
-     * 
-     * @param data
-     *            the hashmap of data
-     */
-    private void searchState(BST<CovidData> data) {
-        // the last arguement is always number of numbers
-// int lastIndex = args.size() - 1;
-// Integer numOfRecords = Integer.parseInt(args.get(lastIndex));
-// if (numOfRecords <= 0) {
-// System.out.println(
-// "Invalid command. # of records has to be positive");
-// return;
-// }
-// args.remove(lastIndex);
-// // the remaining arguements are the parts of the state name
-// String stateName = String.join(" ", args);
-// StateSearcher searcher = new StateSearcher(data, stateName,
-// numOfRecords);
-// searcher.search();
     }
 
 

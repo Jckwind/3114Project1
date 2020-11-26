@@ -50,6 +50,46 @@ public class BST<K extends Comparable<K>> {
 
 
     /**
+     * copys a bst
+     * 
+     * @param tree
+     *            tree to copy
+     */
+    public BST(BST<K> tree) {
+        flyweight = tree.getFlyweight();
+        root = flyweight;
+        add(tree.getRoot().getKey(), tree.getRoot().getValue());
+        copy(root, tree.getRoot());
+        size = tree.getSize();
+    }
+
+
+    /**
+     * does the copying
+     * 
+     * @param node
+     *            the root of new tree
+     * @param oldRoot
+     *            the root of old tree
+     */
+    private void copy(NodeClass<String, K> node, NodeClass<String, K> oldRoot) {
+        if (oldRoot.getLeft() != flyweight) {
+            DataNode<String, K> newLeft = new DataNode<String, K>(oldRoot
+                .getLeft().getKey(), oldRoot.getLeft().getValue(), flyweight);
+            node.setLeft(newLeft);
+            copy(node.getLeft(), oldRoot.getLeft());
+        }
+
+        if (oldRoot.getRight() != flyweight) {
+            DataNode<String, K> newRight = new DataNode<String, K>(oldRoot
+                .getRight().getKey(), oldRoot.getRight().getValue(), flyweight);
+            node.setRight(newRight);
+            copy(node.getRight(), oldRoot.getRight());
+        }
+    }
+
+
+    /**
      * adds the node to tree
      * 
      * @param key
@@ -154,11 +194,11 @@ public class BST<K extends Comparable<K>> {
 
 
     /**
-     * finds the max in the given BST
+     * finds the min in the given BST
      * 
      * @param node
      *            the root of the tree
-     * @return the max node
+     * @return the min node
      */
     private NodeClass<String, K> findMin(NodeClass<String, K> node) {
         NodeClass<String, K> temp = node;
@@ -166,6 +206,20 @@ public class BST<K extends Comparable<K>> {
             temp = temp.getLeft();
         }
         return temp;
+    }
+
+
+    /**
+     * finds the max in the given BST
+     * 
+     * @return the max node
+     */
+    public K findMax() {
+        NodeClass<String, K> temp = this.root;
+        while (temp.getRight() != flyweight) {
+            temp = temp.getRight();
+        }
+        return temp.getValue();
     }
 
 
@@ -329,6 +383,86 @@ public class BST<K extends Comparable<K>> {
 
         if (dataQualityRaw >= grade) {
             result.add(node.getKey());
+        }
+        return result;
+    }
+
+
+    /**
+     * gets a list of the keys with a grade
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
+    public ArrayList<K> getDataWithState(String suffix) {
+        String fullName = State.fullState(suffix.toUpperCase());
+        return getStates(this.root, fullName);
+    }
+
+
+    /**
+     * actually performs the key checking
+     * 
+     * @param grade
+     *            the grade to check for
+     * @return yes
+     */
+    private ArrayList<K> getStates(NodeClass<String, K> node, String state) {
+        ArrayList<K> result = new ArrayList<K>();
+        if (node == flyweight) {
+            return result;
+        }
+        String[] parts = node.getKey().split("-", -1);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getStates(node.getLeft(), state));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getStates(node.getRight(), state));
+        }
+
+        if (state.equalsIgnoreCase(parts[1])) {
+            result.add(node.getValue());
+        }
+        return result;
+    }
+
+
+    /**
+     * gets a list of the data points from a date
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
+    public ArrayList<K> getDataWithDate(String date) {
+        return getDates(this.root, date);
+    }
+
+
+    /**
+     * actually performs the date checking
+     * 
+     * @param state
+     *            the state to check for
+     * @return yes
+     */
+    private ArrayList<K> getDates(NodeClass<String, K> node, String date) {
+        ArrayList<K> result = new ArrayList<K>();
+        if (node == flyweight) {
+            return result;
+        }
+        String[] parts = node.getKey().split("-", -1);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getDates(node.getLeft(), date));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getDates(node.getRight(), date));
+        }
+        if (date.equals(parts[0])) {
+            result.add(node.getValue());
         }
         return result;
     }
