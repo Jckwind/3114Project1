@@ -33,6 +33,8 @@ public class BST<K extends Comparable<K>> {
 
     private LeafNode<String, K> flyweight;
 
+    private StateOrderedBST<K> stateData;
+
     private int size;
 
     /**
@@ -54,6 +56,9 @@ public class BST<K extends Comparable<K>> {
      *            the value to add
      */
     public void add(String key, K value) {
+        if (stateData != null) {
+            stateData.add(key, value);
+        }
         root = add(root, key, value);
         size++;
     }
@@ -99,6 +104,9 @@ public class BST<K extends Comparable<K>> {
      *            key to remove
      */
     public void remove(String key) {
+        if (stateData != null) {
+            stateData.remove(key);
+        }
         root = remove(root, key);
         size--;
     }
@@ -132,10 +140,10 @@ public class BST<K extends Comparable<K>> {
                 return node.getLeft();
             }
             else {
-                NodeClass<String, K> minNode = findMin(node.getRight());
+                NodeClass<String, K> minNode = findMax(node.getLeft());
                 node.setKey(minNode.getKey());
                 node.setValue(minNode.getValue());
-                node.setRight(remove(node.getRight(), node.getKey()));
+                node.setLeft(remove(node.getLeft(), node.getKey()));
             }
         }
         return node;
@@ -143,16 +151,16 @@ public class BST<K extends Comparable<K>> {
 
 
     /**
-     * finds the minimum in the given BST
+     * finds the max in the given BST
      * 
      * @param node
      *            the root of the tree
-     * @return the min node
+     * @return the max node
      */
-    private NodeClass<String, K> findMin(NodeClass<String, K> node) {
+    private NodeClass<String, K> findMax(NodeClass<String, K> node) {
         NodeClass<String, K> temp = node;
-        while (temp.getLeft() != flyweight) {
-            temp = temp.getLeft();
+        while (temp.getRight() != flyweight) {
+            temp = temp.getRight();
         }
         return temp;
     }
@@ -165,7 +173,11 @@ public class BST<K extends Comparable<K>> {
      *            the print mode
      */
     public void inOrder(int mode) {
-        inOrder(this.root, mode, 0);
+        if (mode == 2 && stateData != null) {
+            stateData.inOrder(2);
+            return;
+        }
+        inOrder(this.root, mode, "");
         System.out.println(this.size + " records have been printed");
     }
 
@@ -176,18 +188,18 @@ public class BST<K extends Comparable<K>> {
      * @param node
      *            the root node
      */
-    private void inOrder(NodeClass<String, K> node, int mode, int spaces) {
-        if (node == flyweight) {
-            System.out.println("E");
+    private void inOrder(NodeClass<String, K> node, int mode, String spaces) {
+        if (node.getLeft() == flyweight && node.getRight() == flyweight) {
+            System.out.println(spaces + node.getKey(mode) + node.getPos());
             return;
         }
-        inOrder(node.getLeft(), mode, spaces + 2);
-// StringBuilder builder = new StringBuilder();
-// for (int i = 0; i < spaces; i++) {
-// builder.append(" ");
-// }
-        System.out.println(node.getKey(mode) + node.getPos());
-        inOrder(node.getRight(), mode, spaces + 2);
+        if (node == flyweight) {
+            System.out.println(spaces + "E");
+            return;
+        }
+        inOrder(node.getLeft(), mode, spaces + "  ");
+        System.out.println(spaces + node.getKey(mode) + node.getPos());
+        inOrder(node.getRight(), mode, spaces + "  ");
     }
 
 
@@ -195,6 +207,9 @@ public class BST<K extends Comparable<K>> {
      * removes every element in tree
      */
     public void clear() {
+        if (stateData != null) {
+            stateData.clear();
+        }
         root = flyweight;
         size = 0;
     }
@@ -296,6 +311,15 @@ public class BST<K extends Comparable<K>> {
 
 
     /**
+     * @param stateData
+     *            the stateData to set
+     */
+    public void setStateData(StateOrderedBST<K> stateData) {
+        this.stateData = stateData;
+    }
+
+
+    /**
      * compares two strings
      * 
      * @param string1
@@ -303,20 +327,20 @@ public class BST<K extends Comparable<K>> {
      * @param string2
      *            the second string to compare
      */
-    private int compare(String string1, String string2) {
+    public int compare(String string1, String string2) {
         if (string1.equals(string2)) {
             return 0;
         }
         String[] parts1 = string1.split("-", -1);
         String[] parts2 = string2.split("-", -1);
-        int compareStrings = parts1[0].compareTo(parts2[0]);
-        if (compareStrings != 0) {
-            return compareStrings;
+        Integer part1Number = Integer.parseInt(parts1[0]);
+        Integer part2Number = Integer.parseInt(parts2[0]);
+        int compareDates = part1Number.compareTo(part2Number);
+        if (compareDates != 0) {
+            return compareDates;
         }
         else {
-            Integer part1Number = Integer.parseInt(parts1[1]);
-            Integer part2Number = Integer.parseInt(parts2[1]);
-            return part1Number.compareTo(part2Number);
+            return parts1[1].compareTo(parts2[1]);
         }
     }
 

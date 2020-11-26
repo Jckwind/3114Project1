@@ -50,6 +50,8 @@ public class CommandHub {
         this.commandFile = commandFile;
         this.commands = new ArrayList<Command>();
         this.data = new BST<CovidData>();
+        StateOrderedBST<CovidData> stateData = new StateOrderedBST<CovidData>();
+        this.data.setStateData(stateData);
     }
 
 

@@ -151,19 +151,4 @@ public class NodeClass<T, K> implements Comparable<T> {
         return data.getPos().intValue();
     }
 
-
-    public void print() {
-        print("", this, false);
-    }
-
-
-    public void print(String prefix, NodeClass<T, K> n, boolean isLeft) {
-        if (n != null) {
-            System.out.println(prefix + (isLeft ? "|-- " : "\\-- ") + n
-                .getKey());
-            print(prefix + (isLeft ? "|   " : "    "), n.left, true);
-            print(prefix + (isLeft ? "|   " : "    "), n.right, false);
-        }
-    }
-
 }

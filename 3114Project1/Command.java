@@ -253,8 +253,7 @@ public class Command {
         }
         String modeString = args.get(0).getArgs()[0];
         int mode = Integer.parseInt(modeString);
-        data.getRoot().print();
-// data.inOrder(mode);
+        data.inOrder(mode);
     }
 
 

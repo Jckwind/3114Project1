@@ -54,8 +54,10 @@ public class BSTTest extends TestCase {
      */
     public void testAdd() {
         assertEquals(bst.getSize(), 5);
-        bst.add("test-6", 6);
-        assertEquals(bst.getSize(), 6);
+        bst.add("test-4", 7);
+        bst.add("test-2", 7);
+        bst.add("test-7", 7);
+        assertEquals(bst.getSize(), 8);
     }
 
 

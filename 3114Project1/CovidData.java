@@ -144,7 +144,7 @@ public class CovidData implements Comparable<CovidData> {
      */
     public String getKey() {
         String fullName = getFullState().toLowerCase().replaceAll("\\s", "");
-        return fullName + "-" + date;
+        return date + "-" + fullName;
     }
 
 
