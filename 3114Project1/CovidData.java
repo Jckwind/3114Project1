@@ -144,7 +144,7 @@ public class CovidData implements Comparable<CovidData> {
      */
     public String getKey() {
         String fullName = getFullState().toLowerCase().replaceAll("\\s", "");
-        return date + "-" + fullName;
+        return date + "-" + fullName + "-" + getDataQualityRaw();
     }
 
 
@@ -188,7 +188,17 @@ public class CovidData implements Comparable<CovidData> {
      * @return int of Data quality raw
      */
     public int getDataQualityRaw() {
-        switch (dataQuality) {
+        return getDataQualityRaw(dataQuality);
+    }
+
+
+    /**
+     * returns a number value based on data quality
+     * 
+     * @return int of Data quality raw
+     */
+    public static int getDataQualityRaw(String quality) {
+        switch (quality) {
             case "A+":
                 return 0;
             case "A":

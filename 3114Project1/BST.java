@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 // On my honor:
 //
 // - I have not used source code obtained from another student,
@@ -91,6 +93,7 @@ public class BST<K extends Comparable<K>> {
         else {
             size--;
             node.setValue(value);
+            node.setKey(key);
         }
 
         return node;
@@ -140,10 +143,10 @@ public class BST<K extends Comparable<K>> {
                 return node.getLeft();
             }
             else {
-                NodeClass<String, K> minNode = findMax(node.getLeft());
+                NodeClass<String, K> minNode = findMin(node.getRight());
                 node.setKey(minNode.getKey());
                 node.setValue(minNode.getValue());
-                node.setLeft(remove(node.getLeft(), node.getKey()));
+                node.setRight(remove(node.getRight(), node.getKey()));
             }
         }
         return node;
@@ -157,10 +160,10 @@ public class BST<K extends Comparable<K>> {
      *            the root of the tree
      * @return the max node
      */
-    private NodeClass<String, K> findMax(NodeClass<String, K> node) {
+    private NodeClass<String, K> findMin(NodeClass<String, K> node) {
         NodeClass<String, K> temp = node;
-        while (temp.getRight() != flyweight) {
-            temp = temp.getRight();
+        while (temp.getLeft() != flyweight) {
+            temp = temp.getLeft();
         }
         return temp;
     }
@@ -289,6 +292,45 @@ public class BST<K extends Comparable<K>> {
         return (compare(key, node.getKey()) < 0)
             ? get(node.getLeft(), key)
             : get(node.getRight(), key);
+    }
+
+
+    /**
+     * gets a list of the keys with a grade
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
+    public String[] getKeysWithGrade(int grade) {
+        String[] returnArray = new String[0];
+        return getKeys(this.root, grade).toArray(returnArray);
+    }
+
+
+    /**
+     * actually performs the key checking
+     * 
+     * @param grade
+     *            the grade to check for
+     * @return yes
+     */
+    private ArrayList<String> getKeys(NodeClass<String, K> node, int grade) {
+        ArrayList<String> result = new ArrayList<String>();
+        String[] parts = node.getKey().split("-", -1);
+        Integer dataQualityRaw = Integer.parseInt(parts[2]);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getKeys(node.getLeft(), grade));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getKeys(node.getRight(), grade));
+        }
+
+        if (dataQualityRaw >= grade) {
+            result.add(node.getKey());
+        }
+        return result;
     }
 
 

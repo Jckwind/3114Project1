@@ -154,7 +154,7 @@ public class Command {
                 this.dataDump(data);
                 break;
             case REMOVE:
-                this.remove();
+                this.remove(data);
                 break;
             case ERROR:
                 System.out.println("Discard invalid command name");
@@ -260,8 +260,19 @@ public class Command {
     /**
      * removes the specified data grade
      */
-    private void remove() {
-
+    private void remove(BST<CovidData> data) {
+        if (args.size() != 1 || args.get(0).getArgs().length == 0) {
+            System.out.println("Discard invalid command name");
+            return;
+        }
+        String dataQuality = args.get(0).getArgs()[0];
+        int rawQuality = CovidData.getDataQualityRaw(dataQuality);
+        String[] keys = data.getKeysWithGrade(rawQuality);
+        for (String key : keys) {
+            data.remove(key);
+        }
+        System.out.println(keys.length + " records with quality grade"
+            + " lower or equal to " + dataQuality + " have been removed");
     }
 
 
