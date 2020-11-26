@@ -10,7 +10,7 @@ search -Q C -S SC -D 07/29/2021
 	dumpBST 1
 dumpBST 2
 search -C 1
-search -N 13
+search -D 07/12/2020 -N 13
 search -T 12
 remove C
 dumpBST 1

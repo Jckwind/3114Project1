@@ -1,6 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +33,6 @@ import java.util.Map;
 public class Summary {
 
     private Map<String, CovidData> rawData;
-
 
     /**
      * creates a new summary object
@@ -102,7 +100,7 @@ public class Summary {
         ArrayList<CovidData> result = new ArrayList<CovidData>(condensedMap
             .values());
         // sort the resulting arraylist
-        Collections.sort(result);
+// Collections.sort(result);
         return result;
     }
 }

@@ -188,35 +188,6 @@ public class Command {
 
 
     /**
-     * searchs the data by state
-     * 
-     * @param data
-     *            the hashmap of data
-     */
-    private void searchDate(BST<CovidData> data) {
-// DateSearcher searcher = new DateSearcher(null, null, data);
-// searcher.search();
-// return;
-// try {
-// DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
-// format.setLenient(false);
-// String date = args.get(0);
-// if (date.length() != 10) {
-// throw new ParseException(date, 0);
-// }
-// Date dateData = format.parse(date);
-// format = new SimpleDateFormat("yyyymmdd");
-// String searchable = format.format(dateData);
-// DateSearcher searcher = new DateSearcher(searchable, date, data);
-// searcher.search();
-// }
-// catch (ParseException e) {
-// System.out.println("Discard invalid command name");
-// }
-    }
-
-
-    /**
      * runs the data dump command
      * 
      * @param data

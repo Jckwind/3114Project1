@@ -40,16 +40,9 @@ import student.TestCase;
  */
 public class CommandTest extends TestCase {
 
-    private CommandEnum loadType = CommandEnum.LOAD;
-    private CommandEnum searchType = CommandEnum.SEARCH;
-    private CommandEnum dumpType = CommandEnum.DUMP;
     private ArrayList<String> args = new ArrayList<String>(5);
     private ArrayList<String> arg1 = new ArrayList<String>(1);
     private Command myLoad;
-    private Command mySearch;
-    private Command myOtherSearch;
-    private Command mySummary;
-    private Command myDump;
     private Map<String, CovidData> data;
     private String commandFile = "input_1.txt";
     private ArrayList<Command> commands;
@@ -67,10 +60,6 @@ public class CommandTest extends TestCase {
         args.add("1752");
         arg1.add("03/05/2020");
         Command myCom = new Command(CommandEnum.LOAD, args);
-        myLoad = new Command(loadType, args);
-        mySearch = new Command(searchType, args);
-        myOtherSearch = new Command(searchType, arg1);
-        myDump = new Command(dumpType, args);
         data = new HashMap<String, CovidData>(2);
         commands = new ArrayList<Command>(2);
         commands.add(myCom);

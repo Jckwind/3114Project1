@@ -33,7 +33,7 @@ import java.util.Date;
  * @author Michael Gannon (mgannon3500)
  * @version 2020.09.27
  */
-public class CovidData implements Comparable<CovidData> {
+public class CovidData {
 
     private String date;
 
@@ -450,12 +450,5 @@ public class CovidData implements Comparable<CovidData> {
      */
     public Double getDeath() {
         return death != null ? death : 0;
-    }
-
-
-    @Override
-    public int compareTo(CovidData o) {
-        // TODO Auto-generated method stub
-        return 0;
     }
 }

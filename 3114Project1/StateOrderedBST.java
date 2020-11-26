@@ -27,7 +27,7 @@
  * @author Michael Gannon (mgannon3500)
  * @version Nov 25, 2020
  */
-public class StateOrderedBST<K extends Comparable<K>> extends BST<K> {
+public class StateOrderedBST<K> extends BST<K> {
 
     @Override
     public int compare(String string1, String string2) {

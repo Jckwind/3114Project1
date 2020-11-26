@@ -79,10 +79,4 @@ public class DataNode<T, K> extends NodeClass<T, K> {
         super.setRight(leafNode);
     }
 
-
-    @Override
-    public int compareTo(T o) {
-        // TODO Auto-generated method stub
-        return super.compareTo(o);
-    }
 }

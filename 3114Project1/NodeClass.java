@@ -27,7 +27,7 @@
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
  */
-public class NodeClass<T, K> implements Comparable<T> {
+public class NodeClass<T, K> {
 
     private T key;
 
@@ -111,13 +111,6 @@ public class NodeClass<T, K> implements Comparable<T> {
      */
     public void setRight(NodeClass<T, K> right) {
         this.right = right;
-    }
-
-
-    @Override
-    public int compareTo(T o) {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
 

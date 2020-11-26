@@ -38,7 +38,6 @@ public class CovidDataTest extends TestCase {
     private String[] rawData = { "20200305", "MA", "25.0", "21.0", "5.0", "4.0",
         "0.0", "20.0", "A", "3.0" };
 
-
     /**
      * @throws FileNotFoundException
      * 
@@ -120,8 +119,8 @@ public class CovidDataTest extends TestCase {
     public void testCompareTo() {
         assertEquals(1, myCovidData.compareQuality(otherCovidData));
         assertEquals(-1, otherCovidData.compareQuality(myCovidData));
-        int num = myCovidData.compareTo(otherCovidData);
-        assertEquals(num, myCovidData.compareTo(otherCovidData));
+// int num = myCovidData.compareTo(otherCovidData);
+// assertEquals(num, myCovidData.compareTo(otherCovidData));
     }
 
 
@@ -194,7 +193,8 @@ public class CovidDataTest extends TestCase {
         assertFalse(testData.updatedData(myCovidData));
         assertFalse(myCovidData.updatedData(testData));
     }
-    
+
+
     /**
      * tests the deep copy method
      */

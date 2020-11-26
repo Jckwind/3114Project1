@@ -47,11 +47,4 @@ public class LeafNode<T, K> extends NodeClass<T, K> {
     public K getValue() {
         return null;
     }
-
-
-    @Override
-    public int compareTo(T o) {
-        // TODO Auto-generated method stub
-        return super.compareTo(o);
-    }
 }

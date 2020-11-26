@@ -63,6 +63,7 @@ public class Searcher {
     public void search() {
         if (data.isEmpty()) {
             System.out.println("search Failed! No data available");
+            return;
         }
         for (CommandArgs argument : arguments) {
             if (!search(argument)) {
@@ -86,7 +87,14 @@ public class Searcher {
             case QUALITY:
                 return searchQuality(argument.getArgs());
             case DATE:
-                return searchDate(argument.getArgs());
+                boolean hasT = false;
+                for (CommandArgs arg : arguments) {
+                    if (arg.getType() == ParameterEnum.DATE) {
+                        hasT = true;
+                        break;
+                    }
+                }
+                return searchDate(argument.getArgs(), hasT);
             case DEFAULT:
                 return searchNoDate();
             case DAYS:
@@ -145,25 +153,17 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private boolean searchDate(String[] args) {
-        String date = args[0];
-        String searchableData = "";
-        try {
-            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
-            format.setLenient(false);
-            if (date.length() != 10) {
-                throw new ParseException(date, 0);
-            }
-            Date dateData = format.parse(date);
-            format = new SimpleDateFormat("yyyymmdd");
-            searchableData = format.format(dateData);
+    private boolean searchDate(String[] args, boolean ignore) {
+        if (ignore) {
+            return true;
         }
-        catch (ParseException e) {
+        String date = args[0];
+        String searchableDate = getSearchableDate(date);
+        if (searchableDate == null) {
             System.out.println("The date " + date + " is not valid");
             return false;
         }
-
-        results = data.getDataWithDate(searchableData);
+        results = data.getDataWithDate(searchableDate);
         builder.append(" on date " + date);
         return true;
     }
@@ -176,10 +176,9 @@ public class Searcher {
      *            the arguements
      */
     private boolean searchNoDate() {
-        CovidData maxDateData = data.findMax();
-        String date = maxDateData.getDate().toString();
+        String date = getMostRecentDate();
         String[] args = new String[] { date };
-        return searchDate(args);
+        return searchDate(args, false);
     }
 
 
@@ -190,6 +189,13 @@ public class Searcher {
      *            the arguements
      */
     private boolean searchDays(String[] args) {
+        Integer numberOfDays = Integer.parseInt(args[0]);
+        String date = getMostRecentDate();
+        for (CommandArgs arg : arguments) {
+            if (arg.getType() == ParameterEnum.DATE) {
+                date = arg.getArgs()[0];
+            }
+        }
         return false;
     }
 
@@ -213,6 +219,42 @@ public class Searcher {
      */
     private boolean searchContinuous(String[] args) {
         return false;
+    }
+
+
+    /**
+     * returns the most recent date
+     * 
+     * @return most recent date
+     */
+    private String getMostRecentDate() {
+        CovidData maxDateData = data.findMax();
+        String date = maxDateData.getDate().toString();
+        return date;
+    }
+
+
+    /**
+     * gets a searchable form of the date
+     * 
+     * @param date
+     *            the fancy date
+     * @return the searchable date
+     */
+    private String getSearchableDate(String date) {
+        try {
+            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+            format.setLenient(false);
+            if (date.length() != 10) {
+                throw new ParseException(date, 0);
+            }
+            Date dateData = format.parse(date);
+            format = new SimpleDateFormat("yyyymmdd");
+            return format.format(dateData);
+        }
+        catch (ParseException e) {
+            return null;
+        }
     }
 
 

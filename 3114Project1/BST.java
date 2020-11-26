@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
  */
-public class BST<K extends Comparable<K>> {
+public class BST<K> {
 
     private NodeClass<String, K> root;
 
@@ -73,6 +73,9 @@ public class BST<K extends Comparable<K>> {
      *            the root of old tree
      */
     private void copy(NodeClass<String, K> node, NodeClass<String, K> oldRoot) {
+        if (oldRoot == flyweight) {
+            return;
+        }
         if (oldRoot.getLeft() != flyweight) {
             DataNode<String, K> newLeft = new DataNode<String, K>(oldRoot
                 .getLeft().getKey(), oldRoot.getLeft().getValue(), flyweight);
@@ -230,6 +233,10 @@ public class BST<K extends Comparable<K>> {
      *            the print mode
      */
     public void inOrder(int mode) {
+        if (isEmpty()) {
+            System.out.println("No data available");
+            return;
+        }
         if (mode == 2 && stateData != null) {
             stateData.inOrder(2);
             return;
