@@ -39,6 +39,10 @@ public class Searcher {
 
     private BST<CovidData> data;
 
+    private ArrayList<CovidData> results;
+
+    private StringBuilder builder;
+
     /**
      * creates a new searcher object
      * 
@@ -48,6 +52,8 @@ public class Searcher {
     public Searcher(ArrayList<CommandArgs> arguments, BST<CovidData> data) {
         this.arguments = arguments;
         this.data = new BST<CovidData>(data);
+        this.builder = new StringBuilder();
+        this.results = new ArrayList<CovidData>();
     }
 
 
@@ -55,9 +61,15 @@ public class Searcher {
      * searches the BST using these args
      */
     public void search() {
-        for (CommandArgs argument : arguments) {
-            search(argument);
+        if (data.isEmpty()) {
+            System.out.println("search Failed! No data available");
         }
+        for (CommandArgs argument : arguments) {
+            if (!search(argument)) {
+                return;
+            }
+        }
+        printResults();
     }
 
 
@@ -67,31 +79,24 @@ public class Searcher {
      * @param argument
      *            yes
      */
-    private void search(CommandArgs argument) {
+    private boolean search(CommandArgs argument) {
         switch (argument.getType()) {
             case STATE:
-                searchState(argument.getArgs());
-                break;
+                return searchState(argument.getArgs());
             case QUALITY:
-                searchQuality(argument.getArgs());
-                break;
+                return searchQuality(argument.getArgs());
             case DATE:
-                searchDate(argument.getArgs());
-                break;
+                return searchDate(argument.getArgs());
             case DEFAULT:
-                searchNoDate();
-                break;
+                return searchNoDate();
             case DAYS:
-                searchDays(argument.getArgs());
-                break;
+                return searchDays(argument.getArgs());
             case AVERAGE:
-                searchAverage(argument.getArgs());
-                break;
+                return searchAverage(argument.getArgs());
             case CONTINUOUSRUN:
-                searchContinuous(argument.getArgs());
-                break;
+                return searchContinuous(argument.getArgs());
             default:
-                return;
+                return false;
         }
     }
 
@@ -102,35 +107,15 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private void searchState(String[] args) {
+    private boolean searchState(String[] args) {
         String stateName = String.join(" ", args);
         String stateAbbr = getStateAbbr(stateName);
         if (stateAbbr == null) {
-            return;
+            return false;
         }
-        ArrayList<CovidData> dataPoints = data.getDataWithState(stateAbbr);
-        if (dataPoints.size() == 0) {
-            System.out.println("There are no records from " + stateAbbr);
-            return;
-        }
-        Object[] headerStrings = { "state", "positive", "negative",
-            "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
-            "recovered", "dataQualityGrade", "death" };
-        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s   \n",
-            headerStrings);
-        for (CovidData myData : dataPoints) {
-            System.out.format("%-8s", myData.getState());
-            System.out.format("%,-12d", myData.getPos().intValue());
-            System.out.format("%,-12d", myData.getNeg().intValue());
-            System.out.format("%,-15d", myData.getHosp().intValue());
-            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
-            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
-            System.out.format("%,-12d", myData.getRecovered().intValue());
-            System.out.format("%-19s", myData.getDataQuality());
-            System.out.format("%,-8d\n", myData.getDeath().intValue());
-        }
-        System.out.println(dataPoints.size()
-            + " records are printed out for the state of " + stateAbbr);
+        results = data.getDataWithState(stateAbbr);
+        builder.append(" for state " + stateAbbr);
+        return true;
     }
 
 
@@ -140,32 +125,17 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private void searchQuality(String[] args) {
+    private boolean searchQuality(String[] args) {
         String quality = args[0];
-        ArrayList<CovidData> dataPoints = data.getDataWithGrade(quality);
-        if (dataPoints.size() == 0) {
-            System.out.println("There are no records with " + quality);
-            return;
+        if (CovidData.getDataQualityRaw(quality) == -1) {
+            System.out.println(quality + " is not a valid quality grade");
+            return false;
         }
-        Object[] headerStrings = { "state", "positive", "negative",
-            "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
-            "recovered", "dataQualityGrade", "death" };
-        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s   \n",
-            headerStrings);
-        for (CovidData myData : dataPoints) {
-            System.out.format("%-8s", myData.getState());
-            System.out.format("%,-12d", myData.getPos().intValue());
-            System.out.format("%,-12d", myData.getNeg().intValue());
-            System.out.format("%,-15d", myData.getHosp().intValue());
-            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
-            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
-            System.out.format("%,-12d", myData.getRecovered().intValue());
-            System.out.format("%-19s", myData.getDataQuality());
-            System.out.format("%,-8d\n", myData.getDeath().intValue());
-        }
-        System.out.println(dataPoints.size()
-            + " records have been printed with better or equal than quality grade "
+        results = data.getDataWithGrade(quality);
+
+        builder.insert(0, " with better or equal than quality grade "
             + quality);
+        return true;
     }
 
 
@@ -175,54 +145,41 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private void searchDate(String[] args) {
-
-    }
-
-
-    /**
-     * searches the data based on date
-     * 
-     * @param args
-     *            the arguements
-     */
-    private void searchNoDate() {
-        CovidData maxDateData = data.findMax();
-        String date = maxDateData.getDate().toString();
-        String fancyDate = "";
+    private boolean searchDate(String[] args) {
+        String date = args[0];
+        String searchableData = "";
         try {
-            DateFormat format = new SimpleDateFormat("yyyymmdd");
+            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
             format.setLenient(false);
+            if (date.length() != 10) {
+                throw new ParseException(date, 0);
+            }
             Date dateData = format.parse(date);
-            format = new SimpleDateFormat("mm/dd/yyyy");
-            fancyDate = format.format(dateData);
+            format = new SimpleDateFormat("yyyymmdd");
+            searchableData = format.format(dateData);
         }
         catch (ParseException e) {
-            // nothing lol, it'll never happen
+            System.out.println("The date " + date + " is not valid");
+            return false;
         }
-        ArrayList<CovidData> dataPoints = data.getDataWithDate(date);
-        if (dataPoints.size() == 0) {
-            System.out.println("There are no records on " + fancyDate);
-            return;
-        }
-        Object[] headerStrings = { "state", "positive", "negative",
-            "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
-            "recovered", "dataQualityGrade", "death" };
-        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s   \n",
-            headerStrings);
-        for (CovidData myData : dataPoints) {
-            System.out.format("%-8s", myData.getState());
-            System.out.format("%,-12d", myData.getPos().intValue());
-            System.out.format("%,-12d", myData.getNeg().intValue());
-            System.out.format("%,-15d", myData.getHosp().intValue());
-            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
-            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
-            System.out.format("%,-12d", myData.getRecovered().intValue());
-            System.out.format("%-19s", myData.getDataQuality());
-            System.out.format("%,-8d\n", myData.getDeath().intValue());
-        }
-        System.out.println(dataPoints.size()
-            + " records have been printed on date " + fancyDate);
+
+        results = data.getDataWithDate(searchableData);
+        builder.append(" on date " + date);
+        return true;
+    }
+
+
+    /**
+     * searches the data based on date
+     * 
+     * @param args
+     *            the arguements
+     */
+    private boolean searchNoDate() {
+        CovidData maxDateData = data.findMax();
+        String date = maxDateData.getDate().toString();
+        String[] args = new String[] { date };
+        return searchDate(args);
     }
 
 
@@ -232,8 +189,8 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private void searchDays(String[] args) {
-
+    private boolean searchDays(String[] args) {
+        return false;
     }
 
 
@@ -243,8 +200,8 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private void searchAverage(String[] args) {
-
+    private boolean searchAverage(String[] args) {
+        return false;
     }
 
 
@@ -254,8 +211,8 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private void searchContinuous(String[] args) {
-
+    private boolean searchContinuous(String[] args) {
+        return false;
     }
 
 
@@ -274,11 +231,34 @@ public class Searcher {
         }
         else {
             // state does not exist
-            System.out.println("State of " + stateName + " does not exist!");
+            System.out.println("The state " + stateName + " does not exist!");
             return null;
         }
 
         return stateAbbr;
+    }
+
+
+    private void printResults() {
+        Object[] headerStrings = { "state", "date", "positive", "negative",
+            "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
+            "recovered", "dataQualityGrade", "death" };
+        System.out.format("%s%7s%17s%12s%16s%24s%26s%12s%19s%8s   \n",
+            headerStrings);
+        for (CovidData myData : results) {
+            System.out.format("%-8s", myData.getState());
+            System.out.format("%-13s", myData.fancyDate());
+            System.out.format("%,-12d", myData.getPos().intValue());
+            System.out.format("%,-12d", myData.getNeg().intValue());
+            System.out.format("%,-15d", myData.getHosp().intValue());
+            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
+            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
+            System.out.format("%,-12d", myData.getRecovered().intValue());
+            System.out.format("%-19s", myData.getDataQuality());
+            System.out.format("%,-8d\n", myData.getDeath().intValue());
+        }
+        System.out.println(results.size() + " records have been printed"
+            + builder.toString());
     }
 
 }

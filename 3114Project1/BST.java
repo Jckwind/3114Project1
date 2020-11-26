@@ -425,6 +425,9 @@ public class BST<K extends Comparable<K>> {
         if (quality >= rawQuality) {
             result.add(node.getValue());
         }
+        else {
+            remove(node.getKey());
+        }
         return result;
     }
 
@@ -437,7 +440,8 @@ public class BST<K extends Comparable<K>> {
      * @return array of keys
      */
     public ArrayList<K> getDataWithState(String suffix) {
-        String fullName = State.fullState(suffix.toUpperCase());
+        String fullName = State.fullState(suffix.toUpperCase()).toLowerCase()
+            .replaceAll("\\s", "");
         return getStates(this.root, fullName);
     }
 
@@ -465,6 +469,9 @@ public class BST<K extends Comparable<K>> {
 
         if (state.equalsIgnoreCase(parts[1])) {
             result.add(node.getValue());
+        }
+        else {
+            remove(node.getKey());
         }
         return result;
     }
@@ -504,6 +511,9 @@ public class BST<K extends Comparable<K>> {
         }
         if (date.equals(parts[0])) {
             result.add(node.getValue());
+        }
+        else {
+            remove(node.getKey());
         }
         return result;
     }
