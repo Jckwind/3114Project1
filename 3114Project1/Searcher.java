@@ -103,7 +103,6 @@ public class Searcher {
      *            the arguements
      */
     private void searchState(String[] args) {
-
         String stateName = String.join(" ", args);
         String stateAbbr = getStateAbbr(stateName);
         if (stateAbbr == null) {
@@ -114,13 +113,13 @@ public class Searcher {
             System.out.println("There are no records from " + stateAbbr);
             return;
         }
-        Object[] headerStrings = { "date", "positive", "negative",
+        Object[] headerStrings = { "state", "positive", "negative",
             "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
             "recovered", "dataQualityGrade", "death" };
-        System.out.format("%s%19s%12s%16s%24s%26s%12s%19s%8s   \n",
+        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s   \n",
             headerStrings);
         for (CovidData myData : dataPoints) {
-            System.out.format("%-15s", myData.fancyDate());
+            System.out.format("%-8s", myData.getState());
             System.out.format("%,-12d", myData.getPos().intValue());
             System.out.format("%,-12d", myData.getNeg().intValue());
             System.out.format("%,-15d", myData.getHosp().intValue());
@@ -142,7 +141,31 @@ public class Searcher {
      *            the arguements
      */
     private void searchQuality(String[] args) {
-
+        String quality = args[0];
+        ArrayList<CovidData> dataPoints = data.getDataWithGrade(quality);
+        if (dataPoints.size() == 0) {
+            System.out.println("There are no records with " + quality);
+            return;
+        }
+        Object[] headerStrings = { "state", "positive", "negative",
+            "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
+            "recovered", "dataQualityGrade", "death" };
+        System.out.format("%s%11s%12s%16s%24s%26s%12s%19s%8s   \n",
+            headerStrings);
+        for (CovidData myData : dataPoints) {
+            System.out.format("%-8s", myData.getState());
+            System.out.format("%,-12d", myData.getPos().intValue());
+            System.out.format("%,-12d", myData.getNeg().intValue());
+            System.out.format("%,-15d", myData.getHosp().intValue());
+            System.out.format("%,-25d", myData.getOnVentCurr().intValue());
+            System.out.format("%,-25d", myData.getOnVentTotal().intValue());
+            System.out.format("%,-12d", myData.getRecovered().intValue());
+            System.out.format("%-19s", myData.getDataQuality());
+            System.out.format("%,-8d\n", myData.getDeath().intValue());
+        }
+        System.out.println(dataPoints.size()
+            + " records have been printed with better or equal than quality grade "
+            + quality);
     }
 
 

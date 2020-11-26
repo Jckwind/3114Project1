@@ -395,6 +395,47 @@ public class BST<K extends Comparable<K>> {
      *            the grade to check
      * @return array of keys
      */
+    public ArrayList<K> getDataWithGrade(String quality) {
+        return getGrades(this.root, CovidData.getDataQualityRaw(quality));
+    }
+
+
+    /**
+     * actually performs the key checking
+     * 
+     * @param grade
+     *            the grade to check for
+     * @return yes
+     */
+    private ArrayList<K> getGrades(NodeClass<String, K> node, int quality) {
+        ArrayList<K> result = new ArrayList<K>();
+        if (node == flyweight) {
+            return result;
+        }
+        String[] parts = node.getKey().split("-", -1);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getGrades(node.getLeft(), quality));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getGrades(node.getRight(), quality));
+        }
+
+        Integer rawQuality = Integer.parseInt(parts[2]);
+        if (quality >= rawQuality) {
+            result.add(node.getValue());
+        }
+        return result;
+    }
+
+
+    /**
+     * gets a list of the keys with a grade
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
     public ArrayList<K> getDataWithState(String suffix) {
         String fullName = State.fullState(suffix.toUpperCase());
         return getStates(this.root, fullName);
