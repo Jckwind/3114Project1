@@ -533,7 +533,7 @@ public class BST<K> {
      *            the grade to check
      * @return array of keys
      */
-    public ArrayList<String> getKeysWithDate(String date) {
+    public ArrayList<K> get7DayAverage(Integer avg) {
         return getKeysForDates(this.root, date);
     }
 
@@ -545,9 +545,7 @@ public class BST<K> {
      *            the state to check for
      * @return yes
      */
-    private ArrayList<String> getKeysForDates(
-        NodeClass<String, K> node,
-        String date) {
+    private ArrayList<K> getAveragesAbove(NodeClass<String, K> node, int avg) {
         ArrayList<String> result = new ArrayList<String>();
         if (node == flyweight) {
             return result;
@@ -562,6 +560,51 @@ public class BST<K> {
         }
         if (date.equals(parts[0])) {
             result.add(node.getKey());
+        }
+        return result;
+    }
+
+
+    /**
+     * gets a list of the data points from a date
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
+    public ArrayList<K> getDataWithDates(ArrayList<String> dates) {
+        return getDataFromDates(this.root, dates);
+    }
+
+
+    /**
+     * actually performs the date checking
+     * 
+     * @param state
+     *            the state to check for
+     * @return yes
+     */
+    private ArrayList<K> getDataFromDates(
+        NodeClass<String, K> node,
+        ArrayList<String> dates) {
+
+        ArrayList<K> result = new ArrayList<K>();
+        if (node == flyweight) {
+            return result;
+        }
+        String[] parts = node.getKey().split("-", -1);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getDataFromDates(node.getLeft(), dates));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getDataFromDates(node.getRight(), dates));
+        }
+        if (dates.contains(parts[0])) {
+            result.add(node.getValue());
+        }
+        else {
+            remove(node.getKey());
         }
         return result;
     }

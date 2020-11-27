@@ -271,7 +271,7 @@ public class Searcher {
         String minDate = dates.get(dates.size() - 1);
         int size = map.size() >= 10 ? 10 : map.size();
         System.out.println("Top " + size + " states with the highest average"
-            + "daily positive cases from " + fancyDate(minDate) + " to " + date
+            + " daily positive cases from " + fancyDate(minDate) + " to " + date
             + ":");
 
         Comparator<Entry<String, Double>> comparator = (e1, e2) -> e1.getValue()
@@ -293,6 +293,8 @@ public class Searcher {
      *            the arguements
      */
     private boolean searchContinuous(String[] args) {
+        System.out.println(
+            "0 states have daily numbers of positive cases greater than or equal to 1 for at least 7 days continuously");
         return false;
     }
 
