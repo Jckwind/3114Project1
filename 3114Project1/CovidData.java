@@ -300,6 +300,29 @@ public class CovidData implements Comparable<CovidData> {
         return !date.isEmpty() && !state.isEmpty() && !dataQuality.isEmpty();
     }
 
+// /**
+// * yes if the date is a real possible date
+// *
+// * @return true if valid
+// */
+// private boolean dateIsValid() {
+// try {
+// DateFormat format = new SimpleDateFormat("yyyymmdd");
+// format.setLenient(false);
+// Date dateData = format.parse(date);
+// format = new SimpleDateFormat("yyyy-mm-dd");
+// String dateString = format.format(dateData);
+// LocalDate.parse(dateString);
+// return true;
+// }
+// catch (DateTimeParseException e) {
+// return false;
+// }
+// catch (ParseException e) {
+// return false;
+// }
+// }
+
 
     /**
      * decides if the state is true;

@@ -577,10 +577,12 @@ public class BST<K> {
         ArrayList<String> dateUsed = new ArrayList<String>();
         for (BST7DayAvg averageObject : avgObjects) {
             getAvgs(this.root, avg, averageObject);
-            if (averageObject.getCounter() >= 7 && !dateUsed.contains(
-                averageObject.getStartingDate())) {
+            String state = averageObject.getState();
+            String start = averageObject.getStartingDate();
+            boolean has = dateUsed.contains(state + "-" + start);
+            if (averageObject.getCounter() >= 7 && !has) {
                 result.add(averageObject);
-                dateUsed.add(averageObject.getStartingDate());
+                dateUsed.add(state + "-" + start);
             }
         }
         Collections.sort(result);
@@ -653,6 +655,15 @@ public class BST<K> {
     }
 
 
+    /**
+     * subtracts x from a date
+     * 
+     * @param date1
+     *            the date to subtract from
+     * @param distanceApart
+     *            amount to sub
+     * @return the new date
+     */
     private Integer subtractDate(String date1, int distanceApart) {
         try {
             DateFormat format = new SimpleDateFormat("yyyymmdd");

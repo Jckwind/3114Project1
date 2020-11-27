@@ -2,6 +2,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -211,7 +212,13 @@ public class Searcher {
         for (int i = 0; i < numberOfDays; i++) {
             String newDate = getSearchableDate(addDaysToDate(date, i),
                 "yyyy-mm-dd");
-            dates.add(newDate);
+            if (newDate != null) {
+                dates.add(newDate);
+            }
+        }
+        if (dates.size() == 0) {
+            System.out.println("The date " + date + " is not valid");
+            return false;
         }
         results = data.getDataWithDates(dates);
         String minDate = dates.get(dates.size() - 1);
@@ -256,7 +263,13 @@ public class Searcher {
         for (int i = 0; i < numberOfDays; i++) {
             String newDate = getSearchableDate(addDaysToDate(date, i),
                 "yyyy-mm-dd");
-            dates.add(newDate);
+            if (newDate != null) {
+                dates.add(newDate);
+            }
+        }
+        if (dates.size() == 0) {
+            System.out.println("The date " + date + " is not valid");
+            return false;
         }
         results = data.getDataWithDates(dates);
         Map<String, Double> map = new HashMap<String, Double>();
@@ -339,6 +352,9 @@ public class Searcher {
      * @return the searchable date
      */
     private String getSearchableDate(String date, String dateFormat) {
+        if (date == null) {
+            return null;
+        }
         try {
             DateFormat format = new SimpleDateFormat(dateFormat);
             format.setLenient(false);
@@ -347,7 +363,15 @@ public class Searcher {
             }
             Date dateData = format.parse(date);
             format = new SimpleDateFormat("yyyymmdd");
-            return format.format(dateData);
+            format.setLenient(false);
+            String returnValue = format.format(dateData);
+            format = new SimpleDateFormat("yyyy-mm-dd");
+            format.setLenient(false);
+            LocalDate.parse(format.format(dateData));
+            return returnValue;
+        }
+        catch (DateTimeParseException e) {
+            return null;
         }
         catch (ParseException e) {
             return null;
@@ -376,6 +400,9 @@ public class Searcher {
             format = new SimpleDateFormat("yyyy-mm-dd");
             dateString = format.format(dateData);
             return LocalDate.parse(dateString).minusDays(day2Add).toString();
+        }
+        catch (DateTimeParseException e) {
+            return null;
         }
         catch (ParseException e) {
             return null;
