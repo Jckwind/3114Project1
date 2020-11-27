@@ -1,4 +1,2 @@
 load Sample_Input1.csv
-search -C 1
-search -C 49
-search -C 99
+search -S VIRGIN ISLANDS

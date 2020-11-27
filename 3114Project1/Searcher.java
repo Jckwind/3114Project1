@@ -272,27 +272,29 @@ public class Searcher {
             return false;
         }
         results = data.getDataWithDates(dates);
-        Map<String, Double> map = new HashMap<String, Double>();
+        Map<String, Double> rawMap = new HashMap<String, Double>();
         for (CovidData dataPoint : results) {
-            if (map.containsKey(dataPoint.getState())) {
+            if (rawMap.containsKey(dataPoint.getState())) {
                 String key = dataPoint.getState();
                 Double newValue = dataPoint.getPos() / numberOfDays;
-                map.put(key, map.get(key) + newValue);
+                rawMap.put(key, rawMap.get(key) + newValue);
             }
             else {
                 String key = dataPoint.getState();
                 Double newValue = dataPoint.getPos() / numberOfDays;
-                map.put(key, newValue);
+                rawMap.put(key, newValue);
             }
         }
         String minDate = dates.get(dates.size() - 1);
-        int size = map.size() >= 10 ? 10 : map.size();
+        int size = rawMap.size() >= 10 ? 10 : rawMap.size();
         System.out.println("Top " + size + " states with the highest average"
             + " daily positive cases from " + fancyDate(minDate) + " to " + date
             + ":");
-
-        Comparator<Entry<String, Double>> comparator = (e1, e2) -> e1.getValue()
-            .compareTo(e2.getValue());
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        rawMap.entrySet().stream().forEach(entry -> map.put(entry.getKey(),
+            entry.getValue().intValue()));
+        Comparator<Entry<String, Integer>> comparator = (e1, e2) -> e1
+            .getValue().compareTo(e2.getValue());
         comparator = comparator.thenComparing((e1, e2) -> e2.getKey().compareTo(
             e1.getKey()));
         comparator = comparator.reversed();

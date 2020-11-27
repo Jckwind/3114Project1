@@ -52,8 +52,8 @@ public class State {
         "NORTHERN MARIANA ISLANDS", "OHIO", "OKLAHOMA", "OREGON", "PALAU",
         "PENNSYLVANIA", "PUERTO RICO", "RHODE ISLAND", "SOUTH CAROLINA",
         "SOUTH DAKOTA", "TENNESSEE", "TEXAS", "UTAH", "VERMONT",
-        "VIRGIN ISLAND", "VIRGINIA", "WASHINGTON", "WEST VIRGINIA", "WISCONSIN",
-        "WYOMING" };
+        "VIRGIN ISLANDS", "VIRGINIA", "WASHINGTON", "WEST VIRGINIA",
+        "WISCONSIN", "WYOMING" };
 
     /**
      * turns arrayOfAbbreviations into a list of strings
@@ -66,7 +66,6 @@ public class State {
      */
     static final public List<String> STATE_NAME_LIST = Arrays.asList(
         arrayOfStateNames);
-
 
     /**
      * returns the full state when given the abbrievation

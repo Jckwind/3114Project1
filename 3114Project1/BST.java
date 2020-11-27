@@ -576,7 +576,7 @@ public class BST<K> {
         ArrayList<BST7DayAvg> result = new ArrayList<BST7DayAvg>();
         ArrayList<String> dateUsed = new ArrayList<String>();
         for (BST7DayAvg averageObject : avgObjects) {
-            getAvgs(this.root, avg, averageObject);
+            getAvgs(avg, averageObject);
             String state = averageObject.getState();
             String start = averageObject.getStartingDate();
             boolean has = dateUsed.contains(state + "-" + start);
@@ -623,35 +623,28 @@ public class BST<K> {
     /**
      * actually performs the date checking
      * 
-     * @param node
-     *            the node to start w
      * @param avg
      *            the avg to check for
      * @param obj
      *            the 7 day average object to edit
      */
-    private void getAvgs(NodeClass<String, K> node, int avg, BST7DayAvg obj) {
-        if (node == flyweight) {
-            return;
-        }
-        if (node.getLeft() != flyweight) {
-            getAvgs(node.getLeft(), avg, obj);
-        }
-
-        if (node.getRight() != flyweight) {
-            getAvgs(node.getRight(), avg, obj);
-        }
-        CovidData data = (CovidData)node.getValue();
-        Integer start = Integer.parseInt(obj.getEndDate());
-        boolean sameState = data.getState().equals(obj.getState());
-        Integer adjustedDate = subtractDate(start.toString(), obj.getCounter());
-        boolean nextDay = adjustedDate.equals(data.getDate());
-        boolean aboveAvg = data.getPos() >= avg;
-        if (sameState && nextDay && aboveAvg) {
+    private void getAvgs(int avg, BST7DayAvg obj) {
+        String key = obj.getEndDate() + "-" + obj.getFullState();
+        K rawData = get(key);
+        CovidData data = (CovidData)rawData;
+        while (data != null) {
+            if (data.getPos() < avg) {
+                break;
+            }
             obj.incrementCounter();
             obj.setStartingDate(data.getDate().toString());
+            Integer start = Integer.parseInt(obj.getEndDate());
+            Integer adjustedDate = subtractDate(start.toString(), obj
+                .getCounter());
+            String newKey = adjustedDate + "-" + obj.getFullState();
+            rawData = get(newKey);
+            data = (rawData != null) ? (CovidData)rawData : null;
         }
-
     }
 
 

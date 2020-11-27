@@ -5,8 +5,6 @@
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import student.TestCase;
 
 // On my honor:
@@ -42,7 +40,6 @@ public class CommandTest extends TestCase {
 
     private ArrayList<String> args = new ArrayList<String>(5);
     private ArrayList<String> arg1 = new ArrayList<String>(1);
-    private Map<String, CovidData> data;
     private String commandFile = "input_1.txt";
     private ArrayList<Command> commands;
     private CommandReader myReader;
@@ -58,7 +55,6 @@ public class CommandTest extends TestCase {
         args.add("1752");
         arg1.add("03/05/2020");
         Command myCom = new Command(CommandEnum.LOAD, args);
-        data = new HashMap<String, CovidData>(2);
         commands = new ArrayList<Command>(2);
         commands.add(myCom);
         myReader = new CommandReader(commands, commandFile);
@@ -91,32 +87,6 @@ public class CommandTest extends TestCase {
         assertEquals(CommandEnum.SEARCH, myReader.getType("search"));
         assertEquals(CommandEnum.DUMP, myReader.getType("dumpbst"));
         assertEquals(CommandEnum.ERROR, myReader.getType("other"));
-    }
-
-
-    /**
-     * tests the Summary class
-     */
-    public void testSummary() {
-        Summary mySum = new Summary(data);
-        assertTrue(mySum.reportSummary());
-    }
-
-
-    /**
-     * tests the StateSearcher and DateSearcher
-     */
-    public void testSearching() {
-        Map<String, CovidData> tempData = new HashMap<String, CovidData>(0);
-        StateSearcher myTemp = new StateSearcher(data, "Virginia", 1);
-        myTemp.search();
-        DateSearcher myDate = new DateSearcher("03052000", "03/05/2000", data);
-        myDate.search();
-        assertTrue(myDate.equals(myDate));
-        DateSearcher otherDate = new DateSearcher("3", "5", tempData);
-        StateSearcher otherTemp = new StateSearcher(tempData, "MA", 1);
-        otherDate.search();
-        otherTemp.search();
     }
 
 }

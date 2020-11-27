@@ -65,6 +65,14 @@ public class BST7DayAvg implements Comparable<BST7DayAvg> {
 
 
     /**
+     * @return the state
+     */
+    public String getFullState() {
+        return State.fullState(state).toLowerCase().replaceAll("\\s", "");
+    }
+
+
+    /**
      * @return the startingDate
      */
     public String getStartingDate() {
