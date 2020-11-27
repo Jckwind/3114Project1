@@ -76,6 +76,7 @@ public class BSTTest extends TestCase {
      */
     public void testRemove() {
         bst.remove("5-test");
+        assertNull(bst.get("5-test"));
         assertEquals(4, bst.getSize());
         assertEquals("10-test", bst.getRoot().getKey());
         assertEquals(10, bst.getRoot().getValue().intValue());

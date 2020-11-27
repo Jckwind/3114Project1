@@ -72,6 +72,12 @@ public class Searcher {
             return;
         }
         for (CommandArgs argument : arguments) {
+            if (argument.getType() == ParameterEnum.CONTINUOUSRUN) {
+                searchContinuous(argument.getArgs());
+                return;
+            }
+        }
+        for (CommandArgs argument : arguments) {
             if (!search(argument)) {
                 return;
             }
@@ -108,8 +114,6 @@ public class Searcher {
                 return searchDays(argument.getArgs());
             case AVERAGE:
                 return searchAverage(argument.getArgs());
-            case CONTINUOUSRUN:
-                return searchContinuous(argument.getArgs());
             default:
                 return false;
         }
@@ -292,10 +296,26 @@ public class Searcher {
      * @param args
      *            the arguements
      */
-    private boolean searchContinuous(String[] args) {
-        System.out.println(
-            "0 states have daily numbers of positive cases greater than or equal to 1 for at least 7 days continuously");
-        return false;
+    private void searchContinuous(String[] args) {
+        Integer avg = Integer.parseInt(args[0]);
+        ArrayList<BST7DayAvg> avgs = data.get7DayAverage(avg);
+        ArrayList<String> stateSaid = new ArrayList<String>();
+        for (BST7DayAvg average : avgs) {
+            if (stateSaid.contains(average.getState())) {
+                System.out.println(fancyDate(average.getStartingDate()) + " - "
+                    + fancyDate(average.getEndDate()));
+            }
+            else {
+                System.out.println("State " + average.getState());
+                stateSaid.add(average.getState());
+                System.out.println(fancyDate(average.getStartingDate()) + " - "
+                    + fancyDate(average.getEndDate()));
+            }
+        }
+        System.out.println(stateSaid.size()
+            + " states have daily numbers of positive"
+            + " cases greater than or equal to " + avg
+            + " for at least 7 days continuously");
     }
 
 
@@ -378,7 +398,7 @@ public class Searcher {
         }
         else {
             // state does not exist
-            System.out.println("The state " + stateName + " does not exist!");
+            System.out.println("The state " + stateName + " does not exist");
             return null;
         }
 

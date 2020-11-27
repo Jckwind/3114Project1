@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 // On my honor:
 //
@@ -533,8 +534,17 @@ public class BST<K> {
      *            the grade to check
      * @return array of keys
      */
-    public ArrayList<K> get7DayAverage(Integer avg) {
-        return getKeysForDates(this.root, date);
+    public ArrayList<BST7DayAvg> get7DayAverage(Integer avg) {
+        ArrayList<BST7DayAvg> avgObjects = getAvgObj(this.root, avg);
+        ArrayList<BST7DayAvg> result = new ArrayList<BST7DayAvg>();
+        for (BST7DayAvg averageObject : avgObjects) {
+            getAvgs(this.root, avg, averageObject);
+            if (averageObject.getCounter() >= 7) {
+                result.add(averageObject);
+            }
+        }
+        Collections.sort(result);
+        return result;
     }
 
 
@@ -545,35 +555,24 @@ public class BST<K> {
      *            the state to check for
      * @return yes
      */
-    private ArrayList<K> getAveragesAbove(NodeClass<String, K> node, int avg) {
-        ArrayList<String> result = new ArrayList<String>();
+    private ArrayList<BST7DayAvg> getAvgObj(NodeClass<String, K> node, int a) {
+        ArrayList<BST7DayAvg> result = new ArrayList<BST7DayAvg>();
         if (node == flyweight) {
             return result;
         }
-        String[] parts = node.getKey().split("-", -1);
         if (node.getLeft() != flyweight) {
-            result.addAll(getKeysForDates(node.getLeft(), date));
+            result.addAll(getAvgObj(node.getLeft(), a));
         }
 
         if (node.getRight() != flyweight) {
-            result.addAll(getKeysForDates(node.getRight(), date));
+            result.addAll(getAvgObj(node.getRight(), a));
         }
-        if (date.equals(parts[0])) {
-            result.add(node.getKey());
-        }
+        CovidData data = (CovidData)node.getValue();
+        String state = data.getState();
+        String date = data.getDate().toString();
+        BST7DayAvg newAvg = new BST7DayAvg(state, date, a);
+        result.add(newAvg);
         return result;
-    }
-
-
-    /**
-     * gets a list of the data points from a date
-     * 
-     * @param grade
-     *            the grade to check
-     * @return array of keys
-     */
-    public ArrayList<K> getDataWithDates(ArrayList<String> dates) {
-        return getDataFromDates(this.root, dates);
     }
 
 
@@ -584,29 +583,26 @@ public class BST<K> {
      *            the state to check for
      * @return yes
      */
-    private ArrayList<K> getDataFromDates(
-        NodeClass<String, K> node,
-        ArrayList<String> dates) {
-
-        ArrayList<K> result = new ArrayList<K>();
+    private void getAvgs(NodeClass<String, K> node, int avg, BST7DayAvg obj) {
         if (node == flyweight) {
-            return result;
+            return;
         }
-        String[] parts = node.getKey().split("-", -1);
+        CovidData data = (CovidData)node.getValue();
+        Integer start = Integer.parseInt(obj.getStartingDate());
+        boolean sameState = data.getState().equals(obj.getState());
+        boolean nextDay = start + obj.getCounter() == data.getDate();
+        boolean aboveAvg = data.getPos() >= avg;
+        if (sameState && nextDay && aboveAvg) {
+            obj.incrementCounter();
+            obj.setEndDate(data.getDate().toString());
+        }
         if (node.getLeft() != flyweight) {
-            result.addAll(getDataFromDates(node.getLeft(), dates));
+            getAvgs(node.getLeft(), avg, obj);
         }
 
         if (node.getRight() != flyweight) {
-            result.addAll(getDataFromDates(node.getRight(), dates));
+            getAvgs(node.getRight(), avg, obj);
         }
-        if (dates.contains(parts[0])) {
-            result.add(node.getValue());
-        }
-        else {
-            remove(node.getKey());
-        }
-        return result;
     }
 
 
