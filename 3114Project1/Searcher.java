@@ -1,8 +1,14 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 // On my honor:
 //
@@ -87,14 +93,15 @@ public class Searcher {
             case QUALITY:
                 return searchQuality(argument.getArgs());
             case DATE:
-                boolean hasT = false;
+                boolean hasN = false;
                 for (CommandArgs arg : arguments) {
-                    if (arg.getType() == ParameterEnum.DATE) {
-                        hasT = true;
+                    if (arg.getType() == ParameterEnum.DAYS || arg
+                        .getType() == ParameterEnum.AVERAGE) {
+                        hasN = true;
                         break;
                     }
                 }
-                return searchDate(argument.getArgs(), hasT);
+                return searchDate(argument.getArgs(), hasN);
             case DEFAULT:
                 return searchNoDate();
             case DAYS:
@@ -158,7 +165,7 @@ public class Searcher {
             return true;
         }
         String date = args[0];
-        String searchableDate = getSearchableDate(date);
+        String searchableDate = getSearchableDate(date, "mm/dd/yyyy");
         if (searchableDate == null) {
             System.out.println("The date " + date + " is not valid");
             return false;
@@ -196,7 +203,34 @@ public class Searcher {
                 date = arg.getArgs()[0];
             }
         }
-        return false;
+        ArrayList<String> dates = new ArrayList<String>();
+        for (int i = 0; i < numberOfDays; i++) {
+            String newDate = getSearchableDate(addDaysToDate(date, i),
+                "yyyy-mm-dd");
+            dates.add(newDate);
+        }
+        results = data.getDataWithDates(dates);
+        String minDate = dates.get(dates.size() - 1);
+        builder.append(" from " + fancyDate(minDate) + " to " + date);
+        return true;
+    }
+
+
+    /**
+     * returns the mm/dd/yyyy date formate
+     * 
+     * @return the date
+     */
+    private String fancyDate(String oldDate) {
+        DateFormat format = new SimpleDateFormat("yyyymmdd");
+        try {
+            Date dateData = format.parse(oldDate);
+            format = new SimpleDateFormat("mm/dd/yyyy");
+            return format.format(dateData);
+        }
+        catch (ParseException e) {
+            return "error";
+        }
     }
 
 
@@ -207,6 +241,47 @@ public class Searcher {
      *            the arguements
      */
     private boolean searchAverage(String[] args) {
+        Integer numberOfDays = Integer.parseInt(args[0]);
+        String date = getMostRecentDate();
+        for (CommandArgs arg : arguments) {
+            if (arg.getType() == ParameterEnum.DATE) {
+                date = arg.getArgs()[0];
+            }
+        }
+        ArrayList<String> dates = new ArrayList<String>();
+        for (int i = 0; i < numberOfDays; i++) {
+            String newDate = getSearchableDate(addDaysToDate(date, i),
+                "yyyy-mm-dd");
+            dates.add(newDate);
+        }
+        results = data.getDataWithDates(dates);
+        Map<String, Double> map = new HashMap<String, Double>();
+        for (CovidData data : results) {
+            if (map.containsKey(data.getState())) {
+                String key = data.getState();
+                Double newValue = data.getPos() / numberOfDays;
+                map.put(key, map.get(key) + newValue);
+            }
+            else {
+                String key = data.getState();
+                Double newValue = data.getPos() / numberOfDays;
+                map.put(key, newValue);
+            }
+        }
+        String minDate = dates.get(dates.size() - 1);
+        int size = map.size() >= 10 ? 10 : map.size();
+        System.out.println("Top " + size + " states with the highest average"
+            + "daily positive cases from " + fancyDate(minDate) + " to " + date
+            + ":");
+
+        Comparator<Entry<String, Double>> comparator = (e1, e2) -> e1.getValue()
+            .compareTo(e2.getValue());
+        comparator = comparator.thenComparing((e1, e2) -> e2.getKey().compareTo(
+            e1.getKey()));
+        comparator = comparator.reversed();
+        map.entrySet().stream().sorted(comparator).limit(10).forEach(
+            entry -> System.out.println(entry.getKey() + " " + entry.getValue()
+                .intValue()));
         return false;
     }
 
@@ -229,7 +304,7 @@ public class Searcher {
      */
     private String getMostRecentDate() {
         CovidData maxDateData = data.findMax();
-        String date = maxDateData.getDate().toString();
+        String date = maxDateData.fancyDate().toString();
         return date;
     }
 
@@ -241,9 +316,9 @@ public class Searcher {
      *            the fancy date
      * @return the searchable date
      */
-    private String getSearchableDate(String date) {
+    private String getSearchableDate(String date, String dateFormat) {
         try {
-            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+            DateFormat format = new SimpleDateFormat(dateFormat);
             format.setLenient(false);
             if (date.length() != 10) {
                 throw new ParseException(date, 0);
@@ -255,6 +330,34 @@ public class Searcher {
         catch (ParseException e) {
             return null;
         }
+    }
+
+
+    /**
+     * adds days to a date
+     * 
+     * @param ogDate
+     *            the date to add to
+     * @param day2Add
+     *            the num of days to add
+     * @return new date
+     */
+    private String addDaysToDate(String ogDate, int day2Add) {
+        String dateString = "2020-01-01";
+        try {
+            DateFormat format = new SimpleDateFormat("mm/dd/yyyy");
+            format.setLenient(false);
+            if (ogDate.length() != 10) {
+                throw new ParseException(ogDate, 0);
+            }
+            Date dateData = format.parse(ogDate);
+            format = new SimpleDateFormat("yyyy-mm-dd");
+            dateString = format.format(dateData);
+        }
+        catch (ParseException e) {
+            return null;
+        }
+        return LocalDate.parse(dateString).minusDays(day2Add).toString();
     }
 
 
@@ -282,6 +385,7 @@ public class Searcher {
 
 
     private void printResults() {
+        Collections.sort(results);
         Object[] headerStrings = { "state", "date", "positive", "negative",
             "hospitalized", "onVentilatorCurrently", "onVentilatorCumulative",
             "recovered", "dataQualityGrade", "death" };

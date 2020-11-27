@@ -527,6 +527,92 @@ public class BST<K> {
 
 
     /**
+     * gets a list of the data points from a date
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
+    public ArrayList<String> getKeysWithDate(String date) {
+        return getKeysForDates(this.root, date);
+    }
+
+
+    /**
+     * actually performs the date checking
+     * 
+     * @param state
+     *            the state to check for
+     * @return yes
+     */
+    private ArrayList<String> getKeysForDates(
+        NodeClass<String, K> node,
+        String date) {
+        ArrayList<String> result = new ArrayList<String>();
+        if (node == flyweight) {
+            return result;
+        }
+        String[] parts = node.getKey().split("-", -1);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getKeysForDates(node.getLeft(), date));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getKeysForDates(node.getRight(), date));
+        }
+        if (date.equals(parts[0])) {
+            result.add(node.getKey());
+        }
+        return result;
+    }
+
+
+    /**
+     * gets a list of the data points from a date
+     * 
+     * @param grade
+     *            the grade to check
+     * @return array of keys
+     */
+    public ArrayList<K> getDataWithDates(ArrayList<String> dates) {
+        return getDataFromDates(this.root, dates);
+    }
+
+
+    /**
+     * actually performs the date checking
+     * 
+     * @param state
+     *            the state to check for
+     * @return yes
+     */
+    private ArrayList<K> getDataFromDates(
+        NodeClass<String, K> node,
+        ArrayList<String> dates) {
+
+        ArrayList<K> result = new ArrayList<K>();
+        if (node == flyweight) {
+            return result;
+        }
+        String[] parts = node.getKey().split("-", -1);
+        if (node.getLeft() != flyweight) {
+            result.addAll(getDataFromDates(node.getLeft(), dates));
+        }
+
+        if (node.getRight() != flyweight) {
+            result.addAll(getDataFromDates(node.getRight(), dates));
+        }
+        if (dates.contains(parts[0])) {
+            result.add(node.getValue());
+        }
+        else {
+            remove(node.getKey());
+        }
+        return result;
+    }
+
+
+    /**
      * is the tree empty
      * 
      * @return true if empty
