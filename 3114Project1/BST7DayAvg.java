@@ -44,14 +44,14 @@ public class BST7DayAvg implements Comparable<BST7DayAvg> {
      * 
      * @param state
      *            the state
-     * @param startingDate
-     *            the starting date
+     * @param endDate
+     *            the end date
      * @param minAvg
      *            the minimum average requires for the 7 day run
      */
-    public BST7DayAvg(String state, String startingDate, Integer minAvg) {
+    public BST7DayAvg(String state, String endDate, Integer minAvg) {
         this.state = state;
-        this.startingDate = startingDate;
+        this.endDate = endDate;
         this.minAvg = minAvg;
     }
 
@@ -106,8 +106,7 @@ public class BST7DayAvg implements Comparable<BST7DayAvg> {
 
 
     /**
-     * @param counter
-     *            the counter to set
+     * increases the counter by one
      */
     public void incrementCounter() {
         this.counter++;
@@ -115,11 +114,11 @@ public class BST7DayAvg implements Comparable<BST7DayAvg> {
 
 
     /**
-     * @param endDate
-     *            the endDate to set
+     * @param startingDate
+     *            the startingDate to set
      */
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setStartingDate(String startingDate) {
+        this.startingDate = startingDate;
     }
 
 

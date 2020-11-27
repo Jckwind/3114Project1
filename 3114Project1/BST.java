@@ -1,5 +1,10 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 // On my honor:
 //
@@ -25,10 +30,12 @@ import java.util.Collections;
 // -- Michael Gannon (mgannon3500)
 /**
  * my generic binary search tree class
- *
+ * 
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
+ * @param <K>
+ *            the type to make the BST
  */
 public class BST<K> {
 
@@ -62,6 +69,17 @@ public class BST<K> {
         add(tree.getRoot().getKey(), tree.getRoot().getValue());
         copy(root, tree.getRoot());
         size = tree.getSize();
+    }
+
+
+    /**
+     * copies the state data
+     * 
+     * @param stateTree
+     *            the old state treet
+     */
+    public void copyState(BST<K> stateTree) {
+        this.stateData = new StateOrderedBST<K>(stateTree);
     }
 
 
@@ -330,6 +348,13 @@ public class BST<K> {
     }
 
 
+    /**
+     * gets the value with key
+     * 
+     * @param key
+     *            the key to use
+     * @return the value of node
+     */
     public K get(String key) {
         return get(root, key);
     }
@@ -373,12 +398,18 @@ public class BST<K> {
     /**
      * actually performs the key checking
      * 
+     * @param node
+     *            the node to start w
+     * 
      * @param grade
      *            the grade to check for
      * @return yes
      */
     private ArrayList<String> getKeys(NodeClass<String, K> node, int grade) {
         ArrayList<String> result = new ArrayList<String>();
+        if (node == flyweight) {
+            return result;
+        }
         String[] parts = node.getKey().split("-", -1);
         Integer dataQualityRaw = Integer.parseInt(parts[2]);
         if (node.getLeft() != flyweight) {
@@ -399,8 +430,8 @@ public class BST<K> {
     /**
      * gets a list of the keys with a grade
      * 
-     * @param grade
-     *            the grade to check
+     * @param quality
+     *            the quality to check
      * @return array of keys
      */
     public ArrayList<K> getDataWithGrade(String quality) {
@@ -411,7 +442,9 @@ public class BST<K> {
     /**
      * actually performs the key checking
      * 
-     * @param grade
+     * @param node
+     *            the node to start w
+     * @param quality
      *            the grade to check for
      * @return yes
      */
@@ -443,8 +476,8 @@ public class BST<K> {
     /**
      * gets a list of the keys with a grade
      * 
-     * @param grade
-     *            the grade to check
+     * @param suffix
+     *            the state to check
      * @return array of keys
      */
     public ArrayList<K> getDataWithState(String suffix) {
@@ -457,8 +490,10 @@ public class BST<K> {
     /**
      * actually performs the key checking
      * 
-     * @param grade
-     *            the grade to check for
+     * @param node
+     *            the node to start w
+     * @param state
+     *            the state to check for
      * @return yes
      */
     private ArrayList<K> getStates(NodeClass<String, K> node, String state) {
@@ -488,9 +523,9 @@ public class BST<K> {
     /**
      * gets a list of the data points from a date
      * 
-     * @param grade
-     *            the grade to check
-     * @return array of keys
+     * @param date
+     *            the date to check
+     * @return array of objects
      */
     public ArrayList<K> getDataWithDate(String date) {
         return getDates(this.root, date);
@@ -500,9 +535,11 @@ public class BST<K> {
     /**
      * actually performs the date checking
      * 
-     * @param state
-     *            the state to check for
-     * @return yes
+     * @param node
+     *            the node to start w
+     * @param date
+     *            the date to check for
+     * @return arraylist of values
      */
     private ArrayList<K> getDates(NodeClass<String, K> node, String date) {
         ArrayList<K> result = new ArrayList<K>();
@@ -530,17 +567,20 @@ public class BST<K> {
     /**
      * gets a list of the data points from a date
      * 
-     * @param grade
-     *            the grade to check
-     * @return array of keys
+     * @param avg
+     *            the avg to check
+     * @return array of bst 7 day avergaes
      */
     public ArrayList<BST7DayAvg> get7DayAverage(Integer avg) {
         ArrayList<BST7DayAvg> avgObjects = getAvgObj(this.root, avg);
         ArrayList<BST7DayAvg> result = new ArrayList<BST7DayAvg>();
+        ArrayList<String> dateUsed = new ArrayList<String>();
         for (BST7DayAvg averageObject : avgObjects) {
             getAvgs(this.root, avg, averageObject);
-            if (averageObject.getCounter() >= 7) {
+            if (averageObject.getCounter() >= 7 && !dateUsed.contains(
+                averageObject.getStartingDate())) {
                 result.add(averageObject);
+                dateUsed.add(averageObject.getStartingDate());
             }
         }
         Collections.sort(result);
@@ -551,8 +591,10 @@ public class BST<K> {
     /**
      * actually performs the date checking
      * 
-     * @param state
-     *            the state to check for
+     * @param node
+     *            the node to start w
+     * @param a
+     *            the average to check for
      * @return yes
      */
     private ArrayList<BST7DayAvg> getAvgObj(NodeClass<String, K> node, int a) {
@@ -579,22 +621,16 @@ public class BST<K> {
     /**
      * actually performs the date checking
      * 
-     * @param state
-     *            the state to check for
-     * @return yes
+     * @param node
+     *            the node to start w
+     * @param avg
+     *            the avg to check for
+     * @param obj
+     *            the 7 day average object to edit
      */
     private void getAvgs(NodeClass<String, K> node, int avg, BST7DayAvg obj) {
         if (node == flyweight) {
             return;
-        }
-        CovidData data = (CovidData)node.getValue();
-        Integer start = Integer.parseInt(obj.getStartingDate());
-        boolean sameState = data.getState().equals(obj.getState());
-        boolean nextDay = start + obj.getCounter() == data.getDate();
-        boolean aboveAvg = data.getPos() >= avg;
-        if (sameState && nextDay && aboveAvg) {
-            obj.incrementCounter();
-            obj.setEndDate(data.getDate().toString());
         }
         if (node.getLeft() != flyweight) {
             getAvgs(node.getLeft(), avg, obj);
@@ -603,15 +639,51 @@ public class BST<K> {
         if (node.getRight() != flyweight) {
             getAvgs(node.getRight(), avg, obj);
         }
+        CovidData data = (CovidData)node.getValue();
+        Integer start = Integer.parseInt(obj.getEndDate());
+        boolean sameState = data.getState().equals(obj.getState());
+        Integer adjustedDate = subtractDate(start.toString(), obj.getCounter());
+        boolean nextDay = adjustedDate.equals(data.getDate());
+        boolean aboveAvg = data.getPos() >= avg;
+        if (sameState && nextDay && aboveAvg) {
+            obj.incrementCounter();
+            obj.setStartingDate(data.getDate().toString());
+        }
+
+    }
+
+
+    private Integer subtractDate(String date1, int distanceApart) {
+        try {
+            DateFormat format = new SimpleDateFormat("yyyymmdd");
+            format.setLenient(false);
+            Date dateData = format.parse(date1);
+
+            format = new SimpleDateFormat("yyyy-mm-dd");
+            String dateString = format.format(dateData);
+            String result = LocalDate.parse(dateString).minusDays(distanceApart)
+                .toString();
+
+            format = new SimpleDateFormat("yyyy-mm-dd");
+            dateData = format.parse(result);
+
+            format = new SimpleDateFormat("yyyymmdd");
+            result = format.format(dateData);
+            return Integer.parseInt(result);
+        }
+        catch (ParseException e) {
+            System.out.println(e);
+            return 0;
+        }
     }
 
 
     /**
      * gets a list of the data points from a date
      * 
-     * @param grade
-     *            the grade to check
-     * @return array of keys
+     * @param dates
+     *            the dates to check
+     * @return array of values
      */
     public ArrayList<K> getDataWithDates(ArrayList<String> dates) {
         return getDataFromDates(this.root, dates);
@@ -621,9 +693,11 @@ public class BST<K> {
     /**
      * actually performs the date checking
      * 
-     * @param state
-     *            the state to check for
-     * @return yes
+     * @param node
+     *            the node to start w
+     * @param dates
+     *            the dates to check for
+     * @return array of values
      */
     private ArrayList<K> getDataFromDates(
         NodeClass<String, K> node,
@@ -685,6 +759,7 @@ public class BST<K> {
      *            the first string to compare
      * @param string2
      *            the second string to compare
+     * @return the compare to value
      */
     public int compare(String string1, String string2) {
         if (string1.equals(string2)) {
@@ -701,6 +776,14 @@ public class BST<K> {
         else {
             return parts1[1].compareTo(parts2[1]);
         }
+    }
+
+
+    /**
+     * @return the stateData
+     */
+    public StateOrderedBST<K> getStateData() {
+        return stateData;
     }
 
 }

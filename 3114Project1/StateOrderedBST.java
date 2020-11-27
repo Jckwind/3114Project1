@@ -26,8 +26,29 @@
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
  * @version Nov 25, 2020
+ * @param <K>
+ *            the type of the state orders bst
  */
 public class StateOrderedBST<K> extends BST<K> {
+
+    /**
+     * creates a new state ordered bst
+     */
+    public StateOrderedBST() {
+        super();
+    }
+
+
+    /**
+     * copys a bst
+     * 
+     * @param tree
+     *            tree to copy
+     */
+    public StateOrderedBST(BST<K> tree) {
+        super(tree);
+    }
+
 
     @Override
     public int compare(String string1, String string2) {

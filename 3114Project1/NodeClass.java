@@ -26,6 +26,10 @@
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
+ * @param <T>
+ *            the key type
+ * @param <K>
+ *            the value type
  */
 public class NodeClass<T, K> {
 
@@ -38,10 +42,15 @@ public class NodeClass<T, K> {
     private NodeClass<T, K> right;
 
     /**
+     * creates a new node class obj
      * 
+     * @param key
+     *            the key
+     * @param value
+     *            the value
      */
-    public NodeClass(T data, K value) {
-        this.key = data;
+    public NodeClass(T key, K value) {
+        this.key = key;
         this.value = value;
     }
 
@@ -79,8 +88,8 @@ public class NodeClass<T, K> {
 
 
     /**
-     * @param data
-     *            the data to set
+     * @param key
+     *            the key to set
      */
     public void setKey(T key) {
         this.key = key;

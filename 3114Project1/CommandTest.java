@@ -42,12 +42,10 @@ public class CommandTest extends TestCase {
 
     private ArrayList<String> args = new ArrayList<String>(5);
     private ArrayList<String> arg1 = new ArrayList<String>(1);
-    private Command myLoad;
     private Map<String, CovidData> data;
     private String commandFile = "input_1.txt";
     private ArrayList<Command> commands;
     private CommandReader myReader;
-    private CSVReader myCsv;
 
     /**
      * @throws FileNotFoundException
@@ -64,24 +62,6 @@ public class CommandTest extends TestCase {
         commands = new ArrayList<Command>(2);
         commands.add(myCom);
         myReader = new CommandReader(commands, commandFile);
-// myCsv = new CSVReader(commandFile, data);
-    }
-
-
-    /**
-     * tests getCommandType in Command.java
-     */
-    public void testGetCommandType() {
-        assertEquals(CommandEnum.LOAD, myLoad.getCommandType());
-    }
-
-
-    /**
-     * test getArgs() in Command.java
-     */
-    public void testGetArgs() {
-// ArrayList<String> myList = myLoad.getArgs();
-// assertEquals(myList, myLoad.getArgs());
     }
 
 
@@ -109,19 +89,8 @@ public class CommandTest extends TestCase {
         assertTrue(myReader.read());
         assertEquals(CommandEnum.LOAD, myReader.getType("load"));
         assertEquals(CommandEnum.SEARCH, myReader.getType("search"));
-        assertEquals(CommandEnum.DUMP, myReader.getType("dumpdata"));
+        assertEquals(CommandEnum.DUMP, myReader.getType("dumpbst"));
         assertEquals(CommandEnum.ERROR, myReader.getType("other"));
-    }
-
-
-    /**
-     * tests the loadData method in CSVReader
-     * 
-     * @throws FileNotFoundException
-     */
-    public void testLoadData() throws FileNotFoundException {
-        // assertTrue(myCsv.loadData());
-        assertEquals(data, myCsv.getData());
     }
 
 

@@ -26,6 +26,10 @@
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
+ * @param <T>
+ *            the key type
+ * @param <K>
+ *            the value type
  */
 public class DataNode<T, K> extends NodeClass<T, K> {
 
@@ -34,7 +38,12 @@ public class DataNode<T, K> extends NodeClass<T, K> {
     /**
      * creates a new data node class
      * 
-     * @param data
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @param leafNode
+     *            the flyweight
      */
     public DataNode(T key, K value, LeafNode<T, K> leafNode) {
         super(key, value);

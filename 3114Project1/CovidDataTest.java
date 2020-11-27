@@ -58,7 +58,7 @@ public class CovidDataTest extends TestCase {
      * tests the getKey function from CovidData
      */
     public void testGetKey() {
-        assertEquals("MA-20200305", myCovidData.getKey());
+        assertEquals("20200305-massachusetts-1", myCovidData.getKey());
     }
 
 
@@ -117,10 +117,8 @@ public class CovidDataTest extends TestCase {
      * tests the compare to method for covidData
      */
     public void testCompareTo() {
-        assertEquals(1, myCovidData.compareQuality(otherCovidData));
-        assertEquals(-1, otherCovidData.compareQuality(myCovidData));
-// int num = myCovidData.compareTo(otherCovidData);
-// assertEquals(num, myCovidData.compareTo(otherCovidData));
+        assertEquals(-1, myCovidData.compareQuality(otherCovidData));
+        assertEquals(1, otherCovidData.compareQuality(myCovidData));
     }
 
 

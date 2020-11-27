@@ -54,10 +54,13 @@ public class Searcher {
      * 
      * @param arguments
      *            the arguments
+     * @param data
+     *            the bst tree to use as data
      */
     public Searcher(ArrayList<CommandArgs> arguments, BST<CovidData> data) {
         this.arguments = arguments;
         this.data = new BST<CovidData>(data);
+        this.data.copyState(data.getStateData());
         this.builder = new StringBuilder();
         this.results = new ArrayList<CovidData>();
     }
@@ -181,10 +184,7 @@ public class Searcher {
 
 
     /**
-     * searches the data based on date
-     * 
-     * @param args
-     *            the arguements
+     * searches the data based on most recent date
      */
     private boolean searchNoDate() {
         String date = getMostRecentDate();
@@ -260,15 +260,15 @@ public class Searcher {
         }
         results = data.getDataWithDates(dates);
         Map<String, Double> map = new HashMap<String, Double>();
-        for (CovidData data : results) {
-            if (map.containsKey(data.getState())) {
-                String key = data.getState();
-                Double newValue = data.getPos() / numberOfDays;
+        for (CovidData dataPoint : results) {
+            if (map.containsKey(dataPoint.getState())) {
+                String key = dataPoint.getState();
+                Double newValue = dataPoint.getPos() / numberOfDays;
                 map.put(key, map.get(key) + newValue);
             }
             else {
-                String key = data.getState();
-                Double newValue = data.getPos() / numberOfDays;
+                String key = dataPoint.getState();
+                Double newValue = dataPoint.getPos() / numberOfDays;
                 map.put(key, newValue);
             }
         }
@@ -298,7 +298,7 @@ public class Searcher {
      */
     private void searchContinuous(String[] args) {
         Integer avg = Integer.parseInt(args[0]);
-        ArrayList<BST7DayAvg> avgs = data.get7DayAverage(avg);
+        ArrayList<BST7DayAvg> avgs = data.getStateData().get7DayAverage(avg);
         ArrayList<String> stateSaid = new ArrayList<String>();
         for (BST7DayAvg average : avgs) {
             if (stateSaid.contains(average.getState())) {
@@ -375,11 +375,11 @@ public class Searcher {
             Date dateData = format.parse(ogDate);
             format = new SimpleDateFormat("yyyy-mm-dd");
             dateString = format.format(dateData);
+            return LocalDate.parse(dateString).minusDays(day2Add).toString();
         }
         catch (ParseException e) {
             return null;
         }
-        return LocalDate.parse(dateString).minusDays(day2Add).toString();
     }
 
 
@@ -406,6 +406,9 @@ public class Searcher {
     }
 
 
+    /**
+     * prints the results
+     */
     private void printResults() {
         Collections.sort(results);
         Object[] headerStrings = { "state", "date", "positive", "negative",

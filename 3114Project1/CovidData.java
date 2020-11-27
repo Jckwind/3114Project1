@@ -148,6 +148,13 @@ public class CovidData implements Comparable<CovidData> {
     }
 
 
+    /**
+     * returns a differently formatted key
+     * 
+     * @param mode
+     *            based on mode
+     * @return the key
+     */
     public String getKey(int mode) {
         StringBuilder builder = new StringBuilder();
         builder.append("<");
@@ -195,6 +202,8 @@ public class CovidData implements Comparable<CovidData> {
     /**
      * returns a number value based on data quality
      * 
+     * @param quality
+     *            the quality
      * @return int of Data quality raw
      */
     public static int getDataQualityRaw(String quality) {

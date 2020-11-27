@@ -40,8 +40,6 @@ public class CommandArgs {
      * 
      * @param type
      *            the type of object
-     * @param args
-     *            the args
      */
     public CommandArgs(ParameterEnum type) {
         this.type = type;

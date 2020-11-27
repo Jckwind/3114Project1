@@ -26,6 +26,10 @@
  * @author Jack Windham (jckwind11)
  * @author Michael Gannon (mgannon3500)
  * @version Nov 24, 2020
+ * @param <T>
+ *            the key type
+ * @param <K>
+ *            the value type
  */
 public class LeafNode<T, K> extends NodeClass<T, K> {
 

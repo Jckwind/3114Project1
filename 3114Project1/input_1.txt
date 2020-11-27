@@ -5,7 +5,7 @@ search -S ViRginia
 search -Q A
 search -Q C -S SC
 search -Q C -S SC -D 07/29/2020
-search -Q C -S SC -D 07/29/2021
+search -Q C -S SC -D 09/31/2020
 	
 	dumpBST 1
 dumpBST 2

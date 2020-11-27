@@ -71,12 +71,12 @@ public class Command {
     /**
      * converts the args to command arg objetc
      * 
-     * @param args
+     * @param arguments
      *            the args
      */
-    public void handleArgs(ArrayList<String> args) {
+    public void handleArgs(ArrayList<String> arguments) {
         CommandArgs currentArg = null;
-        for (String arg : args) {
+        for (String arg : arguments) {
             if (arg.charAt(0) == '-') {
                 if (currentArg != null) {
                     this.args.add(currentArg);
@@ -90,7 +90,7 @@ public class Command {
         }
         if (currentArg == null) {
             currentArg = new CommandArgs(ParameterEnum.DEFAULT);
-            for (String arg : args) {
+            for (String arg : arguments) {
                 currentArg.addArg(arg);
             }
             this.args.add(currentArg);
@@ -139,7 +139,6 @@ public class Command {
      * 
      * @param data
      *            Map of the data to be run
-     * @return boolean
      */
     public void run(BST<CovidData> data) {
         switch (commandType) {
